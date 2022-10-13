@@ -1,0 +1,32 @@
+{
+  "name": "keyboardtrainer6415",
+  "version": "1.0.0",
+  "description": "keyboard trainer 6415_2022",
+  "main": "app.js",
+  "scripts": {
+    "start": "node.js",
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev-keyboard-trainer": "concurrently \"npm run server\" \"npm run fronteclientnd\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mudrova-x/KeyboardTrainer6415.git"
+  },
+  "keywords": [
+    "keyboardtrainer"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mudrova-x/KeyboardTrainer6415/issues"
+  },
+  "homepage": "https://github.com/mudrova-x/KeyboardTrainer6415#readme",
+  "devDependencies": {
+    "concurrently": "^7.4.0",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "config": "^3.3.8"
+  }
+}
