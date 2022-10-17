@@ -1,5 +1,5 @@
 import "../styles/Admin/TaskListPage.scss"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import Add from "../icons/add.png"
 import Delete from "../icons/delete.png"
 export const TaskListPage = (props) => {
@@ -25,46 +25,26 @@ export const TaskListPage = (props) => {
       task: "smth5",
     },
   ]
-  
+
   const [oldTask, setOldTask] = useState({
     taskName: "",
   })
-
   const [newTask, setNewTask] = useState({
     taskName: "",
     length: 0,
     level: "3",
-    creationType: '0',
-    taskText:""
+    creationType: '1',
   })
 
-  const CreateTask = (task) => {
-   
-    let newTaskTest = task;
-    console.log("newTaskTest")
-    console.log(newTaskTest)
-    setNewTask({
-    taskName: "",
-    length: 0,
-    level: "3",
-    creationType: '0',
-    taskText:""
-    }
-    )
-    setWindowMode('0')
-  }
   const changeOldTaskHandler = (event) => {
     console.log("taskName = " + oldTask)
     setOldTask({ ...oldTask, [event.target.name]: event.target.value })
   }
 
   const changeNewTaskHandler = (event) => {
-    if (newTask.creationType === '1' && event.target.name === "taskText")
-      setNewTask({ ...newTask, [event.target.name]: event.target.value, length: event.target.value.length})
- 
-    // console.log(event.target.name)
-    // console.log(event.target.value)
-    else setNewTask({ ...newTask, [event.target.name]: event.target.value })
+    console.log(event.target.name)
+    console.log(event.target.value)
+    setNewTask({ ...newTask, [event.target.name]: event.target.value })
     console.log(newTask)
   }
 
@@ -81,18 +61,6 @@ export const TaskListPage = (props) => {
       "px",
   }
 
-  const [windowMode, setWindowMode] = useState('0')
-  
-  useEffect(() => {
-    console.log("use " + newTask.creationType)
-    
-    if (newTask.creationType === '1') setWindowMode('1')
-    if (newTask.creationType === '3') setWindowMode('2')
-    if (newTask.creationType === '2') setWindowMode('0')
-    console.log(windowMode)
-  }, [newTask.creationType, windowMode])
-
-  let fileTask  
   // console.log(oldTask.taskName)
 
   // window.onclick = function(event) {
@@ -168,8 +136,7 @@ export const TaskListPage = (props) => {
                 type="number"
                 id="length"
                 name="length"
-                value={newTask.creationType === '1' ? newTask.taskText.length : newTask.length}
-                disabled={newTask.creationType === '1'? true:false}
+                value={newTask.length}
                 onChange={changeNewTaskHandler}
               />
               <div className="select">
@@ -206,26 +173,11 @@ export const TaskListPage = (props) => {
                   Файл
                 </button>
               </div>
-              {windowMode === '2' ? (
-              <div className="file-field">
-              <input
-                type="file"
-                name="taskText"
-                value={fileTask}
-                onChange={(value)=>fileTask=value}
-              />
-              </div>):<></>}
             </div>
             <div className="single-button">
-              <button
-                onClick={() => {
-                  CreateTask(newTask)
-                }}>Создать</button>
+              <button>Создать</button>
             </div>
           </div>
-          {windowMode === '1' ? (<div className="task-text-field">
-            <textarea name="taskText" rows="4" cols="30" value={newTask.taskText } onChange={changeNewTaskHandler} placeholder="Текст упражнения.."> </textarea>
-          </div>):<></>}
         </div>
       </div>
     </div>
