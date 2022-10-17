@@ -1,7 +1,19 @@
-.admin-page-tasks {
-  height: 80vh;
+@mixin fields-desc {
+  width: 70%;
+  height: 10%;
+  text-indent: 10px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-family: "Raleway";
+  border: 3px black solid;
 }
 
+button:hover {
+  opacity: 0.5;
+}
+body {
+  overflow: hidden;
+}
 .seach-panel {
   min-height: 90px;
   display: flex;
@@ -28,12 +40,28 @@
     font-weight: 500;
   }
 }
+::-webkit-scrollbar {
+  width: 20px;
+}
 
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border: solid 2px black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(217, 217, 217, 1);
+  max-height: 20px;
+  border: solid 2px black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 .task-list {
   overflow: scroll;
 }
 .task-row {
-  width: 98;
   min-height: 150px;
   display: flex;
   flex-direction: row;
@@ -44,21 +72,172 @@
     margin-left: 50px;
     p {
       margin: 30px 0 14px 0;
-      font-size: 48px;
+      font-size: 40px;
+      font-weight: 600;
+      letter-spacing: 2px;
     }
     button {
       background-color: inherit;
       border: none;
       text-decoration: underline;
-      font-size: 28px;
+      //border-bottom:2px solid black;
+      font-size: 20px;
       margin-bottom: 30px;
+      padding-left: 0;
     }
   }
   .right {
     button {
       background-color: inherit;
       border: none;
-      margin-right: 26px;
+      margin-right: 30px;
     }
   }
+}
+
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0, 0, 0); 
+  background-color: rgba(0, 0, 0, 0.4); 
+
+  .window {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgb(217, 217, 217);
+    width: 60%;
+    margin: auto;
+    height: 100%;
+    border: 7px solid black;
+
+    .fields {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 3;
+      padding: 54px;
+
+      input {
+        @include fields-desc;
+        margin-top: 5%;
+      }
+      select {
+        @include fields-desc;
+        appearance: none;
+        outline: 0;
+        border: 0;
+        box-shadow: none;
+
+        flex: 1;
+        height: 100%;
+        padding: 0 1em;
+        color: black;
+        background-color: white;
+        background-image: none;
+        cursor: pointer;
+      }
+      
+      select::-ms-expand {
+        display: none;
+      }
+      
+      .select {
+        margin-top: 5%;
+        position: relative;
+        display: flex;
+        width: 70%;
+        height: 10%;
+        overflow: hidden;
+        border: 3px black solid;
+      }
+      /* Arrow */
+      .select::after {
+        content: url("../../icons/arrow.png");
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 2%;
+        background-color: inherit;
+        transition: 0.25s all ease;
+        pointer-events: none;
+      }
+      /* Transition */
+      option: {
+        background-color: #f39c12;
+      }
+
+      .button-row {
+        margin-top: 5%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 70%;
+        height: 10%;
+        .black,
+        .white {
+          width: 30%;
+          height: 100%;
+          font-size: 19px;
+          letter-spacing: 2px;
+          font-family: "Raleway";
+        }
+        .black {
+          color: white;
+          background-color: black;
+        }
+        .white {
+          background-color: white;
+          border: 3px black solid;
+        }
+      }
+    }
+    .single-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      margin-bottom: 56px;
+
+      button {
+        padding: 40px;
+        width: 56%;
+        color: white;
+        background-color: black;
+        font-size: 19px;
+        font-weight: 200;
+        letter-spacing: 2px;
+        font-family: "Raleway";
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .modal-content {
+    width: 80%;
+    height: 80%;
+    margin: auto;
+  }
+}
+///////////////////////delete
+.close {
+  color: black;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }

@@ -1,27 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,800;0,900;1,800&display=swap");
 
 body{
-    margin: 0;
-    font-family: "Raleway" !important;
+  margin:0;
+  height: 100vh;
+  box-sizing: border-box;
+  font-family: "Raleway" !important;
 }
-.test{
-    font-size: 40px;
-    font-weight: 600;
+.root{
+    overflow: hidden;
 }
 
 header {
     display: flex;
     flex-direction: row;
     text-transform: uppercase;
-    //   letter-spacing: 0.3em;
     text-align: center;
     .title {
-      // flex: 3;
-      // font-weight: 800;
-      // font-size: 128px;
-      // line-height: 150px;
-      // border: solid 3.5px black;
-  
       flex: 3;
       font-weight: 800;
       font-size: 90px;
@@ -33,16 +27,6 @@ header {
     .profile {
       flex: 1;
       button {
-        //   width: 100%;
-        //   height: 100%;
-        //   text-align: center;
-        //   font-weight: 500;
-        //   font-size: 64px;
-        //   line-height: 75px;
-        //   background-color: inherit;
-        //   border: none;
-        //   text-transform: uppercase;
-        //   border: solid 3.5px black;
         width: 100%;
         height: 100%;
         text-align: center;
