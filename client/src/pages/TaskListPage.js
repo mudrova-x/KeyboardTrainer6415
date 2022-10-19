@@ -25,7 +25,7 @@ export const TaskListPage = (props) => {
       task: "smth5",
     },
   ]
-  
+
   const [oldTask, setOldTask] = useState({
     taskName: "",
   })
@@ -34,24 +34,23 @@ export const TaskListPage = (props) => {
     taskName: "",
     length: 0,
     level: "3",
-    creationType: '0',
-    taskText:""
+    creationType: "0",
+    taskText: "",
   })
 
   const CreateTask = (task) => {
-   
-    let newTaskTest = task;
+    let newTaskTest = task
     console.log("newTaskTest")
     console.log(newTaskTest)
+    list.push(newTaskTest)
     setNewTask({
-    taskName: "",
-    length: 0,
-    level: "3",
-    creationType: '0',
-    taskText:""
-    }
-    )
-    setWindowMode('0')
+      taskName: "",
+      length: 0,
+      level: "3",
+      creationType: "0",
+      taskText: "",
+    })
+    setWindowMode("0")
   }
   const changeOldTaskHandler = (event) => {
     console.log("taskName = " + oldTask)
@@ -59,9 +58,12 @@ export const TaskListPage = (props) => {
   }
 
   const changeNewTaskHandler = (event) => {
-    if (newTask.creationType === '1' && event.target.name === "taskText")
-      setNewTask({ ...newTask, [event.target.name]: event.target.value, length: event.target.value.length})
- 
+    if (newTask.creationType === "1" && event.target.name === "taskText")
+      setNewTask({
+        ...newTask,
+        [event.target.name]: event.target.value,
+        length: event.target.value.length,
+      })
     // console.log(event.target.name)
     // console.log(event.target.value)
     else setNewTask({ ...newTask, [event.target.name]: event.target.value })
@@ -81,25 +83,31 @@ export const TaskListPage = (props) => {
       "px",
   }
 
-  const [windowMode, setWindowMode] = useState('0')
-  
+  const [windowMode, setWindowMode] = useState("0")
+
   useEffect(() => {
     console.log("use " + newTask.creationType)
-    
-    if (newTask.creationType === '1') setWindowMode('1')
-    if (newTask.creationType === '3') setWindowMode('2')
-    if (newTask.creationType === '2') setWindowMode('0')
+
+    if (newTask.creationType === "1") setWindowMode("1")
+    if (newTask.creationType === "3") setWindowMode("2")
+    if (newTask.creationType === "2") setWindowMode("0")
     console.log(windowMode)
   }, [newTask.creationType, windowMode])
 
-  let fileTask  
+  let fileTask
   // console.log(oldTask.taskName)
 
-  // window.onclick = function(event) {
-  //   if (event.target == modal) {
-  //     modal.style.display = "none";
-  //   }
-  //   }
+  window.onclick = function (event) {
+    console.log(document.getElementById("myModal").style.display)
+    console.log(event.target)
+
+    if (
+      event.target === document.getElementById("myModal") ||
+      event.target === document.getElementById("modal-content")
+    ) {
+      document.getElementById("myModal").style.display = "none"
+    }
+  }
 
   return (
     <div className="admin-page-tasks">
@@ -145,15 +153,7 @@ export const TaskListPage = (props) => {
       </div>
 
       <div id="myModal" className="modal">
-        <div className="modal-content">
-          <span
-            className="close"
-            onClick={() =>
-              (document.getElementById("myModal").style.display = "none")
-            }
-          >
-            &times;
-          </span>
+        <div className="modal-content" id="modal-content">
           <div className="window">
             <div className="fields">
               <input
@@ -168,64 +168,93 @@ export const TaskListPage = (props) => {
                 type="number"
                 id="length"
                 name="length"
-                value={newTask.creationType === '1' ? newTask.taskText.length : newTask.length}
-                disabled={newTask.creationType === '1'? true:false}
+                value={
+                  newTask.creationType === "1"
+                    ? newTask.taskText.length
+                    : newTask.length
+                }
+                disabled={newTask.creationType === "1" ? true : false}
                 onChange={changeNewTaskHandler}
               />
               <div className="select">
-                <select name="level" value={newTask.level} onChange={changeNewTaskHandler}>
-                  <option  value="1">Первый ур. сложности</option>
-                  <option  value="2">Второй ур. сложности</option>
-                  <option  value="3">Третий ур. сложности</option>
-                  <option  value="4">Четвертый ур. сложности</option>
+                <select
+                  name="level"
+                  value={newTask.level}
+                  onChange={changeNewTaskHandler}
+                >
+                  <option value="1">Первый ур. сложности</option>
+                  <option value="2">Второй ур. сложности</option>
+                  <option value="3">Третий ур. сложности</option>
+                  <option value="4">Четвертый ур. сложности</option>
                 </select>
               </div>
               <div className="button-row">
                 <button
                   name="creationType"
-                  className={newTask.creationType === '1' ? "black" : "white"}
-                  value='1'
+                  className={newTask.creationType === "1" ? "black" : "white"}
+                  value="1"
                   onClick={changeNewTaskHandler}
                 >
                   Ручной
                 </button>
                 <button
                   name="creationType"
-                  className={newTask.creationType === '2' ? "black" : "white"}
-                  value={'2'}
+                  className={newTask.creationType === "2" ? "black" : "white"}
+                  value={"2"}
                   onClick={changeNewTaskHandler}
                 >
                   Авто
                 </button>
                 <button
                   name="creationType"
-                  className={newTask.creationType === '3' ? "black" : "white"}
-                  value={'3'}
+                  className={newTask.creationType === "3" ? "black" : "white"}
+                  value={"3"}
                   onClick={changeNewTaskHandler}
                 >
                   Файл
                 </button>
               </div>
-              {windowMode === '2' ? (
-              <div className="file-field">
-              <input
-                type="file"
-                name="taskText"
-                value={fileTask}
-                onChange={(value)=>fileTask=value}
-              />
-              </div>):<></>}
+              {windowMode === "2" ? (
+                <div className="file-field">
+                  <input
+                    type="file"
+                    name="taskText"
+                    value={fileTask}
+                    onChange={(value) => (fileTask = value)}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="single-button">
-              <button
+              <input
+                type="submit"
+                className="addButton"
+                value="Создать"
                 onClick={() => {
                   CreateTask(newTask)
-                }}>Создать</button>
+                }}
+              >
+              </input>
             </div>
           </div>
-          {windowMode === '1' ? (<div className="task-text-field">
-            <textarea name="taskText" rows="4" cols="30" value={newTask.taskText } onChange={changeNewTaskHandler} placeholder="Текст упражнения.."> </textarea>
-          </div>):<></>}
+          {windowMode === "1" ? (
+            <div className="task-text-field">
+              <textarea
+                name="taskText"
+                rows="4"
+                cols="30"
+                value={newTask.taskText}
+                onChange={changeNewTaskHandler}
+                placeholder="Текст упражнения.."
+              >
+                {" "}
+              </textarea>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
@@ -233,7 +262,8 @@ export const TaskListPage = (props) => {
 }
 
 export const TaskRow = (props) => {
-  const { Name
+  const {
+    Name,
     //,index
   } = props
   // console.log(Name + " --- " + index)

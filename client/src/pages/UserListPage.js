@@ -2,50 +2,50 @@ import "../styles/Admin/TaskListPage.scss"
 import React, { useState } from "react"
 import Add from "../icons/add.png"
 import Delete from "../icons/delete.png"
-export const TaskListPage = (props) => {
-  const list = [
+export const UserListPage = (props) => {
+  const [list, setList] = useState([
     {
-      name: "Первое Упражнение",
-      task: "smth1",
+      userName: "Первый пользователь",
+      password: "12345",
     },
     {
-      name: "Второе Упражнение",
-      task: "smth2",
+      userName: "Второй пользователь",
+      password: "12345",
     },
     {
-      name: "Третье Упражнение",
-      task: "smth3",
+      userName: "Третий пользователь",
+      password: "12345",
     },
     {
-      name: "Четвертое Упражнение",
-      task: "smth4",
+      userName: "Четвертый пользователь",
+      password: "12345",
     },
     {
-      name: "Пятое Упражнение",
-      task: "smth5",
+      userName: "Пятый пользователь",
+      password: "12345",
     },
-  ]
+  ])
 
-  const [oldTask, setOldTask] = useState({
-    taskName: "",
-  })
-  const [newTask, setNewTask] = useState({
-    taskName: "",
-    length: 0,
-    level: "3",
-    creationType: '1',
+  const [oldUser, setOldUser] = useState({
+    userName: "",
   })
 
-  const changeOldTaskHandler = (event) => {
-    console.log("taskName = " + oldTask)
-    setOldTask({ ...oldTask, [event.target.name]: event.target.value })
+  const [newUser, setNewUser] = useState({
+    userName: "",
+    password: "",
+  })
+
+  const changeOldUserHandler = (event) => {
+    console.log("userName = " + oldUser)
+    setOldUser({ ...oldUser, [event.target.name]: event.target.value })
   }
 
-  const changeNewTaskHandler = (event) => {
-    console.log(event.target.name)
-    console.log(event.target.value)
-    setNewTask({ ...newTask, [event.target.name]: event.target.value })
-    console.log(newTask)
+  const changeNewUserHandler = (event) => {
+    setNewUser({ ...newUser, [event.target.name]: event.target.value })
+
+    // console.log(event.target.name)
+    // console.log(event.target.value)
+    console.log(newUser)
   }
 
   let distance = {
@@ -61,28 +61,52 @@ export const TaskListPage = (props) => {
       "px",
   }
 
-  // console.log(oldTask.taskName)
+  window.onclick = function (event) {
+    console.log(document.getElementById("myModal").style.display)
+    console.log(event.target)
+    
+    if (event.target === document.getElementById("myModal")
+      || event.target === document.getElementById("modal-content")) {
+      document.getElementById("myModal").style.display = "none";
+    }
+    }
 
-  // window.onclick = function(event) {
-  //   if (event.target == modal) {
-  //     modal.style.display = "none";
-  //   }
-  //   }
+  let isDisabled = (document.getElementById("password") && document.getElementById("userName"))
+    ? !(document.getElementById("password").checkValidity()&&document.getElementById("userName").checkValidity())
+    : true
+
+  
+    const CreateUser = (user) => {
+      console.log("newUser")
+      console.log(user)
+      if(user.userName!==""&&user.password!=="") setList(
+        list.concat({
+          userName: user.userName,
+          password: user.password,
+        })
+      )
+  
+      console.log(list)
+      setNewUser({
+        userName: "",
+        password: "",
+      })
+      document.getElementById("myModal").style.display = "none"
+  }
 
   return (
     <div className="admin-page-tasks">
       <div className="seach-panel" id="seach-panel">
         <div className="title ">
-          <p>Упражнения</p>
+          <p>Пользователи</p>
         </div>
         <div className="users ">
           <input
-            placeholder="Упражнение.."
+            placeholder="Пользователь.."
             type="text"
-            id="taskName"
-            name="taskName"
-            value={oldTask.taskName}
-            onChange={changeOldTaskHandler}
+            name="userName"
+            value={oldUser.userName}
+            onChange={changeOldUserHandler}
           />
         </div>
         <button
@@ -92,6 +116,7 @@ export const TaskListPage = (props) => {
           }
         >
           <img
+            id="add-task-img"
             src={Add}
             className="add"
             width="40px"
@@ -101,11 +126,13 @@ export const TaskListPage = (props) => {
         </button>
       </div>
       <div className="task-list" style={distance}>
-        {oldTask.taskName === ""
-          ? list.map((el, index) => <TaskRow Name={el.name} index={index} />)
+        {oldUser.userName === ""
+          ? list.map((el, index) => (
+              <UserRow userName={el.userName} index={index} />
+            ))
           : list.map((el, index) =>
-              el.name.includes(oldTask.taskName) ? (
-                <TaskRow Name={el.name} index={index} />
+              el.userName.includes(oldUser.userName) ? (
+                <UserRow userName={el.userName} index={index} />
               ) : (
                 <></>
               )
@@ -113,70 +140,48 @@ export const TaskListPage = (props) => {
       </div>
 
       <div id="myModal" className="modal">
-        <div className="modal-content">
-          <span
+        <div className="modal-content" id="modal-content">
+          {/* <span
             className="close"
             onClick={() =>
               (document.getElementById("myModal").style.display = "none")
             }
           >
             &times;
-          </span>
-          <div className="window">
-            <div className="fields">
+          </span> */}
+          <div className="window-user" >
+            <form className="fields-user" id="window">
               <input
-                placeholder="Название"
+                className="input-user"
+                placeholder="Логин"
                 type="text"
-                name="taskName"
-                value={newTask.taskName}
-                onChange={changeNewTaskHandler}
+                id="userName"
+                name="userName"
+                value={newUser.userName}
+                onChange={changeNewUserHandler}
+                required
+                pattern="^.{4,16}$"
               />
               <input
-                placeholder="Длина"
-                type="number"
-                id="length"
-                name="length"
-                value={newTask.length}
-                onChange={changeNewTaskHandler}
+                className="input-user"
+                placeholder="Пароль"
+                type="text"
+                id="password"
+                name="password"
+                value={newUser.password}
+                onChange={changeNewUserHandler}
+                required
+                pattern="^.{8,16}$"
               />
-              <div className="select">
-                <select name="level" value={newTask.level} onChange={changeNewTaskHandler}>
-                  <option  value="1">Первый ур. сложности</option>
-                  <option  value="2">Второй ур. сложности</option>
-                  <option  value="3">Третий ур. сложности</option>
-                  <option  value="4">Четвертый ур. сложности</option>
-                </select>
-              </div>
-              <div className="button-row">
-                <button
-                  name="creationType"
-                  className={newTask.creationType === '1' ? "black" : "white"}
-                  value='1'
-                  onClick={changeNewTaskHandler}
-                >
-                  Ручной
-                </button>
-                <button
-                  name="creationType"
-                  className={newTask.creationType === '2' ? "black" : "white"}
-                  value={'2'}
-                  onClick={changeNewTaskHandler}
-                >
-                  Авто
-                </button>
-                <button
-                  name="creationType"
-                  className={newTask.creationType === '3' ? "black" : "white"}
-                  value={'3'}
-                  onClick={changeNewTaskHandler}
-                >
-                  Файл
-                </button>
-              </div>
-            </div>
-            <div className="single-button">
-              <button>Создать</button>
-            </div>
+              <input type="submit" className="addButton"
+                value="Создать"
+                disabled={isDisabled}
+                onClick={() => {
+                  CreateUser(newUser)
+                }}
+              >
+              </input>
+            </form>
           </div>
         </div>
       </div>
@@ -184,15 +189,16 @@ export const TaskListPage = (props) => {
   )
 }
 
-export const TaskRow = (props) => {
-  const { Name
-    //,index
+export const UserRow = (props) => {
+  const {
+    userName,
+    //index
   } = props
-  // console.log(Name + " --- " + index)
+  console.log(props)
   return (
-    <div className="task-row">
+    <div className="user-row">
       <div className="left">
-        <p>{Name}</p>
+        <p>{userName}</p>
         <button>Редактировать</button>
       </div>
       <div className="right">
@@ -203,6 +209,7 @@ export const TaskRow = (props) => {
             alt="add-button"
             width="35px"
             height="35px"
+            // onClick={()=>DeleteUser()} надо делать запрос/изменять состояние через глобальный метод
           ></img>
         </button>
       </div>
