@@ -2,8 +2,10 @@ import "../styles/Admin/TaskListPage.scss"
 import React, { useEffect, useState } from "react"
 import Add from "../icons/add.png"
 import Delete from "../icons/delete.png"
+import { CheckZone } from "../components/FrontFunctions"
+
 export const TaskListPage = (props) => {
-  const list = [
+  const [list, setList] = useState([
     {
       name: "Первое Упражнение",
       task: "smth1",
@@ -24,7 +26,7 @@ export const TaskListPage = (props) => {
       name: "Пятое Упражнение",
       task: "smth5",
     },
-  ]
+  ])
 
   const [oldTask, setOldTask] = useState({
     taskName: "",
@@ -38,11 +40,18 @@ export const TaskListPage = (props) => {
     taskText: "",
   })
 
-  const CreateTask = (task) => {
-    let newTaskTest = task
-    console.log("newTaskTest")
-    console.log(newTaskTest)
-    list.push(newTaskTest)
+  const CreateTask = (newTaskTest) => {
+    //  console.log("newTaskTest")
+    console.log({name: newTaskTest.taskName,
+      task: newTaskTest.taskText})
+    setList(
+      list.concat(
+        {
+      name: newTaskTest.taskName,
+      task: newTaskTest.taskText,
+        }
+      ))
+    console.log(list)
     setNewTask({
       taskName: "",
       length: 0,
@@ -51,23 +60,37 @@ export const TaskListPage = (props) => {
       taskText: "",
     })
     setWindowMode("0")
+    document.getElementById("myModal").style.display = "none"
   }
+
   const changeOldTaskHandler = (event) => {
-    console.log("taskName = " + oldTask)
+ //   console.log("taskName = " + oldTask)
     setOldTask({ ...oldTask, [event.target.name]: event.target.value })
   }
 
   const changeNewTaskHandler = (event) => {
     if (newTask.creationType === "1" && event.target.name === "taskText")
+    {
       setNewTask({
         ...newTask,
         [event.target.name]: event.target.value,
         length: event.target.value.length,
       })
+      if (CheckZone(event.target.value, newTask.level) < 0) {
+        document.getElementById("task-text-field").style.color = "red"
+        document.getElementById("single-button").disabled = true
+        console.log("хрень!")
+      }
+      else {
+        document.getElementById("task-text-field").style.color = "black"
+        document.getElementById("single-button").disabled = false
+      }
+    }
+      
     // console.log(event.target.name)
     // console.log(event.target.value)
     else setNewTask({ ...newTask, [event.target.name]: event.target.value })
-    console.log(newTask)
+   // console.log(newTask)
   }
 
   let distance = {
@@ -82,7 +105,7 @@ export const TaskListPage = (props) => {
           : document.getElementById("seach-panel").offsetHeight)) +
       "px",
   }
-
+ 
   const [windowMode, setWindowMode] = useState("0")
 
   useEffect(() => {
@@ -95,15 +118,27 @@ export const TaskListPage = (props) => {
   }, [newTask.creationType, windowMode])
 
   let fileTask
-  // console.log(oldTask.taskName)
+
+  let a = (windowMode === "1") ?
+    {
+      margin: '0',
+      borderRight: '2.5px black solid',
+      marginTop: '2%'
+    } :
+    {
+      width: '50 %',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: '2 %'
+}
+  //console.log(a)
 
   window.onclick = function (event) {
-    console.log(document.getElementById("myModal").style.display)
-    console.log(event.target)
+  //  console.log(document.getElementById("myModal").style.display)
+      //console.log(event.target)
 
     if (
-      event.target === document.getElementById("myModal") ||
-      event.target === document.getElementById("modal-content")
+      event.target === document.getElementById("modal-row")
     ) {
       document.getElementById("myModal").style.display = "none"
     }
@@ -151,10 +186,12 @@ export const TaskListPage = (props) => {
               )
             )}
       </div>
-
+{/* передалать на форму блок - выбрасывает при нажатии на кнопку выбора закполнения */}
       <div id="myModal" className="modal">
-        <div className="modal-content" id="modal-content">
-          <div className="window">
+        <div id="modal-row" className="modal-row">
+          <div className="window"
+            style={a}
+          >
             <div className="fields">
               <input
                 placeholder="Название"
@@ -162,6 +199,9 @@ export const TaskListPage = (props) => {
                 name="taskName"
                 value={newTask.taskName}
                 onChange={changeNewTaskHandler}
+                required
+                pattern="^.{4,16}$"
+                
               />
               <input
                 placeholder="Длина"
@@ -175,12 +215,14 @@ export const TaskListPage = (props) => {
                 }
                 disabled={newTask.creationType === "1" ? true : false}
                 onChange={changeNewTaskHandler}
+                
               />
               <div className="select">
                 <select
                   name="level"
                   value={newTask.level}
-                  onChange={changeNewTaskHandler}
+                onChange={changeNewTaskHandler}
+                
                 >
                   <option value="1">Первый ур. сложности</option>
                   <option value="2">Второй ур. сложности</option>
@@ -232,6 +274,7 @@ export const TaskListPage = (props) => {
                 type="submit"
                 className="addButton"
                 value="Создать"
+                id = "single-button"
                 onClick={() => {
                   CreateTask(newTask)
                 }}
@@ -243,6 +286,7 @@ export const TaskListPage = (props) => {
             <div className="task-text-field">
               <textarea
                 name="taskText"
+                id="task-text-field"
                 rows="4"
                 cols="30"
                 value={newTask.taskText}
@@ -254,8 +298,7 @@ export const TaskListPage = (props) => {
             </div>
           ) : (
             <></>
-          )}
-        </div>
+          )}</div>
       </div>
     </div>
   )
