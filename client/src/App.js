@@ -1,11 +1,14 @@
-
+// import { AdminPage } from "./pages/AdminPage"
+// import { StatisticMenu } from "./pages/StatisticMenu"
+import  ClientMain  from "./pages/client/ClientMain"
 
 function App() {
-  return (
-    <div className="test">
-      hello
-    </div>
-  );
+    return (
+
+
+            <ClientMain/>
+
+    );
 }
 
 export default App;
