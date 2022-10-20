@@ -2,12 +2,12 @@
 // import { StatisticMenu } from "./pages/StatisticMenu"
 //import { TaskListPage } from "./pages/TaskListPage"
 import { UserListPage } from "./pages/UserListPage"
-
+import  ClientMain  from "./pages/client/ClientMain"
 function App() {
   return (
     <div className="test">
       {/* hello */}
-      <header id="header">
+      {/* <header id="header">
                 <div className="title ">
                     Печаточка.
                 </div>
@@ -15,7 +15,8 @@ function App() {
                     <button>Профиль</button>
                 </div>
       </header>
-      <UserListPage/>
+      <UserListPage /> */}
+      <ClientMain/>
     </div>
   );
 }
