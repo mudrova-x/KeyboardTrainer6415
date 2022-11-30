@@ -7,7 +7,7 @@
     "start": "node.js",
     "server": "nodemon app.js",
     "client": "npm run start --prefix client",
-    "dev-keyboard-trainer": "concurrently \"npm run server\" \"npm run fronteclientnd\" "
+    "dev-keyboard-trainer": "concurrently \"npm run server\" \"npm run client\" "
   },
   "repository": {
     "type": "git",

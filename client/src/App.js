@@ -1,11 +1,13 @@
 // import { AdminPage } from "./pages/AdminPage"
 // import { StatisticMenu } from "./pages/StatisticMenu"
-//import { TaskListPage } from "./pages/TaskListPage"
+import Header1 from "../src/pages/client/Header"
+import { TaskListPage } from "./pages/TaskListPage"
 import { UserListPage } from "./pages/UserListPage"
 import  ClientMain  from "./pages/client/ClientMain"
 function App() {
   return (
-    <div className="test">
+    <div className="container">
+      <Header1/>
       {/* hello */}
       {/* <header id="header">
                 <div className="title ">
@@ -15,8 +17,9 @@ function App() {
                     <button>Профиль</button>
                 </div>
       </header>
-      <UserListPage /> */}
-      <ClientMain/>
+      
+      <UserListPage/>*/}
+      <TaskListPage /> 
     </div>
   );
 }
