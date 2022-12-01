@@ -96,7 +96,6 @@ class UserController {
         const users = await User.findAll();
         console.log(users.every(user => user instanceof User)); 
         console.log("All users:", JSON.stringify(users, null, 2));
-        console.log(users[1].dataValues)
         return res.json(users)
     }
 }

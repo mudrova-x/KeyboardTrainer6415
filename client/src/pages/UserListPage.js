@@ -1,58 +1,132 @@
 import "../styles/Admin/TaskListPage.scss"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Add from "../icons/add.png"
 import Delete from "../icons/delete.png"
 import { useHttp } from "../http.hook";
-import {getAllUsers} from "../UserAPI"
+//import {getAllUsers} from "../UserAPI"
+
+
 export const UserListPage = (props) => {
-
-  const { request } = useHttp()
   
-  const [list, setList] = useState([
-    {
-      userName: "Первый пользователь",
-      password: "12345",
-    },
-    {
-      userName: "Второй пользователь",
-      password: "12345",
-    },
-    {
-      userName: "Третий пользователь",
-      password: "12345",
-    },
-    {
-      userName: "Четвертый пользователь",
-      password: "12345",
-    },
-    {
-      userName: "Пятый пользователь",
-      password: "12345",
-    },
-  ])
-
+  const [list, setList] = useState([{userName:"loading"}])
   const [settings, setSettings] = useState(true)
-
   const [oldUser, setOldUser] = useState({
     userName: "",
   })
-
   const [newUser, setNewUser] = useState({
     userName: "",
     password: "",
   })
 
+  const getAllUsers = async () => {
+    let usersMass = []
+    console.log("getAllUsers")
+    let response = await fetch('http://localhost:5000/api/user/getAll')
+    if (response.ok) {
+      // если HTTP-статус в диапазоне 200-299
+      // получаем тело ответа
+        let users = await response.json();
+      for (var e in users) {
+          if(users[e].login!=="admin")
+            usersMass.push({
+                    userName: users[e].login
+            })
+        }
+        console.log(usersMass)
+        setList(usersMass)
+        console.log(list)
+    } else {
+      alert("Ошибка HTTP: " + response.status);
+    }
+  }
+ 
+  
+
+  const createUser = async (user) => {
+    console.log(user.userName)
+    console.log(user.password)
+    const localUser={
+      login:user.userName,
+      password:user.password
+      }
+    let response = await fetch('http://localhost:5000/api/user/registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      body: JSON.stringify(localUser)
+      });
+    let result = await response.json();
+    console.log(result)
+    setNewUser({
+      userName: "",
+      password: "",
+    })
+    document.getElementById("createModal").style.display = "none"
+    //response.then(getAllUsers())
+      //alert(result.message);
+  }
+
+  const updateUser = async (user) => {
+    console.log(user)
+    console.log("updateUser")
+    let response = await fetch('http://localhost:5000/api/user/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      body: JSON.stringify({
+          login:user.userName,
+          password:user.password
+      })
+      });
+    let result = await response.json();
+    console.log(result)
+    setNewUser({
+      userName: "",
+      password: "",
+    })
+    document.getElementById("updateModal").style.display = "none"
+    
+    
+    // setOldUser({
+    //   userName: "",
+    // })
+  }
+
+  const deleteUser = async (userName) => {
+    console.log(userName)
+    console.log("deleteUser")
+    let response = await fetch('http://localhost:5000/api/user', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      body: JSON.stringify({login:userName})
+      });
+    let result = await response.json();
+    console.log(result)
+    getAllUsers()
+  }
+
+  useEffect(()=>{
+    let func = async () => { await getAllUsers() }
+    func() 
+  }, [setList])
+  
   const changeOldUserHandler = (event) => {
-    //console.log("userName = " + oldUser)
+    console.log("userName = " + oldUser.userName)
     setOldUser({ ...oldUser, [event.target.name]: event.target.value })
   }
 
   const changeNewUserHandler = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value })
+  }
 
-    // console.log(event.target.name)
-    // console.log(event.target.value)
-    //console.log(newUser)
+  const changePasswordHandler = (event) => {
+    setNewUser({ ...newUser, [event.target.name]: event.target.value })
+    console.log(event.target.name)
+    console.log(newUser)
   }
 
   let distance = {
@@ -76,7 +150,7 @@ export const UserListPage = (props) => {
   //   //   event.target === document.getElementById("myModal") ||
   //   //   event.target === document.getElementById("modal-content")
   //   // ) {
-  //   //   document.getElementById("myModal").style.display = "none"
+  //   //   document.getElementById("createModal").style.display = "none"
   //   // }
   // }
 
@@ -87,47 +161,14 @@ export const UserListPage = (props) => {
           document.getElementById("userName").checkValidity()
         )
       : true
-
- 
-
-  const CreateUser = () => {
-    console.log("newUser")
-    //console.log(user)
-    // if (user.userName !== "" && user.password !== "")
-    //   setList(
-    //     list.concat({
-    //       userName: user.userName,
-    //       password: user.password,
-    //     })
-    // )
-
-    console.log(list)
-    setNewUser({
-      userName: "",
-      password: "",
-    })
-    document.getElementById("createModal").style.display = "none"
-  }
-
-  // const UpdateUser = (user) => {
-  //   console.log("UpdateUser")
-  //   console.log(user)
-  //   if (user.userName !== "" && user.password !== "")
-  //     setList(
-  //       list.concat({
-  //         userName: user.userName,
-  //         password: user.password,
-  //       })
-  //   )
-
-  //   console.log(list)
-  //   setNewUser({
-  //     userName: "",
-  //     password: "",
-  //   })
-  //   document.getElementById("myModal").style.display = "none"
-  // }
-
+  
+  let isDisabledUpdate =
+    document.getElementById("passwordu") ?
+      !(
+            document.getElementById("passwordu").checkValidity() 
+          )
+        : true
+ console.log(isDisabledUpdate)
 
   const UserRow = (props) => {
     const {
@@ -135,21 +176,33 @@ export const UserListPage = (props) => {
       index
     } = props
     //console.log(props)
+    //onClick={()=>deleteUser(userName)}
     return (
-      <div className="user-row">
+      <div className="user-row" key={index}>
         <div className="left">
           <p id={index}>{userName}</p>
-          <button id={index}>Редактировать</button>
+          <button 
+           id={index}
+            onClick={() => {
+              (document.getElementById("updateModal").style.display = "block")
+              setNewUser({
+                userName: userName,
+                password:""
+              })
+              setSettings(false)
+             
+          }}
+          >Редактировать</button>
         </div>
         <div className="right">
-          <button>
+          <button >
             <img
               src={Delete}
               className="add"
               alt="add-button"
               width="35px"
               height="35px"
-              // onClick={()=>DeleteUser()} надо делать запрос/изменять состояние через глобальный метод
+              onClick={()=>deleteUser(userName)}
             ></img>
           </button>
         </div>
@@ -158,7 +211,6 @@ export const UserListPage = (props) => {
   }
 
 
-// (document.getElementById("createModal").style.display = "block")
   return (
     <div className="admin-page-tasks">
       <div className="seach-panel" id="seach-panel">
@@ -176,9 +228,10 @@ export const UserListPage = (props) => {
         </div>
         <button
           id="add-task"
-          onClick={() =>getAllUsers()
-            
-          }
+          onClick={() => {
+            (document.getElementById("createModal").style.display = "block")
+            setSettings(true)
+          }}
         >
           <img
             id="add-task-img"
@@ -204,7 +257,7 @@ export const UserListPage = (props) => {
             )}
       </div>
 
-      <div id="myModal" className="modal">
+      <div id="createModal" className="modal">
         <div className="modal-content" id="modal-content">
           {/* <span
             className="close"
@@ -224,7 +277,6 @@ export const UserListPage = (props) => {
                 name="userName"
                 value={newUser.userName}
                 onChange={changeNewUserHandler}
-                disabled={!settings}
                 required
                 pattern="^.{4,16}$"
               />
@@ -245,16 +297,15 @@ export const UserListPage = (props) => {
                 value="Создать"
                 disabled={isDisabled}
                 onClick={() => {
-                  CreateUser(newUser)
+                  createUser(newUser)
                 }}
               ></input>
             </form>
           </div>
         </div>
       </div>
-
       <div id="updateModal" className="modal">
-        <div className="modal-content" id="modal-content">
+        <div className="modal-content" id="modal-contentu">
           {/* <span
             className="close"
             onClick={() =>
@@ -264,38 +315,34 @@ export const UserListPage = (props) => {
             &times;
           </span> */}
           <div className="window-user">
-            <form className="fields-user" id="window">
+            <form className="fields-user" id="windowu">
               <input
                 className="input-user"
                 placeholder="Логин"
                 type="text"
-                id="userName"
+                id="userNameu"
                 name="userName"
                 value={newUser.userName}
-                onChange={changeNewUserHandler}
                 disabled={!settings}
-                required
-                pattern="^.{4,16}$"
+                readOnly
               />
               <input
                 className="input-user"
                 placeholder="Пароль"
                 type="text"
-                id="password"
+                id="passwordu"
                 name="password"
                 value={newUser.password}
-                onChange={changeNewUserHandler}
+                onChange={changePasswordHandler}
                 required
                 pattern="^.{8,16}$"
               />
               <input
                 type="submit"
                 className="addButton"
-                value="Создать"
-                disabled={isDisabled}
-                onClick={() => {
-                  CreateUser(newUser)
-                }}
+                value="Сохранить"
+                disabled={isDisabledUpdate}
+                onClick={() => { updateUser(newUser) }}
               ></input>
             </form>
           </div>
@@ -305,3 +352,28 @@ export const UserListPage = (props) => {
   )
 }
  
+
+  //const { request } = useHttp()
+  
+  // const [list, setList] = useState([
+  //   {
+  //     userName: "Первый пользователь",
+  //     password: "12345",
+  //   },
+  //   {
+  //     userName: "Второй пользователь",
+  //     password: "12345",
+  //   },
+  //   {
+  //     userName: "Третий пользователь",
+  //     password: "12345",
+  //   },
+  //   {
+  //     userName: "Четвертый пользователь",
+  //     password: "12345",
+  //   },
+  //   {
+  //     userName: "Пятый пользователь",
+  //     password: "12345",
+  //   },
+  // ])
