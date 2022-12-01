@@ -1,5 +1,5 @@
 import "../../styles/client/Header.scss"
-import App from "../../App";
+//import App from "../../App";
 
  const Header = () => {
 

@@ -1,10 +1,16 @@
 // import { AdminPage } from "./pages/AdminPage"
 // import { StatisticMenu } from "./pages/StatisticMenu"
 import Header1 from "../src/pages/client/Header"
-import { TaskListPage } from "./pages/TaskListPage"
-import { UserListPage } from "./pages/UserListPage"
-import  ClientMain  from "./pages/client/ClientMain"
+//import { TaskListPage } from "./pages/TaskListPage"
+//import { UserListPage } from "./pages/UserListPage"
+//import  ClientMain  from "./pages/client/ClientMain"
+
+import { useRoutes } from "./routes"
+
+
 function App() {
+  const routes = useRoutes(true)
+
   return (
     <div className="container">
       <Header1/>
@@ -19,7 +25,12 @@ function App() {
       </header>
       
       <UserListPage/>*/}
-      <TaskListPage /> 
+      <div className="container background-test">
+                    {
+                        routes
+                    }
+                </div>
+      {/* <TaskListPage />  */}
     </div>
   );
 }
