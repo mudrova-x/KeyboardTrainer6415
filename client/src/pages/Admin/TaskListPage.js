@@ -1,8 +1,8 @@
-import "../styles/Admin/TaskListPage.scss"
+import "../../styles/Admin/TaskListPage.scss"
 import React, { useEffect, useState } from "react"
-import Add from "../icons/add.png"
-import Delete from "../icons/delete.png"
-import { CheckZone } from "../components/FrontFunctions"
+import Add from "../../icons/add.png"
+import Delete from "../../icons/delete.png"
+import { CheckZone } from "../../components/FrontFunctions"
 
 export const TaskListPage = (props) => {
   const [list, setList] = useState([

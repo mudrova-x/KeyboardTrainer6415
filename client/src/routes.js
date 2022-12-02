@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { TaskListPage } from "./pages/TaskListPage"
-import { UserListPage } from "./pages/UserListPage"
+import { TaskListPage } from "./pages/Admin/TaskListPage"
+import { UserListPage } from "./pages/Admin/UserListPage"
 
 //  Route.Redirect - старая технология
 

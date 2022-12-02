@@ -1,0 +1,90 @@
+  // const getAllUsers = async () => {
+  //   let usersMass = []
+  //   console.log("getAllUsers")
+  //   let response = await fetch('http://localhost:5000/api/user/getAll')
+  //   if (response.ok) {
+  //     // если HTTP-статус в диапазоне 200-299
+  //     // получаем тело ответа
+  //       let users = await response.json();
+  //     for (var e in users) {
+  //         if(users[e].login!=="admin")
+  //           usersMass.push({
+  //                   userName: users[e].login
+  //           })
+  //       }
+  //       console.log(usersMass)
+  //       setList(usersMass)
+  //       console.log(list)
+  //   } else {
+  //     alert("Ошибка HTTP: " + response.status);
+  //   }
+  // }
+
+
+   const createUser = async (user) => {
+    console.log(user.userName)
+    console.log(user.password)
+    const localUser={
+      login:user.userName,
+      password:user.password
+      }
+    let response = await fetch('http://localhost:5000/api/user/registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      body: JSON.stringify(localUser)
+      });
+    let result = await response.json();
+    console.log(result)
+    setNewUser({
+      userName: "",
+      password: "",
+    })
+    document.getElementById("createModal").style.display = "none"
+    //response.then(getAllUsers())
+      //alert(result.message);
+  }
+
+   const updateUser = async (user) => {
+    console.log(user)
+    console.log("updateUser")
+    let response = await fetch('http://localhost:5000/api/user/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      body: JSON.stringify({
+          login:user.userName,
+          password:user.password
+      })
+      });
+    let result = await response.json();
+    console.log(result)
+    setNewUser({
+      userName: "",
+      password: "",
+    })
+    document.getElementById("updateModal").style.display = "none"
+    
+    
+    // setOldUser({
+    //   userName: "",
+    // })
+  }
+
+  
+  const deleteUser = async (userName) => {
+    console.log(userName)
+    console.log("deleteUser")
+    let response = await fetch('http://localhost:5000/api/user', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      body: JSON.stringify({login:userName})
+      });
+    let result = await response.json();
+    console.log(result)
+    getAllUsers()
+  }

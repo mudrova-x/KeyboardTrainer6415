@@ -1,13 +1,13 @@
-import "../styles/Admin/TaskListPage.scss"
+import "../../styles/Admin/TaskListPage.scss"
 import React, { useEffect, useState } from "react"
-import Add from "../icons/add.png"
-import Delete from "../icons/delete.png"
-import { useHttp } from "../http.hook";
-//import {getAllUsers} from "../UserAPI"
+import Add from "../../icons/add.png"
+import Delete from "../../icons/delete.png"
+import {useHttp} from "../../http.hook"
 
 
 export const UserListPage = (props) => {
   
+  const { request } = useHttp()
   const [list, setList] = useState([{userName:"loading"}])
   const [settings, setSettings] = useState(true)
   const [oldUser, setOldUser] = useState({
@@ -20,12 +20,10 @@ export const UserListPage = (props) => {
 
   const getAllUsers = async () => {
     let usersMass = []
-    console.log("getAllUsers")
-    let response = await fetch('http://localhost:5000/api/user/getAll')
-    if (response.ok) {
-      // если HTTP-статус в диапазоне 200-299
-      // получаем тело ответа
-        let users = await response.json();
+    //console.log("getAllUsers")
+    let response = await request('/api/user/getAll')
+    console.log(response)
+    let users = response;
       for (var e in users) {
           if(users[e].login!=="admin")
             usersMass.push({
@@ -35,80 +33,67 @@ export const UserListPage = (props) => {
         console.log(usersMass)
         setList(usersMass)
         console.log(list)
-    } else {
-      alert("Ошибка HTTP: " + response.status);
-    }
+    
   }
- 
-  
 
   const createUser = async (user) => {
-    console.log(user.userName)
-    console.log(user.password)
+    console.log("createUser")
     const localUser={
       login:user.userName,
       password:user.password
-      }
-    let response = await fetch('http://localhost:5000/api/user/registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-      body: JSON.stringify(localUser)
-      });
-    let result = await response.json();
-    console.log(result)
+    }
+    try{
+    let response = await request('/api/user/registration',
+      'POST',
+      localUser
+      );
+    console.log(response)
     setNewUser({
-      userName: "",
-      password: "",
-    })
+     userName: "",
+     password: "",
+   })
     document.getElementById("createModal").style.display = "none"
-    //response.then(getAllUsers())
-      //alert(result.message);
+    }
+    catch (e)
+    {
+      console.log(e.message)
+    }
   }
 
   const updateUser = async (user) => {
-    console.log(user)
     console.log("updateUser")
-    let response = await fetch('http://localhost:5000/api/user/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-      body: JSON.stringify({
-          login:user.userName,
-          password:user.password
+    try{
+    let response = await request('/api/user/update',
+      'POST',
+      {
+        login:user.userName,
+        password:user.password
+      }
+      );
+      console.log(response)
+      setNewUser({
+        userName: "",
+        password: "",
       })
-      });
-    let result = await response.json();
-    console.log(result)
-    setNewUser({
-      userName: "",
-      password: "",
-    })
     document.getElementById("updateModal").style.display = "none"
-    
-    
-    // setOldUser({
-    //   userName: "",
-    // })
+    }
+    catch (e)
+    {
+      console.log(e.message)
+    }
   }
 
   const deleteUser = async (userName) => {
     console.log(userName)
     console.log("deleteUser")
-    let response = await fetch('http://localhost:5000/api/user', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-      body: JSON.stringify({login:userName})
-      });
-    let result = await response.json();
-    console.log(result)
+    let response = await request('/api/user',
+        'DELETE',
+       {login:userName}
+      );
+    console.log(response)
     getAllUsers()
   }
-
+  
   useEffect(()=>{
     let func = async () => { await getAllUsers() }
     func() 

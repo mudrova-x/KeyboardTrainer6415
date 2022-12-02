@@ -91,12 +91,17 @@ class UserController {
         return res.json(user)
     }
 
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         //const users = await User.findAndCountAll();
+        try{
         const users = await User.findAll();
         console.log(users.every(user => user instanceof User)); 
         console.log("All users:", JSON.stringify(users, null, 2));
         return res.json(users)
+        }
+        catch (e) {
+            next(errors.badRequest("wrong data"))
+        }
     }
 }
 
