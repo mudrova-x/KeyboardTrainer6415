@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react"
 import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
 import {useHttp} from "../../http.hook"
-
+import {requestCreator} from "../../hook"
 
 export const UserListPage = (props) => {
   
-  const { request } = useHttp()
+ // const { request } = useHttp()
   const [list, setList] = useState([{userName:"loading"}])
   const [settings, setSettings] = useState(true)
   const [oldUser, setOldUser] = useState({
@@ -20,20 +20,25 @@ export const UserListPage = (props) => {
 
   const getAllUsers = async () => {
     let usersMass = []
-    //console.log("getAllUsers")
-    let response = await request('/api/user/getAll')
+    console.log("getAllUsers")
+    try{
+    let response = await requestCreator('/api/user/getAll')
     console.log(response)
-    let users = response;
-      for (var e in users) {
-          if(users[e].login!=="admin")
+      for (var e in response) {
+          if(response[e].login!=="admin")
             usersMass.push({
-                    userName: users[e].login
+                    userName: response[e].login
             })
         }
         console.log(usersMass)
         setList(usersMass)
         console.log(list)
-    
+    } 
+    catch (e)
+    {
+      console.log(e.message)
+      alert("Ошибка HTTP");
+    }
   }
 
   const createUser = async (user) => {
@@ -43,15 +48,11 @@ export const UserListPage = (props) => {
       password:user.password
     }
     try{
-    let response = await request('/api/user/registration',
+    let response = await requestCreator('/api/user/registration',
       'POST',
       localUser
       );
     console.log(response)
-    setNewUser({
-     userName: "",
-     password: "",
-   })
     document.getElementById("createModal").style.display = "none"
     }
     catch (e)
@@ -63,7 +64,7 @@ export const UserListPage = (props) => {
   const updateUser = async (user) => {
     console.log("updateUser")
     try{
-    let response = await request('/api/user/update',
+    let response = await requestCreator('/api/user/update',
       'POST',
       {
         login:user.userName,
@@ -71,10 +72,7 @@ export const UserListPage = (props) => {
       }
       );
       console.log(response)
-      setNewUser({
-        userName: "",
-        password: "",
-      })
+
     document.getElementById("updateModal").style.display = "none"
     }
     catch (e)
@@ -84,9 +82,7 @@ export const UserListPage = (props) => {
   }
 
   const deleteUser = async (userName) => {
-    console.log(userName)
-    console.log("deleteUser")
-    let response = await request('/api/user',
+    let response = await requestCreator('/api/user',
         'DELETE',
        {login:userName}
       );

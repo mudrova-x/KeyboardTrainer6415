@@ -12,7 +12,7 @@ const errorHandler = require('./error/errors')
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
-
+//app.use('/api/auth',require('./routes/auth.routes'))
 const PORT = config.get('port') || 5000
 
 // Обработка ошибок, не двигать!
