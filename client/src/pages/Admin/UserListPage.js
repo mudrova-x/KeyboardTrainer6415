@@ -2,7 +2,6 @@ import "../../styles/Admin/TaskListPage.scss"
 import React, { useEffect, useState } from "react"
 import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
-import {useHttp} from "../../http.hook"
 import {requestCreator} from "../../hook"
 
 export const UserListPage = (props) => {
