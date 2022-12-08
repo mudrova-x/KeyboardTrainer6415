@@ -134,22 +134,56 @@ export const UserListPage = (props) => {
   //   // }
   // }
 
-  let isDisabled =
-    document.getElementById("password") && document.getElementById("userName")
-      ? !(
-          document.getElementById("password").checkValidity() &&
-          document.getElementById("userName").checkValidity()
-        )
+  let checkInput = (() => {
+    let isDisabled = document.getElementById("password") && document.getElementById("userName")
+    ? !(
+        document.getElementById("password").checkValidity() &&
+        document.getElementById("userName").checkValidity() 
+      )
       : true
-  
-  let isDisabledUpdate =
-    document.getElementById("passwordu") ?
-      !(
-            document.getElementById("passwordu").checkValidity() 
-          )
-        : true
- console.log(isDisabledUpdate)
+     // console.log("!checkInput="+!isDisabled)
+    return isDisabled
+  })
 
+  useEffect(() => {
+    console.log("useEffect")
+    if (document.getElementById("userName") && (newUser.password !== "" || newUser.userName !== "")) {
+      console.log("useEffect")
+      if (settings){ 
+      if (newUser.userName !== "" && !document.getElementById("userName").checkValidity())
+        document.getElementById("errorLogin").style.display = "block";
+      else
+        document.getElementById("errorLogin").style.display = "none";
+      
+      if (newUser.password !== "" && !document.getElementById("password").checkValidity())
+        document.getElementById("errorPassword").style.display = "block";
+      else
+        document.getElementById("errorPassword").style.display = "none";
+    }
+      else {
+        if (newUser.password !== "" && !document.getElementById("passwordu").checkValidity())
+        document.getElementById("errorPasswordu").style.display = "block";
+      else
+        document.getElementById("errorPasswordu").style.display = "none";
+     }
+    }
+    // console.log("checkInput() = "+checkInput())
+    // console.log(("list.find() = "+!!list.find(person=>person.userName===newUser.userName)))
+    // console.log(checkInput()||(!!list.find(person=>person.userName===newUser.userName)))
+  }, [newUser])
+
+  let checkPassword = (() => {
+    // let password = document.getElementById("passwordu")
+     let isDisabled = document.getElementById("passwordu") ?
+     !(document.getElementById("passwordu").checkValidity())
+     : true
+     // if (password && isDisabled) {
+     //   console.log("wrong")
+     //   password.style={}
+     // }
+     return isDisabled
+  })
+  
   const UserRow = (props) => {
     const {
       userName,
@@ -275,7 +309,7 @@ export const UserListPage = (props) => {
                 type="submit"
                 className="addButton"
                 value="Создать"
-                disabled={isDisabled}
+                disabled={checkInput()||(!!list.find(person=>person.userName===newUser.userName))}
                 onClick={() => {
                   createUser(newUser)
                 }}
@@ -321,7 +355,7 @@ export const UserListPage = (props) => {
                 type="submit"
                 className="addButton"
                 value="Сохранить"
-                disabled={isDisabledUpdate}
+                disabled={checkPassword()}
                 onClick={() => { updateUser(newUser) }}
               ></input>
             </form>
