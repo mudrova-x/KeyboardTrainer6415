@@ -9,7 +9,7 @@ const cors = require('cors')
 const router = require('./routes/index')
 const errorHandler = require('./error/errors')
 
-app.use(cors())
+//app.use(cors())
 app.use(express.json())
 app.use('/api', router)
 //app.use('/api/auth',require('./routes/auth.routes'))
@@ -31,13 +31,3 @@ async function start() {
 }
 
 start()
-
-
-
-
-/*
-Что уже было:
-npm install install -D nodemon concurrently
-    install config
-    react app
- */

@@ -9,7 +9,7 @@ import Header1 from "../src/pages/client/Header"
 import {AuthContext} from "./auth.context"
 import { useRoutes } from "./routes"
 
-import {useAuth} from "./hooks/auth.hook"
+import {useAuth} from "./auth.hook"
 
 function App() {
   //const routes = useRoutes(true)

@@ -1,12 +1,11 @@
-import "../../styles/Admin/TaskListPage.scss"
+import "../styles/Main.scss"
 import React, { useEffect, useState , useContext} from "react"
-import {useHttp} from "../../hooks/http.hook"
-import {AuthContext} from "../../auth.context";
+import {useHttp} from "../hook"
+import {AuthContext} from "../auth.context";
 
 export const MainPage = (props) => {
     const auth = useContext(AuthContext)
-    const { request } = useHttp()
-
+   const { request } = useHttp()
     const [newUser, setNewUser] = useState({
         userName: "",
         password: "",
@@ -46,10 +45,19 @@ export const MainPage = (props) => {
   
     const login = async () => {
         try {
-            const data = await request("/api/user/login", "POST", { login: newUser.userName, password: newUser.password });
-            console.log(data)
-            // auth.login(data.token, data.login)
-        } catch (e) { }
+            const data = await request('/api/user/login',
+                'POST',
+                { login: newUser.userName, password: newUser.password }
+            )
+            auth.login(data.token, data.userId, data.accountType);
+           // auth.login(data.token, data.userLogin, data.accountType)
+          //  console.log(data)
+            
+        } catch (e)
+        {
+          console.log("Error: "+e.message)
+          //alert("Не удалось войти");
+        }
     }
 
   

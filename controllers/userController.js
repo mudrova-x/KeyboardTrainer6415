@@ -1,7 +1,7 @@
 const { User } = require('../models/models')
 const errors = require('../error/errors')
 const bcrypt = require('bcrypt')
-const jsonwebtoken = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const config = require("config") // константы проекта
 const key = config.get('Key')
 //доделать логин
@@ -13,16 +13,21 @@ class UserController {
         const { login, password } = req.body
             console.log(req.body)
             
+          
             if (!login || !password)
-                next(errors.badRequest("wrong data"))
-            const candidate = await User.findOne({ where: { login } })
-            if (candidate)
-                next(errors.badRequest("user exist"))
-            
+            next(errors.badRequest('Некорректные данные регистрации'))
+    
+        const candidate = await User.findOne({ where: { login } })
+        console.log(candidate)
+        if (candidate)
+            return res.json({message: 'Такой пользователь уже существует'})
+        
         //const hashPasswors = await bcrypt.hash(password, 2)
+    const hashedPassword = await bcrypt.hash(password, 12)
+    console.log(hashedPassword)
         const user = await User.create({
             login: login,
-            password: password
+            password: hashedPassword
         })
         //const jwt = jsonwebtoken.sign({ login: login }, key)
         return res.json(user)
@@ -32,21 +37,38 @@ class UserController {
         }
     }
 
-    async login(req, res, next) {
-        const { login, password } = req.body
-        const user = await User.findOne({
-            where: {
-                login: login
+    async login(req, res) {
+        try {
+            const { login, password } = req.body
+            const user = await User.findOne({
+                where: {
+                    login: login
+                }
+            })
+            console.log(user)
+            if (!user) {
+                return res.json(JSON.stringify({ message: 'Пользователь не найден' }))
             }
-        })
-        console.log(user)
-        if (!user) {
-            next(errors.badRequest("wrong data"))
+
+            const isMatch = await bcrypt.compare(password, user.password)
+            console.log("isMatch " + isMatch)
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' })
+            }
+            const token = jwt.sign(
+                {userId: user.login },
+                config.get('Key'),
+                { expiresIn: '1h' }
+            )
+            const accountType = user.login === "admin" ? true : false
+            // let result = { token, userLogin: user.login, accountType: accountType }
+            console.log({ token, userId: user.login, accountType })
+
+            response.json({ token, userId: user.login, accountType })
+            
+        }catch (e) {
+            response.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
         }
-        if (password !== user.password){
-            next(errors.badRequest("wrong data"))
-        }
-        return res.json(user.login)
             
     }
 

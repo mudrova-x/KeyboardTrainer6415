@@ -36,7 +36,7 @@ export const UserListPage = (props) => {
     catch (e)
     {
       console.log(e.message)
-      alert("Ошибка HTTP");
+      alert("Не удалось загрузить список пользователей");
     }
   }
 
@@ -144,7 +144,7 @@ export const UserListPage = (props) => {
      // console.log("!checkInput="+!isDisabled)
     return isDisabled
   })
-
+  let check = checkInput()||(!!list.find(person=>person.userName===newUser.userName))
   useEffect(() => {
     console.log("useEffect")
     if (document.getElementById("userName") && (newUser.password !== "" || newUser.userName !== "")) {
@@ -167,6 +167,7 @@ export const UserListPage = (props) => {
         document.getElementById("errorPasswordu").style.display = "none";
      }
     }
+    
     // console.log("checkInput() = "+checkInput())
     // console.log(("list.find() = "+!!list.find(person=>person.userName===newUser.userName)))
     // console.log(checkInput()||(!!list.find(person=>person.userName===newUser.userName)))
@@ -183,7 +184,7 @@ export const UserListPage = (props) => {
      // }
      return isDisabled
   })
-  
+ 
   const UserRow = (props) => {
     const {
       userName,
@@ -305,11 +306,34 @@ export const UserListPage = (props) => {
                 required
                 pattern="^.{8,16}$"
               />
+              <div className="errorsBox">
+              {(!!list.find(person => person.userName === newUser.userName) && newUser.userName !== "") &&
+                (<p className="errorMessage" id="errorExistence">
+                  Ошибка: пользователь с таким логином уже создан
+                </p>)}
+               {/*  {(newUser.userName !== "" && !document.getElementById("userName").checkValidity()) &&
+                (<p className="errorMessage" id="errorLogin">
+                 Логин должен содержать от 4 до 16 символов.
+                </p>)}
+              {( newUser.password !== "" && !document.getElementById("password").checkValidity()  ) &&
+                (<p className="errorMessage" id="errorPassword">
+                  Пароль должен содержать от 8 до 16 символов.
+                  </p>)} */}
+                 {/* <p className="errorMessage" id="errorExistence">
+                  Ошибка: пользователь с таким логином уже создан
+                </p> */}
+                <p className="errorMessage" id="errorLogin">
+                 Логин должен содержать от 4 до 16 символов.
+                </p>
+              <p className="errorMessage" id="errorPassword">
+                  Пароль должен содержать от 8 до 16 символов.
+                  </p>
+              </div>
               <input
                 type="submit"
                 className="addButton"
                 value="Создать"
-                disabled={checkInput()||(!!list.find(person=>person.userName===newUser.userName))}
+                disabled={check}
                 onClick={() => {
                   createUser(newUser)
                 }}
@@ -351,6 +375,11 @@ export const UserListPage = (props) => {
                 required
                 pattern="^.{8,16}$"
               />
+              <div className="errorsBox">
+              <p className="errorMessage" id="errorPasswordu">
+                  Пароль должен содержать от 8 до 16 символов.
+                  </p>
+              </div>
               <input
                 type="submit"
                 className="addButton"
