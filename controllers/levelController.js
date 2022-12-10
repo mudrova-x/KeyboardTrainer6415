@@ -15,13 +15,15 @@ class LevelController {
     }
 
     async explore(req, res) {
-        const { number } = req.body
-        console.log(req.body)
+        const { number } = req.query
+        console.log(req.query)
+        console.log("Запрос пошел нужный")
         const level = await Level.findOne({
-            where: {
-                number: number
-            }
+            where:
+                {number}
+
         });
+        console.log("Прошел")
         return res.json(level)
     }
 

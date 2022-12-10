@@ -1,12 +1,26 @@
 import Header1 from "./Header"
 import App from "../../App";
 import "../../styles/client/ClientMain.scss"
+import {observer} from "mobx-react-lite";
+import {useContext, useEffect, useState} from "react";
+import {getExerciseByLevel, fetchDescriptionLevel} from "../../http/mainAPI";
+import {useNavigate} from "react-router-dom";
+import {Context} from "../../index"
 
-const ClientMain = () => {
+export const ClientMain = observer(() => {
+
+    const {exerlevel} = useContext(Context);
+
+    useEffect( () => {
+        fetchDescriptionLevel(1).then(data =>
+            exerlevel.setLevel(data)
+        )
+    }, [])
 
     return (
+        <>
+
         <div className="container">
-            <Header1/>
 
             <div className="first-layer">
                 <div className="blind-printing">
@@ -29,10 +43,10 @@ const ClientMain = () => {
                     <div className="difficulty-levels">
                         <div className="difficulty-levels-text">Уровень сложности:</div>
                         <div className="">
-                            <button className="level-1">1</button>
-                            <button className="level-2">2</button>
-                            <button className="level-3">3</button>
-                            <button className="level-4">4</button>
+                            <button  className="level-1">1</button>
+                            <button  className="level-2">2</button>
+                            <button  className="level-3">3</button>
+                            <button  className="level-4">4</button>
                         </div>
 
                     </div>
@@ -84,8 +98,7 @@ const ClientMain = () => {
                     <div className="text-description-of-difficulty-levels underline">Мин. количество допустимых ошибок:
                         5
                     </div>
-                    <div className="text-description-of-difficulty-levels underline">Макс. количество допустимых ошибок:
-                        5
+                    <div className="text-description-of-difficulty-levels underline">
                     </div>
                     <div className="text-description-of-difficulty-levels underline">Макс. время нажатия в секундах: 4
                     </div>
@@ -100,7 +113,7 @@ const ClientMain = () => {
 
 
         </div>
+        </>
     )
-}
+})
 
-export default ClientMain;

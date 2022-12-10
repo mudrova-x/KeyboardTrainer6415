@@ -1,9 +1,12 @@
 const { Exercise } = require('../models/models')
 const errors = require('../error/errors')
 
+const sequelize = require("../db");
+const Sequelize = require('sequelize');
+
 class ExerciseController {
 
-
+//weddewdw
     // сделать функцию для генерации текста на б // length 
     async create(req, res) {
 
@@ -45,11 +48,11 @@ class ExerciseController {
     }
     async explore(req, res) {
         const {name} = req.body
-        const exercise = await Exercise.findOne({
+        const exercise = await Exercise.findAll(/*{
             where: {
                 name: name
             }
-        });
+        }*/);
         return res.json(exercise)
     }
     async getAll(req, res) {
@@ -58,6 +61,14 @@ class ExerciseController {
         //console.log("All exercises:", JSON.stringify(exercises, null, 2));
         console.log(typeof(exercises))
         return res.json(exercises)
+    }
+
+    async getExerciseByLevel(req, res){
+        let {level_num} = req.body;
+        //const level_num = 1
+        const exercise = await Exercise.findAndCountAll({where: {level_num}});
+        //const exercise = await Exercise.findAll();
+        return res.json(exercise);
     }
 }
 
