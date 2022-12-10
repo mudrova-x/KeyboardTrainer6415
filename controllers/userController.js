@@ -1,6 +1,6 @@
 const { User } = require('../models/models')
 const errors = require('../error/errors')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require("config") // константы проекта
 const key = config.get('Key')
@@ -47,7 +47,7 @@ class UserController {
             })
             console.log(user)
             if (!user) {
-                return res.json(JSON.stringify({ message: 'Пользователь не найден' }))
+                return res.status(400).json({ message: 'Пользователь не найден' })
             }
 
             const isMatch = await bcrypt.compare(password, user.password)
@@ -64,10 +64,10 @@ class UserController {
             // let result = { token, userLogin: user.login, accountType: accountType }
             console.log({ token, userId: user.login, accountType })
 
-            response.json({ token, userId: user.login, accountType })
+            res.json({ token, userId: user.login, accountType })
             
         }catch (e) {
-            response.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+            res.status(500).json({message: e.message})
         }
             
     }

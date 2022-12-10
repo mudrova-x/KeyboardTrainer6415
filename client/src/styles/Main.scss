@@ -86,7 +86,7 @@ header {
   border: 5px black solid;
 }
 
-+.errorMessage-main{
+.errorMessage-main{
 max-height: 20px;
 font-size: 20px;
 line-height: 20px;
@@ -112,15 +112,18 @@ display: none;
 #errorPassword{
 display: none;
 }
+#errorData{
+  display: none;
+  }
 }
 
 .modal-main {
-display: block;
+display: none;
 position: fixed;
 z-index: 1;
 // padding-top: 100px;
 left: 0;
-top: 0;
+top: 16.6vh;
 width: 100%;
 max-width: 80;
 height: 100%;
@@ -163,13 +166,13 @@ text-decoration: underline;
 display: flex;
 flex-direction: column;
 /* justify-content: space-between; */
-/* background: rgb(217, 217, 217); */
+ background: rgb(217, 217, 217); 
 /* width: 60%; */
 /* height: 76%; */
 border: 7px solid black;
 /* margin-left: auto; */
 /* margin-right: auto; */
-margin-top: 17vh;
+// margin-top: 17vh;
 min-width: 638px;
 min-height: 422px;
 width: 34%;

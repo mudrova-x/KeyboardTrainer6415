@@ -1,4 +1,4 @@
-import "../styles/Admin/AdminPage.scss"
+import "../../styles/Admin/AdminPage.scss"
 
 export const StatisticMenu = () => {
    

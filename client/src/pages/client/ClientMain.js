@@ -1,5 +1,4 @@
 import Header1 from "./Header"
-import App from "../../App";
 import "../../styles/client/ClientMain.scss"
 
 const ClientMain = () => {
@@ -7,7 +6,6 @@ const ClientMain = () => {
     return (
         <div className="container">
             <Header1/>
-
             <div className="first-layer">
                 <div className="blind-printing">
                     <div className="the-most-powerful">Самый мощный</div>

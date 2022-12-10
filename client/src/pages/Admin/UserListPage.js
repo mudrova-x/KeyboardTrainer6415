@@ -193,7 +193,7 @@ export const UserListPage = (props) => {
     //console.log(props)
     //onClick={()=>deleteUser(userName)}
     return (
-      <div className="user-row" key={index}>
+      <div className="user-row" key={Math.random() * (100000 - 1) + 1}>
         <div className="left">
           <p id={index}>{userName}</p>
           <button 

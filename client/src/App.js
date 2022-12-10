@@ -3,13 +3,13 @@
 import Header1 from "../src/pages/client/Header"
 //import { TaskListPage } from "./pages/TaskListPage"
 //import { UserListPage } from "./pages/UserListPage"
-//import  ClientMain  from "./pages/client/ClientMain"
+
 
 //import { useRoutes } from "./routes"
-import {AuthContext} from "./auth.context"
+import {AuthContext} from "./context/auth.context"
 import { useRoutes } from "./routes"
 
-import {useAuth} from "./auth.hook"
+import {useAuth} from "./hooks/auth.hook"
 
 function App() {
   //const routes = useRoutes(true)
@@ -39,11 +39,12 @@ function App() {
       <UserListPage/>*/}
       <div className="container background-test">
                     {
-                        routes
+                         routes
                     }
                 </div>
-      {/* <TaskListPage />  */}
-    </div></AuthContext.Provider>
+       
+    </div>
+    </AuthContext.Provider >
   );
 }
 
