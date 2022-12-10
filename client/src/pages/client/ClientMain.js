@@ -3,19 +3,43 @@ import App from "../../App";
 import "../../styles/client/ClientMain.scss"
 import {observer} from "mobx-react-lite";
 import {useContext, useEffect, useState} from "react";
-import {getExerciseByLevel, fetchDescriptionLevel} from "../../http/mainAPI";
+import {getExerciseByLevel, fetchDescriptionLevel, logiunser} from "../../http/mainAPI";
 import {useNavigate} from "react-router-dom";
 import {Context} from "../../index"
 
 export const ClientMain = observer(() => {
 
     const {exerlevel} = useContext(Context);
+    const {user} = useContext(Context);
+    //const [level, setLevel] = useState({})
+    //const [userTest, setuserTest] =  useState({});
+
 
     useEffect( () => {
+        //fetchDescriptionLevel(1).then(data =>
+            //exerlevel.setLevel(data)
+        //)
+
         fetchDescriptionLevel(1).then(data =>
             exerlevel.setLevel(data)
         )
+        let FirstUser = "FirstUser"
+        let password = "password"
+        logiunser(FirstUser, password).then(data => user.setUser(data))
+
     }, [])
+
+    //useEffect( ()=>{
+        //console.log(level)
+        //console.log(level.max_length)
+        //console.log(user.user.login)
+       // console.log("Так можно")
+       // console.log(exerlevel.getlevel.max_length)
+
+   // }, [exerlevel])
+
+
+
 
     return (
         <>
@@ -96,7 +120,7 @@ export const ClientMain = observer(() => {
                 <div className="description-of-difficulty-levels">
                     <div className="the-name-of-the-difficulty-level">Первый уровень сложности</div>
                     <div className="text-description-of-difficulty-levels underline">Мин. количество допустимых ошибок:
-                        5
+
                     </div>
                     <div className="text-description-of-difficulty-levels underline">
                     </div>

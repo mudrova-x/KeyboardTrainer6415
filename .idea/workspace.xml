@@ -22,8 +22,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/client/src/components/AppRouter.js" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/client/src/http/index.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/client/src/http/mainAPI.js" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/client/src/index.js" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/client/src/pages/client/ClientMain.js" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/controllers/exerciseController.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/controllers/levelController.js" root0="FORCE_HIGHLIGHTING" />
@@ -93,6 +95,7 @@
       <workItem from="1670610340144" duration="987000" />
       <workItem from="1670612713267" duration="13602000" />
       <workItem from="1670629513444" duration="20000" />
+      <workItem from="1670658781826" duration="9284000" />
     </task>
     <servers />
   </component>

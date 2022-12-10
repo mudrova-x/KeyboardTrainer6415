@@ -10,8 +10,13 @@ export const getExerciseByLeve111 = async () =>{
     return data;
 }
 export const fetchDescriptionLevel = async (difficlt) =>{
-    console.log(difficlt)
     const {data} = await $host.get('api/level/explore',{params:{number: difficlt}});
-    console.log(difficlt)
+    return data;
+}
+
+export const logiunser = async (login, password) =>{
+    //console.log(difficlt)
+    const {data} = await $host.post('api/user/login',{login, password});
+    //console.log(difficlt)
     return data;
 }

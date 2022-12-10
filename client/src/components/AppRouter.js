@@ -6,7 +6,9 @@ import {Context} from "../index"
 
 const AppRouter = () => {
     const {exerlevel} = useContext(Context)
+    const {user} = useContext(Context)
     console.log(exerlevel)
+    console.log(user)
 
     return(
       <Routes>

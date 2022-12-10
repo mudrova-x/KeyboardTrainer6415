@@ -46,7 +46,7 @@ class UserController {
         if (password !== user.password){
             next(errors.badRequest("wrong data"))
         }
-        return res.json(user.login)
+        return res.json({user})
             
     }
 
