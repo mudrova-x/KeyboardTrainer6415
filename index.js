@@ -1,6 +1,5 @@
 console.log('app')
 
-<<<<<<< Updated upstream:app.js
 // const express = require("express")
 // const config = require("config") // константы проекта
 
@@ -22,7 +21,6 @@ console.log('app')
 // }
 
 // start()
-=======
 const express = require("express")
 const config = require("config") // константы проекта
 const sequelize = require('./db')
@@ -37,10 +35,11 @@ const fileUpload = require('express-fileupload')
 
 
 index.use(cors())
-index.use(express.json())
+index.use(express.json({extended: true}))
+//index.use(express.json())
 index.use('/api', router)
 index.use(fileUpload({}))
-index.use(errorHandler)
+//index.use(errorHandler)
 
 
 const PORT = config.get('port') || 5000
@@ -61,7 +60,6 @@ async function start() {
 }
 
 start()
->>>>>>> Stashed changes:index.js
 
 
 

@@ -1,16 +1,5 @@
 // import { AdminPage } from "./pages/AdminPage"
 // import { StatisticMenu } from "./pages/StatisticMenu"
-<<<<<<< Updated upstream
-import  ClientMain  from "./pages/client/ClientMain"
-
-function App() {
-    return (
-
-
-            <ClientMain/>
-
-    );
-=======
 //import { TaskListPage } from "./pages/TaskListPage"
 //import { UserListPage } from "./pages/UserListPage"
 //import  ClientMain  from "./pages/client/ClientMain"
@@ -27,7 +16,6 @@ function App() {
             <AppRouter/>
         </BrowserRouter>
   );
->>>>>>> Stashed changes
 }
 
 export default App;

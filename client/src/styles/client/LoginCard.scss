@@ -1,0 +1,223 @@
+@mixin fields-desc {
+  width: 100%;
+  height: 14%;
+  text-indent: 10px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-family: "Raleway";
+  border: 5px black solid;
+}
+
++.errorMessage-main{
+max-height: 20px;
+font-size: 20px;
+line-height: 20px;
+margin-block-end: 0;
+margin-block-start: 0;
+font-weight: 600;
+color: rgb(172, 6, 6);
+margin-left: 50px;
+padding-top: 4px;
+padding-bottom: 4px;
+}
+
+.errorsBox{
+// display: none;
+
+width: 100%;
+// #errorExistence{
+//   display: none;
+// }
+#errorLogin{
+display: none;
+}
+#errorPassword{
+display: none;
+}
+}
+
+.modal-main {
+display: block;
+position: fixed;
+z-index: 1;
+// padding-top: 100px;
+left: 0;
+top: 17%;
+width: 100%;
+max-width: 80;
+height: 100%;
+overflow: auto;
+
+
+.task-text-field {
+  width: 40%;
+  height: 88%;
+  margin-top:2%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  display: flex;
+  border: 8px solid black;
+  textarea {
+    width: 95%;
+    height: 95%;
+    border: none;
+    /* text-indent: 10px; */
+    text-align: start;
+    /* padding: 28px; */
+    font-size: 18px;
+}
+
+}
+.addButton {
+padding: 5%;
+width: 55%;
+min-width: 252px;
+color: white;
+background-color: black;
+font-size:20px;
+font-weight: 200;
+letter-spacing: 2px;
+font-family: "Raleway";
+text-decoration: underline;
+}
+.window-user {
+display: flex;
+flex-direction: column;
+/* justify-content: space-between; */
+background: rgb(217, 217, 217); 
+/* width: 60%; */
+/* height: 76%; */
+border: 7px solid black;
+/* margin-left: auto; */
+/* margin-right: auto; */
+// margin-top: 17vh;
+min-width: 638px;
+min-height: 422px;
+width: 34%;
+height: 50%;
+position: fixed;
+/* margin: 0; */
+right: 0;
+
+
+.fields-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex: 3;
+  padding: 54px;
+
+  .input-user {
+    padding: 3%;
+    width: 48%;
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-family: "Raleway";
+    border: 5px black solid;
+    text-align: center;
+    min-width: 217px;
+    font-weight: 500;
+    font-size: 40px;
+  }
+  .addButton {
+    padding: 5%;
+    width: 55%;
+    min-width: 252px;
+    color: white;
+    background-color: black;
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    font-family: "Raleway";
+    text-decoration: underline;
+  }
+  
+}
+}
+.window {
+display: flex;
+flex-direction: column;
+justify-content:space-evenly;
+width: 50%;
+margin-left: auto;
+margin-right: auto;
+margin-top: 2%;
+height: 88%;
+border: 7px solid black;
+
+select::-ms-expand {
+  display: none;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 3;
+  padding: 52px 190px;
+
+  input {
+    @include fields-desc;
+    margin-top: 5%;
+    padding:0;
+  }
+  select {
+    @include fields-desc;
+    appearance: none;
+    outline: 0;
+    border: 0;
+    box-shadow: none;
+
+    flex: 1;
+    height: 100%;
+    color: black;
+    background-color: white;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  .select {
+    margin-top: 5%;
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 14%;
+    overflow: hidden;
+    border: 5px black solid;
+  }
+  
+  /* Transition */
+  option: {
+    background-color: #f39c12;
+  }
+  button{
+    padding:0;
+  }
+}
+.single-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin-bottom: 56px;
+
+}
+.file-field {
+  width: 100%;
+  height: 10%;
+  input {
+    width: 99%;
+    height: 100%;
+  }
+}
+}
+
+// .modal-content {
+//   width: 80%;
+//   height: 80%;
+//   margin: auto;
+// }
+}
