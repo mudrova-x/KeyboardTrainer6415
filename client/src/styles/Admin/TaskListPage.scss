@@ -321,11 +321,22 @@ body {
       // }
     }
     .file-field {
-      width: 100%;
-      height: 10%;
+      margin-top: 5%;
+    width: 102%;
+    display: flex;
+    justify-content: center;
+
+      .block{
+        width: 100%;
+        height: 1px;
+        padding-bottom: 80px;
+        border: solid 5px black;
+      }
       input {
-        width: 99%;
-        height: 100%;
+        width: 100%;
+        border: none;
+        /* text-align: center; */
+        padding-bottom: 38px;
       }
     }
   }
@@ -349,4 +360,39 @@ body {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+.errorMessage{
+  max-height: 20px;
+  font-size: 20px;
+  line-height: 20px;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  font-weight: 600;
+  color: rgb(172, 6, 6);
+  margin-left: 148px;
+  padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.errorsBox{
+ // display: none;
+
+  width: 100%;
+  // #errorExistence{
+  //   display: none;
+  // }
+  #errorLogin{
+    display: none;
+  }
+  #errorPassword{
+    display: none;
+  }
+  #errorName{
+    margin-left: 230px;
+    display: none;
+  }
+  #errorLength{
+    margin-left: 230px;
+    display: none;
+  }
 }

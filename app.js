@@ -4,19 +4,16 @@ const express = require("express")
 const config = require("config") // константы проекта
 const sequelize = require('./db')
 const app = express()
-const models = require('./models/models')
-const cors = require('cors')
-const router = require('./routes/index')
-const errorHandler = require('./error/errors')
 
-app.use(cors())
-app.use(express.json())
+const router = require('./routes/index')
+
+// app.use(express.json())
+app.use(express.json(
+   // { extended: true }
+))
 app.use('/api', router)
 //app.use('/api/auth',require('./routes/auth.routes'))
 const PORT = config.get('port') || 5000
-
-// Обработка ошибок, не двигать!
-//app.use(errorHandler)
 
 async function start() {
     try {
@@ -31,13 +28,3 @@ async function start() {
 }
 
 start()
-
-
-
-
-/*
-Что уже было:
-npm install install -D nodemon concurrently
-    install config
-    react app
- */

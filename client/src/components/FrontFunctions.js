@@ -20,22 +20,24 @@ export const firstZone = [
 ]
 export const secondZone = ["в", "с", "у", "л", "б", "ш", "9", "4"]
 export const thirdZone = ["ы", "ч", "ц", "д", "ю", "щ", "0", "3"]
-export const fourthZone = ["ж", "э", "з", "х", "ъ", ".", "-", "+", "\\"]
+export const fourthZone = ["ж", "э", "з", "х", "ъ", ".", "-", "+","1","2", "\\"]
 
 export function GetZone(level) {
-  console.log(level)
-  let validSymbols
+  console.log("level = " + level)
+  console.log("level = "+ typeof level)
+  let validSymbols = []
 
   switch (level) {
     // объеденить массивы
     case "1": {
+      console.log("fffffff = "+ typeof level)
       validSymbols = firstZone
-      validSymbols = validSymbols.concat(firstZone)
+      //validSymbols = validSymbols.concat(firstZone)
       break
     }
     case "2": {
       validSymbols = firstZone
-      validSymbols = validSymbols.concat(firstZone, secondZone)
+      validSymbols = validSymbols.concat(secondZone)
       break
     }
     case "3": {
@@ -57,7 +59,7 @@ export function GetZone(level) {
 }
 
 export function CheckZone(holeText, level) {
-  
+  console.log(holeText, level)
   let validSymbols = GetZone(level)
     let res = 0
     for (let i = 0; i < holeText.length; i++) {
@@ -70,3 +72,42 @@ export function CheckZone(holeText, level) {
   return res
 }
 // проверка соотвествия зонам
+
+
+export function Decode(length, level, array) {
+  try {
+    if (!array||!length||!level) throw Error('Ошибка данных')
+    const uintArr = new Uint8Array(array)
+    const fileText = new TextDecoder().decode(uintArr)
+    console.log(fileText)
+    console.log(typeof fileText)
+    const task = AutoCreate(length, level, fileText)
+    return task
+  }
+ catch(e) {
+    console.log(e.message)
+    return null
+ }
+}
+
+export function AutoCreate(length, level, fileText) {
+  try {
+    if (fileText === '') throw Error('Пустой файл')
+    const include = GetZone(level)
+    console.log(include)
+    const text = fileText.toLowerCase()
+    let res = ''
+    for (let i = 0; i < text.length && res.length < length; i++) {
+      if (!!include.find((el) => el === text[i]))
+        res += text[i]
+    }
+    console.log("res = " + res)
+    console.log(res.length)
+    console.log(CheckZone(res, level))
+    return res
+  }
+ catch(e) {
+    console.log(e.message)
+    return null
+ }
+}
