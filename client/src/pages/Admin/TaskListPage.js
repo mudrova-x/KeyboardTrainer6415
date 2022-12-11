@@ -2,32 +2,16 @@ import "../../styles/Admin/TaskListPage.scss"
 import React, { useEffect, useState } from "react"
 import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
-import { CheckZone } from "../../components/FrontFunctions"
+import { CheckZone, Decode } from "../../components/FrontFunctions"
+import {  getAllExercises, createTask } from "../../http/exerciseAPI";
 
 export const TaskListPage = (props) => {
   const [list, setList] = useState([
     {
-      name: "Первое Упражнение",
-      task: "smth1",
-    },
-    {
-      name: "Второе Упражнение",
-      task: "smth2",
-    },
-    {
-      name: "Третье Упражнение",
-      task: "smth3",
-    },
-    {
-      name: "Четвертое Упражнение",
-      task: "smth4",
-    },
-    {
-      name: "Пятое Упражнение",
-      task: "smth5",
-    },
+      name: "loading",
+      task: "",
+    }
   ])
-
   const [oldTask, setOldTask] = useState({
     taskName: "",
   })
@@ -40,27 +24,40 @@ export const TaskListPage = (props) => {
     taskText: "",
   })
 
-  const CreateTask = (newTaskTest) => {
-    //  console.log("newTaskTest")
-    console.log({name: newTaskTest.taskName,
-      task: newTaskTest.taskText})
-    setList(
-      list.concat(
-        {
-      name: newTaskTest.taskName,
-      task: newTaskTest.taskText,
-        }
-      ))
-    console.log(list)
-    setNewTask({
-      taskName: "",
-      length: 0,
-      level: "3",
-      creationType: "0",
-      taskText: "",
+  const getAll = async () => {
+    let mass = []
+    //console.log("getAll")
+    getAllExercises().then(data => {
+      //console.log(data)
+      for (var e in data) {
+      mass.push({
+        name: data[e].name,
+        task: data[e].text
+          })
+      }
+     // console.log(mass)
+      setList(mass)
     })
-    setWindowMode("0")
-    document.getElementById("myModal").style.display = "none"
+  }
+
+  useEffect(()=>{
+    let func = async () => { await getAll() }
+    func() 
+  }, [setList])
+
+  const checkFields = (() => {
+    
+  })
+
+  const create = async () => {
+    
+    console.log("createTask")
+    createTask(newTask.taskName,newTask.level, newTask.taskText).then(data => {
+      console.log(data)
+      document.getElementById("myModal").style.display = "none"
+      getAll()
+    })
+    
   }
 
   const changeOldTaskHandler = (event) => {
@@ -69,30 +66,34 @@ export const TaskListPage = (props) => {
   }
 
   const changeNewTaskHandler = (event) => {
-    if (newTask.creationType === "1" && event.target.name === "taskText")
-    {
+    const target=event.target
+    if (newTask.creationType === "1" && (target.name === "taskText" || target.name === "level")) {
       setNewTask({
         ...newTask,
-        [event.target.name]: event.target.value,
-        length: event.target.value.length,
+        [target.name]: target.value,
+        length: target.name === "level" ?newTask.taskText.length:target.value.length,
       })
-      if (CheckZone(event.target.value, newTask.level) < 0) {
+      console.log(newTask.taskText.length)
+      if (CheckZone(target.name === "level" ? newTask.taskText : target.value,
+      target.name === "level" ?target.value:newTask.level) < 0) {
         document.getElementById("task-text-field").style.color = "red"
         document.getElementById("single-button").disabled = true
-        console.log("хрень!")
+        console.log("ошибка набора")
       }
       else {
         document.getElementById("task-text-field").style.color = "black"
         document.getElementById("single-button").disabled = false
       }
     }
-      
-    // console.log(event.target.name)
-    // console.log(event.target.value)
-    else setNewTask({ ...newTask, [event.target.name]: event.target.value })
+    else {
+     // if (event.target.name === "taskText")
+        
+      setNewTask({ ...newTask, [target.name]: target.value })
+    }
+    console.log("event.target.name"+target.name)
    // console.log(newTask)
   }
-
+  
   let distance = {
     height:
       window.innerHeight +
@@ -106,6 +107,35 @@ export const TaskListPage = (props) => {
       "px",
   }
  
+  const selectFile = ((event) => {
+    console.log(event)
+    
+    //console.log(event.files)
+    if (event) {
+      if (!event.target.value.endsWith(".lern"))
+        document.getElementById("fileInput").style.color = "red"
+      else  document.getElementById("fileInput").style.color = "black"
+    }
+
+  let reader = new FileReader()
+
+  reader.readAsArrayBuffer(document.getElementById('fileInput').files[0])
+  //AutoCreate(reader.result)
+  reader.onload = function() {
+    console.log(reader)
+    console.log(reader.result)
+    console.log({
+      length:newTask.length,
+      level:newTask.level,
+      r:reader.result
+    })
+    Decode(newTask.length,newTask.level, reader.result)
+  }
+  reader.onerror = function() {
+    console.log(reader.error)
+  }
+  })
+
   const [windowMode, setWindowMode] = useState("0")
 
   useEffect(() => {
@@ -133,16 +163,16 @@ export const TaskListPage = (props) => {
 }
   //console.log(a)
 
-  window.onclick = function (event) {
-  //  console.log(document.getElementById("myModal").style.display)
-      //console.log(event.target)
+  // window.onclick = function (event) {
+  // //  console.log(document.getElementById("myModal").style.display)
+  //     //console.log(event.target)
 
-    if (
-      event.target === document.getElementById("modal-row")
-    ) {
-      document.getElementById("myModal").style.display = "none"
-    }
-  }
+  //   if (
+  //     event.target === document.getElementById("modal-row")
+  //   ) {
+  //     document.getElementById("myModal").style.display = "none"
+  //   }
+  // }
 
   return (
     <div className="admin-page-tasks">
@@ -258,17 +288,31 @@ export const TaskListPage = (props) => {
               </div>
               {windowMode === "2" ? (
                 <div className="file-field">
-                  <input
+                  <div className="block"><input
+                    id="fileInput"
                     type="file"
                     name="taskText"
                     value={fileTask}
-                    onChange={(value) => (fileTask = value)}
-                  />
+                    onChange={(value) => (selectFile(value))}
+                    accept=".lern"
+                  /></div>
                 </div>
               ) : (
                 <></>
               )}
             </div>
+            <div className="errorsBox">
+                {/* {((!!list.find(person => person.userName === newUser.userName)|| newUser.userName === "admin") && newUser.userName !== "" ) &&
+                (<p className="errorMessage" id="errorExistence">
+                  Ошибка: пользователь с таким логином уже создан
+                </p>)} */}
+                <p className="errorMessage" id="errorName">
+                 Логин должен содержать от 4 до 16 символов.
+                </p>
+              <p className="errorMessage" id="errorLength">
+                  Пароль должен содержать от 8 до 16 символов.
+                  </p>
+              </div>
             <div className="single-button">
               <input
                 type="submit"
@@ -276,7 +320,7 @@ export const TaskListPage = (props) => {
                 value="Создать"
                 id = "single-button"
                 onClick={() => {
-                  CreateTask(newTask)
+                  create(newTask)
                 }}
               >
               </input>
@@ -309,7 +353,7 @@ export const TaskRow = (props) => {
     Name,
     //,index
   } = props
-  // console.log(Name + " --- " + index)
+ //  console.log(Name + " --- ")
   return (
     <div className="task-row">
       <div className="left">
