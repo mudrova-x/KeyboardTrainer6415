@@ -5,7 +5,7 @@ const ClientMain = () => {
 
     return (
         <div className="container">
-            <Header1/>
+            {/* <Header1/> */}
             <div className="first-layer">
                 <div className="blind-printing">
                     <div className="the-most-powerful">Самый мощный</div>

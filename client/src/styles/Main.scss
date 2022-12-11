@@ -302,3 +302,10 @@ select::-ms-expand {
 //   margin: auto;
 // }
 }
+
+.loader{
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+  font-size: 2ch;
+}
