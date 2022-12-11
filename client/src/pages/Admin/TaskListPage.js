@@ -20,9 +20,20 @@ export const TaskListPage = (props) => {
     taskName: "",
     length: 0,
     level: "3",
-    creationType: "0",
+    creationType: "2",
     taskText: "",
   })
+
+  const [windowMode, setWindowMode] = useState("0")
+
+  useEffect(() => {
+    console.log("use " + newTask.creationType)
+
+    if (newTask.creationType === "1") setWindowMode("1")
+    if (newTask.creationType === "3") setWindowMode("2")
+    if (newTask.creationType === "2") setWindowMode("0")
+    console.log(windowMode)
+  }, [newTask.creationType, windowMode])
 
   const getAll = async () => {
     let mass = []
@@ -45,18 +56,81 @@ export const TaskListPage = (props) => {
     func() 
   }, [setList])
 
-  const checkFields = (() => {
-    
+  useEffect(() => { 
+
+    if (document.getElementById("errorName")&&newTask.taskName!=="")
+    {
+      console.log(document.getElementById("taskName").checkValidity())
+      if (!document.getElementById("taskName").checkValidity())
+       document.getElementById("errorName").style.display = "block"
+    else
+        document.getElementById("errorName").style.display = "none"
+    }
+  }, [newTask])
+
+  const openFile = (async () => {
+    let reader = new FileReader()
+    reader.readAsArrayBuffer(document.getElementById('fileInput').files[0])
+    reader.onload = await function() {
+         console.log(reader)
+        console.log(reader.result)
+        console.log({
+        length:newTask.length,
+        level:newTask.level,
+        r:reader.result
+        })
+    return Decode(newTask.length, newTask.level, reader.result)
+      
+    }
+    reader.onerror = function() {
+      console.log("error: " + reader.error)
+      return ''
+  }
+  })
+
+  const checkFields = (async () => {
+    let text = ''
+    let file = true
+    console.log("newTask.creationType "+newTask.creationType)
+    if (newTask.creationType === "3" && document.getElementById("fileInput").value.endsWith(".lern"))
+    {
+      text = await openFile().then(() => {
+        if (!!text) {
+          console.log("text")
+          setNewTask({ ...newTask, taskText: text })
+          file = false
+        } else document.getElementById("errorFile").style.display = "block"
+      })
+      
+    }
+    if (newTask.creationType !== "3") file = false
+    const name = !document.getElementById("taskName").checkValidity()
+    const length = (newTask.length<=0)
+    if(length)
+      document.getElementById("errorLength").style.display = "block"
+    let zone = false
+    if (newTask.creationType === "1" && CheckZone(newTask.taskText, newTask.level) < 0) {
+      document.getElementById("errorText").style.display = "block"
+      zone=true
+    }
+    console.log({
+      file: file,
+      name: name,
+      length: length,
+      zone:zone
+    })
+    const desabled = file || name || length || zone
+    return desabled
   })
 
   const create = async () => {
     
-    console.log("createTask")
-    createTask(newTask.taskName,newTask.level, newTask.taskText).then(data => {
-      console.log(data)
-      document.getElementById("myModal").style.display = "none"
-      getAll()
-    })
+    console.log("createTask " + checkFields())
+    // createTask(newTask.taskName,newTask.level, newTask.taskText).then(data => {
+    //   console.log(data)
+    //   document.getElementById("myModal").style.display = "none"
+    //   getAll()
+    // })
     
   }
 
@@ -109,43 +183,22 @@ export const TaskListPage = (props) => {
  
   const selectFile = ((event) => {
     console.log(event)
-    
     //console.log(event.files)
     if (event) {
-      if (!event.target.value.endsWith(".lern"))
+      if (!event.target.value.endsWith(".lern")) {
         document.getElementById("fileInput").style.color = "red"
-      else  document.getElementById("fileInput").style.color = "black"
+        document.getElementById("errorType").style.display = "block"
+      }
+      else {
+        document.getElementById("fileInput").style.color = "black"
+        document.getElementById("errorType").style.display = "none"
+      }
     }
+    console.log(document.getElementById("fileInput").value)
 
-  let reader = new FileReader()
-
-  reader.readAsArrayBuffer(document.getElementById('fileInput').files[0])
-  //AutoCreate(reader.result)
-  reader.onload = function() {
-    console.log(reader)
-    console.log(reader.result)
-    console.log({
-      length:newTask.length,
-      level:newTask.level,
-      r:reader.result
-    })
-    Decode(newTask.length,newTask.level, reader.result)
-  }
-  reader.onerror = function() {
-    console.log(reader.error)
-  }
   })
 
-  const [windowMode, setWindowMode] = useState("0")
-
-  useEffect(() => {
-    console.log("use " + newTask.creationType)
-
-    if (newTask.creationType === "1") setWindowMode("1")
-    if (newTask.creationType === "3") setWindowMode("2")
-    if (newTask.creationType === "2") setWindowMode("0")
-    console.log(windowMode)
-  }, [newTask.creationType, windowMode])
+  
 
   let fileTask
 
@@ -184,7 +237,7 @@ export const TaskListPage = (props) => {
           <input
             placeholder="Упражнение.."
             type="text"
-            id="taskName"
+            id="taskNames"
             name="taskName"
             value={oldTask.taskName}
             onChange={changeOldTaskHandler}
@@ -227,6 +280,7 @@ export const TaskListPage = (props) => {
                 placeholder="Название"
                 type="text"
                 name="taskName"
+                id="taskName"
                 value={newTask.taskName}
                 onChange={changeNewTaskHandler}
                 required
@@ -307,11 +361,20 @@ export const TaskListPage = (props) => {
                   Ошибка: пользователь с таким логином уже создан
                 </p>)} */}
                 <p className="errorMessage" id="errorName">
-                 Логин должен содержать от 4 до 16 символов.
+                 Название должно содержать от 4 до 16 символов.
                 </p>
               <p className="errorMessage" id="errorLength">
-                  Пароль должен содержать от 8 до 16 символов.
-                  </p>
+                  Длина упражнения должна быть больше 0.
+              </p>
+              <p className="errorMessage" id="errorText">
+                  Текст не соответствует уровню.
+              </p>
+              <p className="errorMessage" id="errorType">
+                  Неверный формат файла.
+              </p>
+              <p className="errorMessage" id="errorFile">
+                  Ошибка файла.
+              </p>
               </div>
             <div className="single-button">
               <input

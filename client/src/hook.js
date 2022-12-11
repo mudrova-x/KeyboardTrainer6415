@@ -10,7 +10,7 @@ export async function requestCreator(url, method = 'GET', body = null, headers =
             headers['Content-Type'] = 'application/json'
         }
         const response = await fetch(url, { method, body, headers })
-        console.log(response)
+        //console.log(response)
         const data = await response.json()
         console.log(data)
         

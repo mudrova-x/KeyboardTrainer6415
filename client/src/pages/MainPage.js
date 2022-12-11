@@ -31,7 +31,7 @@ export const MainPage = (props) => {
                 document.getElementById("userName").checkValidity()
             )
             : true
-        // console.log("!checkInput="+!isDisabled)
+        console.log("!checkInput="+!isDisabled)
         return isDisabled
     })
 
