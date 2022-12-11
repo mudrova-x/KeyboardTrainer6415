@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
 import {requestCreator} from "../../hook"
+import { createUser, getAllUsers, updateUser, deleteUser } from "../../http/userAPI";
 
 export const UserListPage = (props) => {
   
@@ -17,80 +18,50 @@ export const UserListPage = (props) => {
     password: "",
   })
 
-  const getAllUsers = async () => {
+  const getAll = async () => {
     let usersMass = []
-    console.log("getAllUsers")
-    try{
-    let response = await requestCreator('/api/user/getAll')
-    console.log(response)
-      for (var e in response) {
-          if(response[e].login!=="admin")
-            usersMass.push({
-                    userName: response[e].login
-            })
-        }
-        console.log(usersMass)
-        setList(usersMass)
-        console.log(list)
-    } 
-    catch (e)
-    {
-      console.log(e.message)
-      alert("Не удалось загрузить список пользователей");
-    }
-  }
-
-  const createUser = async (user) => {
-    console.log("createUser")
-    const localUser={
-      login:user.userName,
-      password:user.password
-    }
-    try{
-    let response = await requestCreator('/api/user/registration',
-      'POST',
-      localUser
-      );
-    console.log(response)
-    document.getElementById("createModal").style.display = "none"
-    }
-    catch (e)
-    {
-      console.log(e.message)
-    }
-  }
-
-  const updateUser = async (user) => {
-    console.log("updateUser")
-    try{
-    let response = await requestCreator('/api/user/update',
-      'POST',
-      {
-        login:user.userName,
-        password:user.password
+    console.log("getAll")
+    getAllUsers().then(data => {
+      for (var e in data) {
+        if(data[e].login!=="admin")
+          usersMass.push({
+                  userName: data[e].login
+          })
       }
-      );
-      console.log(response)
-
-    document.getElementById("updateModal").style.display = "none"
-    }
-    catch (e)
-    {
-      console.log(e.message)
-    }
+      //console.log(usersMass)
+      setList(usersMass)
+      //console.log(list)
+    })
   }
 
-  const deleteUser = async (userName) => {
-    let response = await requestCreator('/api/user',
-        'DELETE',
-       {login:userName}
-      );
-    console.log(response)
-    getAllUsers()
+  const create = async (user) => {
+    console.log("createUser")
+    createUser(user.userName,user.password).then(data => {
+      console.log(data)
+      document.getElementById("createModal").style.display = "none"
+      getAll()
+    })
+    
+  }
+
+  const update = async (user) => {
+    console.log("updateUser")
+    updateUser(user.userName, user.password).then(data => {
+      console.log(data)
+      document.getElementById("updateModal").style.display = "none"
+      getAll()
+    })
+  }
+
+  const del = async (userName) => {
+    deleteUser(userName).then(data => {
+      console.log(data)
+      getAll()
+    })
   }
   
   useEffect(()=>{
-    let func = async () => { await getAllUsers() }
+    let func = async () => { await getAll() }
     func() 
   }, [setList])
   
@@ -134,17 +105,17 @@ export const UserListPage = (props) => {
   //   // }
   // }
 
-  let checkInput = (() => {
+  const checkInput = (() => {
     let isDisabled = document.getElementById("password") && document.getElementById("userName")
     ? !(
         document.getElementById("password").checkValidity() &&
         document.getElementById("userName").checkValidity() 
       )
       : true
-     // console.log("!checkInput="+!isDisabled)
+     console.log("!checkInput="+!isDisabled)
     return isDisabled
   })
-  let check = checkInput()||(!!list.find(person=>person.userName===newUser.userName))
+
   useEffect(() => {
     console.log("useEffect")
     if (document.getElementById("userName") && (newUser.password !== "" || newUser.userName !== "")) {
@@ -217,7 +188,7 @@ export const UserListPage = (props) => {
               alt="add-button"
               width="35px"
               height="35px"
-              onClick={()=>deleteUser(userName)}
+              onClick={()=>del(userName)}
             ></img>
           </button>
         </div>
@@ -261,11 +232,11 @@ export const UserListPage = (props) => {
       <div className="task-list" style={distance}>
         {oldUser.userName === ""
           ? list.map((el, index) => (
-              <UserRow userName={el.userName} index={index} />
+              <UserRow userName={el.userName} index={index} key={Math.random() * (100000 - 1) + 1}/>
             ))
           : list.map((el, index) =>
               el.userName.includes(oldUser.userName) ? (
-                <UserRow userName={el.userName} index={index} />
+                <UserRow userName={el.userName} index={index} key={Math.random() * (100000 - 1) + 1}/>
               ) : (
                 <></>
               )
@@ -283,7 +254,7 @@ export const UserListPage = (props) => {
             &times;
           </span> */}
           <div className="window-user">
-            <form className="fields-user" id="window">
+            <div className="fields-user" id="window">
               <input
                 className="input-user"
                 placeholder="Логин"
@@ -333,12 +304,12 @@ export const UserListPage = (props) => {
                 type="submit"
                 className="addButton"
                 value="Создать"
-                disabled={check}
+                disabled={(!!list.find(person => person.userName === newUser.userName))  && checkInput()}
                 onClick={() => {
-                  createUser(newUser)
+                  create(newUser)
                 }}
               ></input>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -353,7 +324,7 @@ export const UserListPage = (props) => {
             &times;
           </span> */}
           <div className="window-user">
-            <form className="fields-user" id="windowu">
+            <div className="fields-user" id="windowu">
               <input
                 className="input-user"
                 placeholder="Логин"
@@ -384,10 +355,10 @@ export const UserListPage = (props) => {
                 type="submit"
                 className="addButton"
                 value="Сохранить"
-                disabled={checkPassword()}
-                onClick={() => { updateUser(newUser) }}
+                disabled={(!!list.find(person => person.userName === newUser.userName)) && checkPassword()}
+                onClick={() => { update(newUser) }}
               ></input>
-            </form>
+            </div>
           </div>
         </div>
       </div>
