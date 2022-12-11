@@ -7,10 +7,10 @@ export const useAuth = () => {
     const [ready, setReady] = useState(false)
     const [userId, setUserId] = useState(null)
     const [accountType, setAccountType] = useState(null)
-    console.log(localStorage)
+    //console.log(localStorage)
 
     const login = useCallback((jwtToken, id, type) => {
-        console.log("accountType", type)
+        //console.log("accountType", type)
         setToken(jwtToken)
         setUserId(id)
         setAccountType(type)
@@ -23,7 +23,7 @@ export const useAuth = () => {
     }, [])
 
     useEffect(() => {
-        console.log("check")
+        //console.log("check")
         const data = JSON.parse(localStorage.getItem(storageName))
         if (data && data.token && data.accountType) {
           login(data.token, data.userId, data.accountType)

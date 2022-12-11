@@ -11,7 +11,7 @@ import {useAuth} from "./hooks/auth.hook"
 
 function App() {
   const { token, login, logout, userId, accountType, ready } = useAuth()
-  console.log(useAuth())
+  //console.log(useAuth())
   const  isAuthenticated = !!token
   const routes = useRoutes(isAuthenticated, accountType)
 
