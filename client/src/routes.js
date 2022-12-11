@@ -12,7 +12,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
     console.log("isAuthenticated", isAuthenticated)
 
         if (isAuthenticated) {
-            if (accountType) {
+            if (accountType==="admin") {
                 return (
                 ///администратор
                 <Routes>
@@ -24,7 +24,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
             )
             }
             // обучаемый
-        if (!accountType) {
+        if (accountType==="student") {
             return (
                 <Routes>
                    

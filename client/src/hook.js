@@ -1,8 +1,9 @@
 import {useCallback, useState} from "react";
+
 export async function requestCreator(url, method = 'GET', body = null, headers = {}) {
-    console.log("request")
-    console.log(url)
-    console.log(method)
+   // console.log("request")
+   // console.log(url)
+   // console.log(method)
     try {
         if ( body) {
             body = JSON.stringify(body)
@@ -49,3 +50,4 @@ export async function requestCreator(url, method = 'GET', body = null, headers =
 // }, [])
 // return {request}
 // }
+

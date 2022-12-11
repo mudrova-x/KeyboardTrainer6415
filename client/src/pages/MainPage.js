@@ -6,7 +6,7 @@ import React, {
 } from "react"
 import {useHttp} from "../hooks/http.hook"
 import {AuthContext} from "../context/auth.context";
-import { getExerciseByLevel, fetchDescriptionLevel, logiunser } from "../http/mainAPI";
+import { getExerciseByLevel, fetchDescriptionLevel, logiunser, test} from "../http/mainAPI";
 
 export const MainPage = (props) => {
 
@@ -110,7 +110,7 @@ export const MainPage = (props) => {
                     
                 }
                 ))
-       
+        
     }, [])
     
    
@@ -177,7 +177,7 @@ export const MainPage = (props) => {
                     </div>
                         <div className="container-all-test">
                         { exercises.map((el, index) => (
-                            <ExRow ex={el} index={index} />
+                            <ExRow ex={el} index={index} key={Math.random() * (100000 - 1) + 1 } />
                         ))
                         }
                         {/* <div className="container-number-test">

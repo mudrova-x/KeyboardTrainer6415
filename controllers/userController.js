@@ -60,7 +60,7 @@ class UserController {
                 config.get('Key'),
                 { expiresIn: '1h' }
             )
-            const accountType = user.login === "admin" ? true : false
+            const accountType = user.login === "admin" ? 'admin' : 'student'
             // let result = { token, userLogin: user.login, accountType: accountType }
             console.log({ token, userId: user.login, accountType })
 
