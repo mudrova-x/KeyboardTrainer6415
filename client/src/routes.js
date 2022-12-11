@@ -22,7 +22,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
                     <Route path="/tasklist" exact element={<TaskListPage />} />
                     <Route path="/userlist" exact element={<UserListPage />} />
                     <Route path="/statisticallusers" exact element={<StatisticAllUsers />} />
-                    <Route path="*" element={<Navigate replace to="/userlist/" />} />
+                    <Route path="*" element={<Navigate replace to="/statisticallusers/" />} />
                 </Routes>
             )
             }
