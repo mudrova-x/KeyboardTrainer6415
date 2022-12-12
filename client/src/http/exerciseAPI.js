@@ -20,3 +20,16 @@ export const createTask = async (name, level, text) => {
         console.log(e.message)
     }
 }
+
+
+export const deleteEx = async (exerciseName) => {
+    try {
+    const data = await requestCreator('/api/exercise', 'DELETE',  {name:exerciseName})
+        console.log(data)
+        return data;
+    }
+    catch (e)
+    {
+      console.log(e.message)
+    }
+  }

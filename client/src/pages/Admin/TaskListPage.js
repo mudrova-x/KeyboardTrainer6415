@@ -2,8 +2,10 @@ import "../../styles/Admin/TaskListPage.scss"
 import React, { useEffect, useState } from "react"
 import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
-import { CheckZone, Decode } from "../../components/FrontFunctions"
-import {  getAllExercises, createTask } from "../../http/exerciseAPI";
+//import { CheckZone, Decode } from "../../components/FrontFunctions"
+import * as functions from "../../components/FrontFunctions"
+import {  getAllExercises, createTask, deleteEx } from "../../http/exerciseAPI";
+import { fetchDescriptionLevel} from "../../http/mainAPI";
 
 export const TaskListPage = (props) => {
   const [list, setList] = useState([
@@ -15,7 +17,7 @@ export const TaskListPage = (props) => {
   const [oldTask, setOldTask] = useState({
     taskName: "",
   })
-
+  const [settings, setSettings] = useState(true)
   const [newTask, setNewTask] = useState({
     taskName: "",
     length: 0,
@@ -23,7 +25,7 @@ export const TaskListPage = (props) => {
     creationType: "2",
     taskText: "",
   })
-
+  const [level, setLevel] = useState({max_length: 0, min_length: 0,number: 0})
   const [windowMode, setWindowMode] = useState("0")
 
   useEffect(() => {
@@ -50,28 +52,41 @@ export const TaskListPage = (props) => {
       setList(mass)
     })
   }
-
+  useEffect(()=>{
+    let func = async () => { await setLevel(1) }
+    func() 
+  }, [])
   useEffect(()=>{
     let func = async () => { await getAll() }
     func() 
   }, [setList])
 
   useEffect(() => { 
-
+    console.log(newTask.taskName)
+    console.log(list)
+    console.log(!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== ""))
+    if (!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== ""))
+    {
+      console.log(newTask.taskName)
+      document.getElementById("errorExExistence").style.display = "block"
+    }
+    else 
+      document.getElementById("errorExExistence").style.display = "none"
     if (document.getElementById("errorName")&&newTask.taskName!=="")
     {
-      console.log(document.getElementById("taskName").checkValidity())
+      //console.log(document.getElementById("taskName").checkValidity())
       if (!document.getElementById("taskName").checkValidity())
        document.getElementById("errorName").style.display = "block"
     else
         document.getElementById("errorName").style.display = "none"
     }
+    if (newTask.length>0) document.getElementById("errorLength").style.display = "none"
   }, [newTask])
 
-  const openFile = (async () => {
+  const openFile = async function(callback){
     let reader = new FileReader()
     reader.readAsArrayBuffer(document.getElementById('fileInput').files[0])
-    reader.onload = await function() {
+    reader.onload = function () {
          console.log(reader)
         console.log(reader.result)
         console.log({
@@ -79,68 +94,123 @@ export const TaskListPage = (props) => {
         level:newTask.level,
         r:reader.result
         })
-    return Decode(newTask.length, newTask.level, reader.result)
-      
+      let text = null
+      text = functions.Decode(newTask.length,newTask.level, reader.result)
+      if (!checkFields() && text &&text!=="") {
+        document.getElementById("errorFile").style.display = "none"
+        setNewTask({ ...newTask, taskText: text })
+        console.log("newTask")
+        console.log(newTask)
+        callback(text)
+      }
+      if (!text||text!=="") document.getElementById("errorFile").style.display = "block"
     }
     reader.onerror = function() {
       console.log("error: " + reader.error)
       return ''
   }
-  })
-
-  const checkFields = (async () => {
-    let text = ''
-    let file = true
+  }
+  
+  const checkFields = (() => {
+    //let text = ''
+   // let file = true
     console.log("newTask.creationType "+newTask.creationType)
-    if (newTask.creationType === "3" && document.getElementById("fileInput").value.endsWith(".lern"))
-    {
-      text = await openFile().then(() => {
-        if (!!text) {
-          console.log("text")
-          setNewTask({ ...newTask, taskText: text })
-          file = false
-        } else document.getElementById("errorFile").style.display = "block"
-      })
-      
-    }
-    if (newTask.creationType !== "3") file = false
+    
+   // if (newTask.creationType !== "3") file = false
     const name = !document.getElementById("taskName").checkValidity()
-    const length = (newTask.length<=0)
+    if(name)
+      document.getElementById("errorName").style.display = "block"
+    const length = !(newTask.length >= level.min_length && newTask.length <= level.max_length)
+    console.log("length " + newTask.length >= level.min_length)
+    console.log("length " + newTask.length <= level.max_length)
+    console.log( "length " + newTask.length >= level.min_length && newTask.length <= level.max_length)
     if(length)
       document.getElementById("errorLength").style.display = "block"
     let zone = false
-    if (newTask.creationType === "1" && CheckZone(newTask.taskText, newTask.level) < 0) {
+    if (newTask.creationType === "1" && functions.CheckZone(newTask.taskText, newTask.level) < 0) {
       document.getElementById("errorText").style.display = "block"
       zone=true
     }
-    console.log({
-      file: file,
-      name: name,
-      length: length,
-      zone:zone
-    })
-    const desabled = file || name || length || zone
-    return desabled
+      console.log({
+        name: name,
+        length: length,
+        zone:zone
+      })
+   const desabled = name || length || zone
+   return desabled
+    
   })
 
-  const create = async () => {
-    
-    console.log("createTask " + checkFields())
-    // createTask(newTask.taskName,newTask.level, newTask.taskText).then(data => {
-    //   console.log(data)
-    //   document.getElementById("myModal").style.display = "none"
-    //   getAll()
-    // })
+const tryToCreate = () => {
+  const t =  checkFields()
+  console.log("createTask " + !t)
+  console.log("newTask.creationType " + !newTask.creationType)
+  if (!t&&newTask.creationType === "3" && document.getElementById("fileInput").value.endsWith(".lern"))
+    openFile((data) => {
+      console.log("callback funck " + data)
+      console.log(newTask)
+      create({
+        taskName: newTask.taskName,
+        length: newTask.length,
+        level: newTask.level,
+        creationType: newTask.creationType,
+        taskText: data,
+      })
+    })
+  if (!t && newTask.creationType === "2")
+  {
+    console.log("AutoCreate")
+    const text = functions.AutoCreate(newTask.length, newTask.level)
+    setNewTask({ ...newTask, taskText: text })
+    console.log(newTask)
+    create({
+       taskName: newTask.taskName,
+       length: newTask.length,
+        level: newTask.level,
+         creationType: newTask.creationType,
+        taskText: text,
+       })
+   }
+  if (!t&&newTask.creationType !== "3"&&newTask.creationType !== "2") create(newTask)
+}
+
+  const create = async (ex) => {
+    console.log("create")
+    createTask(ex.taskName,ex.level, ex.taskText).then(data => {
+      console.log(data)
+      document.getElementById("myModal").style.display = "none"
+      getAll()
+    })
     
   }
-
+  const changeLevel = ((level) => {
+    console.log("changeLevel")
+    fetchDescriptionLevel(level).then(data =>
+    {
+            console.log(data)
+            if(data)setLevel({
+                max_length: data.max_length,
+                min_length: data.min_length,
+                number:level,
+            })
+        }
+    )
+})
+const del = async (userName) => {
+  deleteEx(userName).then(data => {
+    console.log(data)
+    getAll()
+  })
+}
+  
   const changeOldTaskHandler = (event) => {
  //   console.log("taskName = " + oldTask)
     setOldTask({ ...oldTask, [event.target.name]: event.target.value })
   }
 
   const changeNewTaskHandler = (event) => {
-    const target=event.target
+    const target = event.target
+    if (target.name === "level") changeLevel(target.value)
     if (newTask.creationType === "1" && (target.name === "taskText" || target.name === "level")) {
       setNewTask({
         ...newTask,
@@ -148,7 +218,7 @@ export const TaskListPage = (props) => {
         length: target.name === "level" ?newTask.taskText.length:target.value.length,
       })
       console.log(newTask.taskText.length)
-      if (CheckZone(target.name === "level" ? newTask.taskText : target.value,
+      if (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
       target.name === "level" ?target.value:newTask.level) < 0) {
         document.getElementById("task-text-field").style.color = "red"
         document.getElementById("single-button").disabled = true
@@ -158,6 +228,7 @@ export const TaskListPage = (props) => {
         document.getElementById("task-text-field").style.color = "black"
         document.getElementById("single-button").disabled = false
       }
+      
     }
     else {
      // if (event.target.name === "taskText")
@@ -182,6 +253,7 @@ export const TaskListPage = (props) => {
   }
  
   const selectFile = ((event) => {
+    document.getElementById("errorFile").style.display = "none"
     console.log(event)
     //console.log(event.files)
     if (event) {
@@ -197,8 +269,6 @@ export const TaskListPage = (props) => {
     console.log(document.getElementById("fileInput").value)
 
   })
-
-  
 
   let fileTask
 
@@ -226,6 +296,32 @@ export const TaskListPage = (props) => {
   //     document.getElementById("myModal").style.display = "none"
   //   }
   // }
+  const TaskRow = (props) => {
+    const {
+      Name,
+      //,index
+    } = props
+   //  console.log(Name + " --- ")
+    return (
+      <div className="task-row">
+        <div className="left">
+          <p>{Name}</p>
+          <button>Редактировать</button>
+        </div>
+        <div className="right" >
+          <button onClick={()=>del(Name)}>
+            <img
+              src={Delete}
+              className="add"
+              alt="add-button"
+              width="35px"
+              height="35px"
+            ></img>
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="admin-page-tasks">
@@ -245,8 +341,10 @@ export const TaskListPage = (props) => {
         </div>
         <button
           id="add-task"
-          onClick={() =>
+          onClick={() => {
+            setSettings(true)
             (document.getElementById("myModal").style.display = "block")
+          }
           }
         >
           <img
@@ -356,15 +454,14 @@ export const TaskListPage = (props) => {
               )}
             </div>
             <div className="errorsBox">
-                {/* {((!!list.find(person => person.userName === newUser.userName)|| newUser.userName === "admin") && newUser.userName !== "" ) &&
-                (<p className="errorMessage" id="errorExistence">
-                  Ошибка: пользователь с таким логином уже создан
-                </p>)} */}
+                <p className="errorMessage" id="errorExExistence">
+                  Ошибка: упражнение с таким названием уже создано
+                </p>
                 <p className="errorMessage" id="errorName">
                  Название должно содержать от 4 до 16 символов.
                 </p>
               <p className="errorMessage" id="errorLength">
-                  Длина упражнения должна быть больше 0.
+                Длина упражнения должна быть от {level.min_length} до {level.max_length} символов  
               </p>
               <p className="errorMessage" id="errorText">
                   Текст не соответствует уровню.
@@ -383,7 +480,7 @@ export const TaskListPage = (props) => {
                 value="Создать"
                 id = "single-button"
                 onClick={() => {
-                  create(newTask)
+                  tryToCreate(newTask)
                 }}
               >
               </input>
@@ -411,29 +508,29 @@ export const TaskListPage = (props) => {
   )
 }
 
-export const TaskRow = (props) => {
-  const {
-    Name,
-    //,index
-  } = props
- //  console.log(Name + " --- ")
-  return (
-    <div className="task-row">
-      <div className="left">
-        <p>{Name}</p>
-        <button>Редактировать</button>
-      </div>
-      <div className="right">
-        <button>
-          <img
-            src={Delete}
-            className="add"
-            alt="add-button"
-            width="35px"
-            height="35px"
-          ></img>
-        </button>
-      </div>
-    </div>
-  )
-}
+// export const TaskRow = (props) => {
+//   const {
+//     Name,
+//     //,index
+//   } = props
+//  //  console.log(Name + " --- ")
+//   return (
+//     <div className="task-row">
+//       <div className="left">
+//         <p>{Name}</p>
+//         <button>Редактировать</button>
+//       </div>
+//       <div className="right" onClick={del(Name)}>
+//         <button>
+//           <img
+//             src={Delete}
+//             className="add"
+//             alt="add-button"
+//             width="35px"
+//             height="35px"
+//           ></img>
+//         </button>
+//       </div>
+//     </div>
+//   )
+// }

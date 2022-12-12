@@ -54,8 +54,8 @@ class ExerciseController {
       res.status(500).json({ message: e.message })
     }
   }
-
   async delete(req, res) {
+    try{
     const { name } = req.body
     console.log(req.body)
     Exercise.destroy({
@@ -63,8 +63,12 @@ class ExerciseController {
         name: name,
       },
     })
-    return res.json({ message: "exercise has been deleted" })
+    return res.json({ message: "Упражнение удалено" })
+  } catch (e) {
+    res.status(500).json({ message: e.message })
   }
+  }
+  
   async explore(req, res) {
     const { name } = req.body
     const exercise = await Exercise.findAll(/*{
@@ -103,6 +107,9 @@ class ExerciseController {
     // //const exercise = await Exercise.findAll();
     // return res.json(exercise);
   }
+ 
+
+
 }
 
 module.exports = new ExerciseController() // возвращаем объект класса, через который будем обращаться к функциям (выше)

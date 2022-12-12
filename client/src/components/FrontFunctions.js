@@ -1,23 +1,5 @@
 // зоны клавиатуры
-export const firstZone = [
-    " ",
-  "а",
-  "п",
-  "м",
-  "и",
-  "к",
-  "е",
-  "о",
-  "р",
-  "т",
-  "ь",
-  "н",
-  "г",
-  "5",
-  "6",
-  "7",
-  "8",
-]
+export const firstZone = [ " ","а","п","м","и","к","е","о","р","т","ь","н","г","5","6","7","8"]
 export const secondZone = ["в", "с", "у", "л", "б", "ш", "9", "4"]
 export const thirdZone = ["ы", "ч", "ц", "д", "ю", "щ", "0", "3"]
 export const fourthZone = ["ж", "э", "з", "х", "ъ", ".", "-", "+","1","2", "\\"]
@@ -76,12 +58,12 @@ export function CheckZone(holeText, level) {
 
 export function Decode(length, level, array) {
   try {
-    if (!array||!length||!level) throw Error('Ошибка данных')
+    if (!array || !length || !level || parseInt(length) === 0) throw Error('Ошибка данных')
     const uintArr = new Uint8Array(array)
     const fileText = new TextDecoder().decode(uintArr)
-    console.log(fileText)
+    //console.log(fileText)
     console.log(typeof fileText)
-    const task = AutoCreate(length, level, fileText)
+    const task = FileCreate(parseInt(length), level, fileText)
     return task
   }
  catch(e) {
@@ -90,7 +72,7 @@ export function Decode(length, level, array) {
  }
 }
 
-export function AutoCreate(length, level, fileText) {
+export function FileCreate(length, level, fileText) {
   try {
     if (fileText === '') throw Error('Пустой файл')
     const include = GetZone(level)
@@ -102,8 +84,29 @@ export function AutoCreate(length, level, fileText) {
         res += text[i]
     }
     console.log("res = " + res)
-    console.log(res.length)
-    console.log(CheckZone(res, level))
+      if (res.length<length)  throw Error('Недостаточно символов')
+    console.log("res.length" + res.length)
+    if(CheckZone(res, level)<0) throw Error('Ошибка данных')
+    return res
+  }
+ catch(e) {
+    console.log(e.message)
+    return null
+ }
+}
+
+export function AutoCreate(length, level) {
+  try {
+    if (!length || !level || parseInt(length) === 0) throw Error('Ошибка данных')
+    const include = GetZone(level)
+    let res = ''
+    for (let i = 0; i < length; i++) {
+        res += include[Math.floor(Math.random() * include.length)]
+    }
+    console.log("res = " + res)
+      if (res.length<length)  throw Error('Ошибка длины')
+    console.log("res.length" + res.length)
+    if(CheckZone(res, level)<0) throw Error('Ошибка данных')
     return res
   }
  catch(e) {
