@@ -4,7 +4,7 @@ import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
 //import { CheckZone, Decode } from "../../components/FrontFunctions"
 import * as functions from "../../components/FrontFunctions"
-import {  getAllExercises, createTask, deleteEx } from "../../http/exerciseAPI";
+import {  getAllExercises, createTask, deleteEx, getExercise, updateExercise} from "../../http/exerciseAPI";
 import { fetchDescriptionLevel} from "../../http/mainAPI";
 
 export const TaskListPage = (props) => {
@@ -65,7 +65,8 @@ export const TaskListPage = (props) => {
     console.log(newTask.taskName)
     console.log(list)
     console.log(!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== ""))
-    if (!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== ""))
+    console.log("settings = " + (settings!==true))
+    if (!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== "") && settings!==true)
     {
       console.log(newTask.taskName)
       document.getElementById("errorExExistence").style.display = "block"
@@ -80,7 +81,8 @@ export const TaskListPage = (props) => {
     else
         document.getElementById("errorName").style.display = "none"
     }
-    if (newTask.length>0) document.getElementById("errorLength").style.display = "none"
+    if (newTask.length > 0) document.getElementById("errorLength").style.display = "none"
+    
   }, [newTask])
 
   const openFile = async function(callback){
@@ -149,7 +151,14 @@ const tryToCreate = () => {
     openFile((data) => {
       console.log("callback funck " + data)
       console.log(newTask)
-      create({
+      if (!settings) create({
+        taskName: newTask.taskName,
+        length: newTask.length,
+        level: newTask.level,
+        creationType: newTask.creationType,
+        taskText: data,
+      })
+      else update({
         taskName: newTask.taskName,
         length: newTask.length,
         level: newTask.level,
@@ -163,17 +172,32 @@ const tryToCreate = () => {
     const text = functions.AutoCreate(newTask.length, newTask.level)
     setNewTask({ ...newTask, taskText: text })
     console.log(newTask)
-    create({
+    if (!settings) create({
        taskName: newTask.taskName,
        length: newTask.length,
         level: newTask.level,
          creationType: newTask.creationType,
         taskText: text,
-       })
+    })
+    else update({
+      taskName: newTask.taskName,
+       length: newTask.length,
+       level: newTask.level,
+       creationType: newTask.creationType,
+       taskText: text,
+    })
    }
   if (!t&&newTask.creationType !== "3"&&newTask.creationType !== "2") create(newTask)
 }
-
+const update = async (ex) => {
+  console.log("update")
+  updateExercise(ex.taskName,ex.level, ex.taskText).then(data => {
+    console.log(data)
+    document.getElementById("myModal").style.display = "none"
+    getAll()
+  })
+  
+}
   const create = async (ex) => {
     console.log("create")
     createTask(ex.taskName,ex.level, ex.taskText).then(data => {
@@ -196,13 +220,33 @@ const tryToCreate = () => {
         }
     )
 })
-const del = async (userName) => {
-  deleteEx(userName).then(data => {
+const del = async (name) => {
+  deleteEx(name).then(data => {
     console.log(data)
     getAll()
   })
-}
-  
+  }
+
+  const findEx = async (name, callback) => {
+    getExercise(name).then(ex => {
+      console.log("findEx")
+      console.log(ex)
+    //  setNewTask({
+    //    taskName: ex.taskName,
+    //    length: ex.length,
+    //    level: ex.level,
+    //    creationType: 2,
+    //    taskText: ex.text,
+    //  })
+      callback({
+        taskName: ex.taskName,
+        length: ex.length,
+        level: ex.level,
+        creationType: "2",
+        taskText: ex.taskText,
+      })
+    })
+  }
   const changeOldTaskHandler = (event) => {
  //   console.log("taskName = " + oldTask)
     setOldTask({ ...oldTask, [event.target.name]: event.target.value })
@@ -217,7 +261,9 @@ const del = async (userName) => {
         [target.name]: target.value,
         length: target.name === "level" ?newTask.taskText.length:target.value.length,
       })
-      console.log(newTask.taskText.length)
+      console.log("newTask.taskText.length" + newTask.taskText.length)
+      console.log(target.name === "level" ? newTask.taskText : target.value)
+      console.log(target.name === "level" ?target.value:newTask.level)
       if (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
       target.name === "level" ?target.value:newTask.level) < 0) {
         document.getElementById("task-text-field").style.color = "red"
@@ -284,29 +330,29 @@ const del = async (userName) => {
       marginRight: 'auto',
       marginTop: '2 %'
 }
-  //console.log(a)
-
-  // window.onclick = function (event) {
-  // //  console.log(document.getElementById("myModal").style.display)
-  //     //console.log(event.target)
-
-  //   if (
-  //     event.target === document.getElementById("modal-row")
-  //   ) {
-  //     document.getElementById("myModal").style.display = "none"
-  //   }
-  // }
+ 
+ 
   const TaskRow = (props) => {
     const {
       Name,
       //,index
     } = props
    //  console.log(Name + " --- ")
+    const changeSettings=((ex) => {
+      //let ex = list.find(ex => ex.name === name)
+      console.log(ex)
+      changeLevel(ex.level)
+      setNewTask(ex)
+      setSettings(true)
+      document.getElementById("myModal").style.display = "block"
+   })
     return (
       <div className="task-row">
         <div className="left">
           <p>{Name}</p>
-          <button>Редактировать</button>
+          <button
+            onClick={()=>findEx(Name, changeSettings)}
+          >Редактировать</button>
         </div>
         <div className="right" >
           <button onClick={()=>del(Name)}>
@@ -342,8 +388,8 @@ const del = async (userName) => {
         <button
           id="add-task"
           onClick={() => {
-            setSettings(true)
             (document.getElementById("myModal").style.display = "block")
+            setSettings(false)
           }
           }
         >
@@ -358,10 +404,10 @@ const del = async (userName) => {
       </div>
       <div className="task-list" style={distance}>
         {oldTask.taskName === ""
-          ? list.map((el, index) => <TaskRow Name={el.name} index={index} />)
+          ? list.map((el, index) => <TaskRow Name={el.name} index={index} key={Math.random() * (100000 - 1) + 1}/>)
           : list.map((el, index) =>
               el.name.includes(oldTask.taskName) ? (
-                <TaskRow Name={el.name} index={index} />
+                <TaskRow Name={el.name} index={index} key={Math.random() * (100000 - 1) + 1}/>
               ) : (
                 <></>
               )
@@ -373,6 +419,17 @@ const del = async (userName) => {
           <div className="window"
             style={a}
           >
+            <button
+              className="closeButton"
+              onClick={() => (document.getElementById("myModal").style.display = "none")}>
+            <img
+              src={Delete}
+              className="add"
+              alt="add-button"
+              width="25px"
+              height="25px"
+            ></img>
+          </button>
             <div className="fields">
               <input
                 placeholder="Название"
@@ -380,6 +437,7 @@ const del = async (userName) => {
                 name="taskName"
                 id="taskName"
                 value={newTask.taskName}
+                disabled={settings}
                 onChange={changeNewTaskHandler}
                 required
                 pattern="^.{4,16}$"

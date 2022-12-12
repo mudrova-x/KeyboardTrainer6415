@@ -42,8 +42,9 @@ export function GetZone(level) {
 
 export function CheckZone(holeText, level) {
   console.log(holeText, level)
-  let validSymbols = GetZone(level)
-    let res = 0
+  let validSymbols = GetZone(level.toString())
+  let res = 0
+  console.log(validSymbols)
     for (let i = 0; i < holeText.length; i++) {
         res += validSymbols.find((el) => {
            // console.log(el + " - " + holeText[i] + " = "+(el === holeText[i]))

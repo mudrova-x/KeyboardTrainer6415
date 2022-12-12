@@ -5,7 +5,7 @@ import { UserListPage } from "./pages/Admin/UserListPage"
 import { MainPage } from "./pages/MainPage"
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
 //  Route.Redirect - старая технология
-
+import { LevelSettings } from "./pages/Admin/LevelSettings";
 export const useRoutes = (isAuthenticated, accountType) => {
     
     console.log("accountType", accountType)
@@ -18,8 +18,9 @@ export const useRoutes = (isAuthenticated, accountType) => {
                 <Routes>
                     {/* <Route path="/main" exact element={<MainPage />} /> */}
                     <Route path="/tasklist" exact element={<TaskListPage />} />
-                    <Route path="/userlist" exact element={<UserListPage />} />
-                    <Route path="*" element={<Navigate replace to="/tasklist/" />} />
+                        <Route path="/userlist" exact element={<UserListPage />} />
+                        <Route path="/settings" exact element={<LevelSettings />} />
+                    <Route path="*" element={<Navigate replace to="/settings/" />} />
                 </Routes>
             )
             }

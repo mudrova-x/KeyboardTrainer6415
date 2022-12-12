@@ -57,7 +57,9 @@ class ExerciseController {
   async delete(req, res) {
     try{
     const { name } = req.body
-    console.log(req.body)
+      console.log(req.body)
+      
+      // проверить наличие
     Exercise.destroy({
       where: {
         name: name,
@@ -70,14 +72,32 @@ class ExerciseController {
   }
   
   async explore(req, res) {
-    const { name } = req.body
-    const exercise = await Exercise.findAll(/*{
+    try {
+      console
+    const { name } = req.params
+    const exercise = await Exercise.findOne({
                 where: {
                     name: name
                 }
-            }*/)
-    return res.json(exercise)
+    })
+    if (!exercise) {
+      return res.status(400).json({ message: "Упражнение не найдено" })
+    }
+      return res.json(
+        {
+          taskName: exercise.name,
+          length: exercise.text.length,
+          level: exercise.level_num,
+          taskText: exercise.text
+          
+        }
+      )
+  } catch (e) {
+    res.status(500).json({ message: e.message })
+    }
   }
+
+
   async getAll(req, res) {
     try {
       const exercises = await Exercise.findAll()

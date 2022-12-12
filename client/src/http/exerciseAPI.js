@@ -21,6 +21,20 @@ export const createTask = async (name, level, text) => {
     }
 }
 
+export const updateExercise = async (name, level, text) => {
+    try {
+        console.log("createTask")
+        console.log(name+" - "+level)
+    let task = {name, level, text}
+    const data = await requestCreator('/api/exercise/update', 'POST', task)
+    console.log(task)
+    return data;
+    }
+    catch (e)
+    {
+        console.log(e.message)
+    }
+}
 
 export const deleteEx = async (exerciseName) => {
     try {
@@ -32,4 +46,12 @@ export const deleteEx = async (exerciseName) => {
     {
       console.log(e.message)
     }
-  }
+}
+  
+export const getExercise = async (name) => {
+    let url = '/api/exercise/explore/' + name
+    console.log(url)
+    const  data  = await requestCreator(url)
+    console.log(url)
+    return data;
+}

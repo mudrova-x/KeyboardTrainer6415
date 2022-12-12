@@ -3,7 +3,7 @@ import {useCallback, useState} from "react";
 export async function requestCreator(url, method = 'GET', body = null, headers = {}) {
    console.log("request")
    // console.log(url)
-   console.log(JSON.stringify(body))
+   //console.log(JSON.stringify(body))
     try {
         if ( body) {
             body = JSON.stringify(body)
