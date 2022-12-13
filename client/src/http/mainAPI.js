@@ -26,3 +26,10 @@ export const logiunser = async (login, password) => {
     return data;
 }
 
+export const fetchOneExercise = async (id) => {
+    let url = 'api/exercise/getOneExercise/' + id
+    const data = await requestCreator(url)
+    //console.log(data)
+    return data;
+}
+

@@ -77,6 +77,26 @@ class ExerciseController {
             // //const exercise = await Exercise.findAll();
             // return res.json(exercise);
         }
+
+    async getOneExercise(req, res) {
+        const {id} = req.params
+        console.log(id)
+        // let {level_num} = req.query;
+        //const level_num = 1
+        const exercise = await Exercise.findOne({where: {id}});
+        //const exercise = await Exercise.findAll();
+        // console.log(exercise.rows)
+        return res.json(exercise);
+
+        // console.log(req.query)
+        // let {level_num} = req.query;
+        // //const level_num = 1
+        // const exercise = await Exercise.findAndCountAll({where: {level_num}});
+        // //const exercise = await Exercise.findAll();
+        // return res.json(exercise);
     }
-    
+    }
+
+
+
     module.exports = new ExerciseController() // возвращаем объект класса, через который будем обращаться к функциям (выше)

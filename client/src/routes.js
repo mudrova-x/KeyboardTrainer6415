@@ -4,6 +4,7 @@ import { TaskListPage } from "./pages/Admin/TaskListPage"
 import { UserListPage } from "./pages/Admin/UserListPage"
 import { MainPage } from "./pages/MainPage"
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
+import {Training} from "./pages/client/Training";
 //  Route.Redirect - старая технология
 
 export const useRoutes = (isAuthenticated, accountType) => {
@@ -29,6 +30,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
                 <Routes>
                    
                     <Route path="/" exact element={<MainPage />} />
+                    <Route path="/training" exact element={<Training />} />
                     <Route path="*" element={<Navigate replace to="/" />} />
                 </Routes>
             )
