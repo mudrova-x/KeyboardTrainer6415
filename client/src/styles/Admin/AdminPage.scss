@@ -3,6 +3,9 @@
 button:hover {
   opacity: 0.5;
 }
+button:after:hover {
+  opacity: 0.5;
+}
 .admin-page {
   font-family: "Raleway" !important;
   width: 100%;
@@ -12,7 +15,7 @@ button:hover {
 .admin-panel {
   display: flex;
   flex-direction: row;
-  text-decoration: underline;
+  // text-decoration: underline;
 
   background-color: white;
   button {
@@ -22,7 +25,7 @@ button:hover {
     background-color: inherit;
     border: none;
     font-family: "Raleway" !important;
-    text-decoration: underline;
+    // text-decoration: underline;
     border: solid 3.5px black;
   }
 
@@ -38,22 +41,38 @@ button:hover {
         line-height: 150px;
         letter-spacing: 0.1em;
         color: white;
-        text-decoration: underline;
+        // text-decoration: underline;
       }
       flex: 3;
       border: solid 3.5px black;
+      
+      // flex: 3 1;
+      // display: flex;
+      // flex-direction: COLUMN;
+      // justify-content: center;
+      // border: solid 3.5px black;
     }
     .users button {
-      padding: 30px;
+      padding: 44px;
       flex: 2 1;
       font-weight: 600;
-      font-size: 60px;
+      font-size: 58px;
       line-height: 106px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
+    .users button:after {
+      display: block;
+      content: "";
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: -1.6vh;
+      width: 100%;
+      height: 4.5px;
+      background-color: black;
+    }
   }
-  &.second-layer {
+  &.second-layers {
     min-height: 150px;
     .tasks {
       flex: 3;
@@ -68,6 +87,16 @@ button:hover {
       line-height: 75px;
       letter-spacing: 0.1em;
     }
+    .tasks button:after {
+      display: block;
+      content: "";
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: -1vh;
+      width: 84%;
+      height: 4.5px;
+      background-color: black;
+    }
     .statistic button {
       padding: 30px 70px 30px 70px;
       text-transform: uppercase;
@@ -76,6 +105,16 @@ button:hover {
       font-size: 46px;
       line-height: 75px;
       letter-spacing: 0.1em;
+    }
+    .statistic button:after {
+      display: block;
+      content: "";
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: -1vh;
+      width: 100%;
+      height: 4.5px;
+      background-color: black;
     }
     .st {
       button {
@@ -89,9 +128,29 @@ button:hover {
 
       &.task {
         flex: 4.5;
+        button:after {
+          display: block;
+          content: "";
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: -1vh;
+          width: 84%;
+          height: 4.5px;
+          background-color: black;
+        }
       }
       &.all-users {
         flex: 4;
+        button:after {
+          display: block;
+          content: "";
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: -1vh;
+          width: 84%;
+          height: 4.5px;
+          background-color: black;
+        }
       }
       letter-spacing: 0.1em;
     }
@@ -115,10 +174,39 @@ button:hover {
       line-height: 106px;
       letter-spacing: 0.1em;
     }
-    .container {
-      border: solid 3.5px black;
-      flex: 2;
+    .levels button:after {
+      display: block;
+      content: "";
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: -1vh;
+      width: 100%;
+      height: 4.5px;
+      background-color: black;
     }
+    .info {
+      //border: solid 3.5px black;
+      flex: 2;
+      button {
+        text-transform: uppercase;
+        padding: 56px 84px 52px 84px;
+        font-weight: 700;
+        font-size: 60px;
+        line-height: 106px;
+        letter-spacing: 0.1em;
+      }
+      button:after {
+        display: block;
+    content: "";
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -2.1vh;
+    width: 42%;
+    height: 4.5px;
+    background-color: black;
+      }
+    }
+    
 
     .user {
       flex: 4;
@@ -130,18 +218,39 @@ button:hover {
         line-height: 75px;
         letter-spacing: 0.1em;
       }
+      button:after {
+        display: block;
+        content: "";
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0;
+        width: 68%;
+        height: 4.5px;
+        background-color: black;
+      }
     }
+    
     .back {
       flex: 1;
       button {
         text-decoration: undernonline;
         text-transform: uppercase;
-        padding: 10px 160px 10px 160px;
+        padding: 6px 160px 10px 160px;
         font-style: normal;
         font-weight: 600;
         font-size: 60px;
         line-height: 75px;
         letter-spacing: 0.1em;
+      }
+      button:after {
+        display: block;
+        content: "";
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0;
+        width: 100%;
+        height: 4.5px;
+        background-color: black;
       }
     }
   }

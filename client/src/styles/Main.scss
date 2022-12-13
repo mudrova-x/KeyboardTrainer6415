@@ -310,3 +310,58 @@ select::-ms-expand {
   padding-top: 4rem;
   font-size: 2ch;
 }
+
+.info-box{
+  background-color: rgb(217, 217, 217);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+  p{
+    text-align: center;
+  }
+
+  .info-title{
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .info-text{
+    font-size: 18px;
+    font-size: 18px;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    p{
+      margin-block-start: 10px;
+    margin-block-end: 10px;
+    }
+    .p1{
+      font-weight: 600;
+      width: 65%;
+    }
+    .p2{
+      width: 70%;
+    }
+    
+}
+  .info-close{
+    margin-left: 90%;
+    margin-top: 2%;
+    background: inherit;
+    border: none;
+    width: 25px;
+  }
+
+  .systemButton{
+    margin-top: 2%;
+    width: 36%;
+    height: 3rem;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: rgb(134, 134, 134);
+    background: rgb(255, 255, 255);
+    border: solid 2px black;
+  }
+}

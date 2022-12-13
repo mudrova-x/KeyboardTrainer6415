@@ -44,7 +44,9 @@ export const UserListPage = (props) => {
     console.log("list= " + listIn)
     let admin = newUser.userName === "admin"
     console.log("admin= " + admin)
-    if(document.getElementById("passwordu")) listIn=false
+    console.log("settings= " + settings)
+    if (!settings) listIn = false
+    console.log((input||admin||listIn))
     if (input||admin||listIn)
      return true;
     else
@@ -83,7 +85,7 @@ export const UserListPage = (props) => {
   }
 
   const create = async (user) => {
-    
+    //if (check_disable)return
     console.log("createUser")
     createUser(user.userName,user.password).then(data => {
       console.log(data)

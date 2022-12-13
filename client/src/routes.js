@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { TaskListPage } from "./pages/Admin/TaskListPage"
 import { UserListPage } from "./pages/Admin/UserListPage"
 import { MainPage } from "./pages/MainPage"
+import { AdminPage } from "./pages/Admin/AdminPage";
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
 //  Route.Redirect - старая технология
 import { LevelSettings } from "./pages/Admin/LevelSettings";
@@ -16,11 +17,12 @@ export const useRoutes = (isAuthenticated, accountType) => {
                 return (
                 ///администратор
                 <Routes>
-                    {/* <Route path="/main" exact element={<MainPage />} /> */}
-                    <Route path="/tasklist" exact element={<TaskListPage />} />
+                        <Route path="/admin_panel" exact element={<AdminPage />} /> 
+                        <Route path="/statistic_menu" exact element={<StatisticMenu />} />
+                        <Route path="/tasklist" exact element={<TaskListPage />} />
                         <Route path="/userlist" exact element={<UserListPage />} />
                         <Route path="/settings" exact element={<LevelSettings />} />
-                    <Route path="*" element={<Navigate replace to="/settings/" />} />
+                    <Route path="*" element={<Navigate replace to="/admin_panel/" />} />
                 </Routes>
             )
             }

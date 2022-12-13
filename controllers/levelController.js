@@ -31,13 +31,21 @@ class LevelController {
 
         const { number, max_errors, max_time, zones,  min_length, max_length } = req.body
         console.log(req.body)
+        const l = await Level.findOne({
+            where: {
+                number: number
+            }
+        })
+        if (!l) {
+            return res.status(400).json({ message: "Уровень не найден" })
+          }
         const level = await Level.update({max_errors: max_errors, max_time: max_time, zones:zones,  min_length: min_length, max_length:max_length},
             {
                 where: {
                     number: number
                 }
               })
-        return res.json({message: "Level has been changed"})
+        return res.json({message: "Уровень сложности был изменен"})
     }
 
 }

@@ -30,12 +30,20 @@ export const TaskListPage = (props) => {
 
   useEffect(() => {
     console.log("use " + newTask.creationType)
-
-    if (newTask.creationType === "1") setWindowMode("1")
+    if (newTask.creationType === "1") {
+      setWindowMode("1")
+    }
     if (newTask.creationType === "3") setWindowMode("2")
     if (newTask.creationType === "2") setWindowMode("0")
     console.log(windowMode)
   }, [newTask.creationType, windowMode])
+
+  useEffect(() => {
+    console.log("use " + newTask.creationType)
+    if (newTask.creationType === "1") {
+      checkInput (functions.CheckZone(newTask.taskText, newTask.level) < 0)
+    }
+  }, [ windowMode])
 
   const getAll = async () => {
     let mass = []
@@ -67,10 +75,7 @@ export const TaskListPage = (props) => {
     console.log(!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== ""))
     console.log("settings = " + (settings!==true))
     if (!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== "") && settings!==true)
-    {
-      console.log(newTask.taskName)
       document.getElementById("errorExExistence").style.display = "block"
-    }
     else 
       document.getElementById("errorExExistence").style.display = "none"
     if (document.getElementById("errorName")&&newTask.taskName!=="")
@@ -82,7 +87,6 @@ export const TaskListPage = (props) => {
         document.getElementById("errorName").style.display = "none"
     }
     if (newTask.length > 0) document.getElementById("errorLength").style.display = "none"
-    
   }, [newTask])
 
   const openFile = async function(callback){
@@ -263,17 +267,20 @@ const del = async (name) => {
       })
       console.log("newTask.taskText.length" + newTask.taskText.length)
       console.log(target.name === "level" ? newTask.taskText : target.value)
-      console.log(target.name === "level" ?target.value:newTask.level)
-      if (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
-      target.name === "level" ?target.value:newTask.level) < 0) {
-        document.getElementById("task-text-field").style.color = "red"
-        document.getElementById("single-button").disabled = true
-        console.log("ошибка набора")
-      }
-      else {
-        document.getElementById("task-text-field").style.color = "black"
-        document.getElementById("single-button").disabled = false
-      }
+      console.log(target.name === "level" ? target.value : newTask.level)
+      checkInput (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
+      target.name === "level" ? target.value : newTask.level) < 0)
+      //if (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
+      //  target.name === "level" ? target.value : newTask.level) < 0)
+      // {
+      //   document.getElementById("task-text-field").style.color = "red"
+      //   document.getElementById("single-button").disabled = true
+      //   console.log("ошибка набора")
+      // }
+      // else {
+      //   document.getElementById("task-text-field").style.color = "black"
+      //   document.getElementById("single-button").disabled = false
+      // }
       
     }
     else {
@@ -285,6 +292,18 @@ const del = async (name) => {
    // console.log(newTask)
   }
   
+  const checkInput=((val) => {
+    if (val) {
+        document.getElementById("task-text-field").style.color = "red"
+        document.getElementById("single-button").disabled = true
+        console.log("ошибка набора")
+      }
+      else {
+        document.getElementById("task-text-field").style.color = "black"
+        document.getElementById("single-button").disabled = false
+      }
+  })
+
   let distance = {
     height:
       window.innerHeight +
@@ -413,7 +432,6 @@ const del = async (name) => {
               )
             )}
       </div>
-{/* передалать на форму блок - выбрасывает при нажатии на кнопку выбора закполнения */}
       <div id="myModal" className="modal">
         <div id="modal-row" className="modal-row">
           <div className="window"
