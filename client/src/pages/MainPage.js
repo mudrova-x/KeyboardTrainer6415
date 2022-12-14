@@ -135,7 +135,7 @@ export const MainPage = (props) => {
 
             <div className="text-flex-row">
                 <div className="test-zone">Зона: {level.zones}</div>
-                <div className="test-time">Время теста: {text?level.max_time*text.length:0}</div>
+                <div className="test-time">Время теста: {text?(level.max_time*text.length).toFixed(1):0}</div>
                 <div>
                     <div className="test-max-mistake">Количество допустимых ошибок: {level.max_errors}</div>
                     <div className="test-symbol">Количество символов: {text?text.length:0}</div>

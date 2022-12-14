@@ -25,12 +25,12 @@ const Header = () => {
   }
   const getName = () => {
     if (!auth.isAuthenticated) return "Профиль"
-    if (location.pathname.startsWith("/admin_panel")||location.pathname===("/")) return "Выход"
+    if (location.pathname.startsWith("/admin_panel")||location.pathname===("/statistics")||location.pathname===("/statistic_menu")) return "Выход"
     return "Профиль"
   }
   const reNavidate = () => {
     if (auth.accountType === "admin") history("/admin_panel")
-    if (auth.accountType === "student") history("/") // ДОБАВИТЬ ССЫЛОЧКУ
+    if (auth.accountType === "student") history("/statistics") // ДОБАВИТЬ ССЫЛОЧКУ
   }
   const func = () => {
     const f = !auth.isAuthenticated
@@ -40,6 +40,7 @@ const Header = () => {
       : reNavidate 
     return f
   }
+
   return (
     <div>
       {/* hello */}

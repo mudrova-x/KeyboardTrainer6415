@@ -10,6 +10,7 @@ export const UserListPage = (props) => {
  // const { request } = useHttp()
   const [list, setList] = useState([{ userName: "loading" }])
   const [dis, setDis] = useState(true)
+  const [max, setMax] = useState(0)
   const [settings, setSettings] = useState(true)
   const [oldUser, setOldUser] = useState({
     userName: "",
@@ -19,7 +20,7 @@ export const UserListPage = (props) => {
     password: "",
   })
   const changeOldUserHandler = (event) => {
-    console.log("userName = " + oldUser.userName)
+    //console.log("userName = " + oldUser.userName)
     setOldUser({ ...oldUser, [event.target.name]: event.target.value })
   }
 
@@ -31,7 +32,6 @@ export const UserListPage = (props) => {
   }
 
   const checkInput = (() => {
-    if (document.getElementById("passwordu")) console.log("bbbbbbbeeeeeeeeeeee "+(document.getElementById("passwordu").checkValidity() ))
     if (settings) {
       let isDisabled = document.getElementById("password") && document.getElementById("userName")
         ? !(
@@ -39,7 +39,6 @@ export const UserListPage = (props) => {
           document.getElementById("userName").checkValidity()
         )
         : true
-      if (document.getElementById("password")) console.log("document.getElementById().checkValidity()" + document.getElementById("password").checkValidity())
       return isDisabled
     }
     else return document.getElementById("passwordu") ? !(document.getElementById("password").checkValidity() ): true
@@ -47,15 +46,15 @@ export const UserListPage = (props) => {
 
   const check_disable = (() =>{
     let listIn = !!list.find(person => person.userName === newUser.userName)
-    console.log("list= " + listIn)
+    //console.log("list= " + listIn)
     let admin = newUser.userName === "admin"
-    console.log("admin= " + admin)
-    console.log("settings= " + settings)
+    //console.log("admin= " + admin)
+    //console.log("settings= " + settings)
     if (!settings) listIn = false
     
     let input = checkInput()
-    console.log("checkInput= " + input)
-    console.log("result = = = "+(input||admin||listIn))
+   // console.log("checkInput= " + input)
+    //console.log("result = = = "+(input||admin||listIn))
     if (input || admin || listIn)
      return true;
     else
@@ -64,8 +63,8 @@ export const UserListPage = (props) => {
 
   const changePasswordHandler = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value })
-    console.log(event.target.name)
-    console.log(newUser)
+    //console.log(event.target.name)
+    //console.log(newUser)
     //check_disable()
   }
   // function checkUser(){
@@ -89,6 +88,7 @@ export const UserListPage = (props) => {
       }
       //console.log(usersMass)
       setList(usersMass)
+      setMax(list.length)
       //console.log(list)
     })
   }
@@ -156,9 +156,9 @@ export const UserListPage = (props) => {
   
 
   useEffect(() => {
-    console.log("useEffect")
+    //console.log("useEffect")
     if (document.getElementById("userName") && (newUser.password !== "" || newUser.userName !== "")) {
-      console.log("useEffect")
+     // console.log("useEffect")
       if (settings){ 
       if (newUser.userName !== "" && !document.getElementById("userName").checkValidity())
         document.getElementById("errorLogin").style.display = "block";
@@ -177,7 +177,7 @@ export const UserListPage = (props) => {
         document.getElementById("errorPasswordu").style.display = "none";
       }
       if (!check_disable()) {
-        console.log("saveButton() = ")
+        //console.log("saveButton() = ")
         setDis(false)
       }else setDis(true)
     }
@@ -248,6 +248,7 @@ export const UserListPage = (props) => {
         </div>
         <div className="users ">
           <input
+            autocomplete="off"
             placeholder="Пользователь.."
             type="text"
             name="userName"
@@ -258,11 +259,11 @@ export const UserListPage = (props) => {
         <button
           id="add-task"
           onClick={() => {
-            if (list.length !== 100) {
+            if (max !== 10) {
               (document.getElementById("createModal").style.display = "block")
               setSettings(true)
             }
-            //else alert("Максимальное число пользователей");
+            else alert("Максимальное число пользователей");
           }}
         >
           <img
@@ -302,6 +303,7 @@ export const UserListPage = (props) => {
           <div className="window-user">
             <div className="fields-user" id="window">
               <input
+                autocomplete="off"
                 className="input-user"
                 placeholder="Логин"
                 type="text"
@@ -313,6 +315,7 @@ export const UserListPage = (props) => {
                 pattern="^.{4,16}$"
               />
               <input
+                autocomplete="off"
                 className="input-user"
                 placeholder="Пароль"
                 type="text"
@@ -362,6 +365,7 @@ export const UserListPage = (props) => {
           <div className="window-user">
             <div className="fields-user" id="windowu">
               <input
+                autocomplete="off"
                 className="input-user"
                 placeholder="Логин"
                 type="text"
@@ -372,6 +376,7 @@ export const UserListPage = (props) => {
                 readOnly
               />
               <input
+                autocomplete="off"
                 className="input-user"
                 placeholder="Пароль"
                 type="text"

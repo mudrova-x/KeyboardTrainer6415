@@ -8,6 +8,7 @@ import { StatisticMenu } from "./pages/Admin/StatisticMenu"
 import {Training} from "./pages/client/Training";
 //  Route.Redirect - старая технология
 import { LevelSettings } from "./pages/Admin/LevelSettings";
+import {UserStatistics} from "./pages/client/UserStatistics"
 export const useRoutes = (isAuthenticated, accountType) => {
     
     console.log("accountType", accountType)
@@ -31,7 +32,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
         if (accountType==="student") {
             return (
                 <Routes>
-                   
+                    <Route path="/statistics" exact element={<UserStatistics />} />
                     <Route path="/" exact element={<MainPage />} />
                     <Route path="/training/:id" exact element={<Training />} />
                     <Route path="*" element={<Navigate replace to="/" />} />

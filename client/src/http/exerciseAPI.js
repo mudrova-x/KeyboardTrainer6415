@@ -55,3 +55,9 @@ export const getExercise = async (name) => {
     console.log(url)
     return data;
 }
+
+export const getEmount = async () => {
+    const  data  = await requestCreator('/api/exercise/emount' )
+    console.log(data)
+    return data;
+}

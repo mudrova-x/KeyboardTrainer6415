@@ -97,6 +97,45 @@ class ExerciseController {
     }
   }
 
+  async emount(req, res) {
+    try {
+    const first = await Exercise.count({
+                where: {
+                  level_num: 1
+                }
+    })
+      console.log(first)
+    const second = await Exercise.count({
+      where: {
+        level_num: 2
+      }
+    })
+      const third = await Exercise.count({
+        where: {
+          level_num: 3
+        }
+      })
+      const fourth = await Exercise.count({
+        where: {
+          level_num: 4
+        }
+      })
+console.log(first)
+    // if (!first||!second||!third||!fourth) {
+    //   return res.status(400).json({ message: "Ошибка поиска упражнений" })
+    // }
+      return res.json(
+        {
+          first: first,
+          second: second,
+          third: third,
+          fourth: fourth,
+        }
+      )
+  } catch (e) {
+    res.status(500).json({ message: e.message })
+    }
+  }
 
   async getAll(req, res) {
     try {

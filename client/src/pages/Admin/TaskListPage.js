@@ -4,7 +4,7 @@ import Add from "../../icons/add.png"
 import Delete from "../../icons/delete.png"
 //import { CheckZone, Decode } from "../../components/FrontFunctions"
 import * as functions from "../../components/FrontFunctions"
-import {  getAllExercises, createTask, deleteEx, getExercise, updateExercise} from "../../http/exerciseAPI";
+import {  getAllExercises, createTask, deleteEx, getExercise, updateExercise, getEmount} from "../../http/exerciseAPI";
 import { fetchDescriptionLevel} from "../../http/mainAPI";
 
 export const TaskListPage = (props) => {
@@ -27,6 +27,12 @@ export const TaskListPage = (props) => {
   })
   const [level, setLevel] = useState({max_length: 0, min_length: 0,number: 0, zones:0})
   const [windowMode, setWindowMode] = useState("0")
+  const [levelCount, setLevelCount] = useState({
+    first: 0,
+    second: 0,
+    third: 0,
+    fourth: 0,
+  })
 
   useEffect(() => {
     console.log("use " + newTask.creationType)
@@ -59,6 +65,7 @@ export const TaskListPage = (props) => {
       }
      // console.log(mass)
       setList(mass)
+      getEmount().then((data)=>setLevelCount(data))
     })
   }
   // useEffect(()=>{
@@ -155,6 +162,7 @@ export const TaskListPage = (props) => {
       document.getElementById("errorText").style.display = "block"
       zone=true
     }
+    let inList = !!list.find(ex => ex.name === newTask.taskName)
     let selected_level = newTask.level==="0"
     if (selected_level)
       document.getElementById("errorSLevel").style.display = "block"
@@ -163,12 +171,50 @@ export const TaskListPage = (props) => {
         length: length,
         zone:zone
       })
-   const desabled = name || length || zone || selected_level
+   const desabled = name || length || zone || selected_level ||inList
    return desabled
     
   })
 
-const tryToCreate = () => {
+  const checkCount = (l) => {
+    console.log("l = " + l)
+    console.log(typeof l)
+    console.log(levelCount)
+    let num
+  switch (l) {
+    case ("1"): {
+      console.log("case (1)")
+      num = levelCount.first
+      //validSymbols = validSymbols.concat(firstZone)
+      break
+    }
+    case ("2"): {
+      num = levelCount.second
+      break
+    }
+    case ("3"): {
+      num = levelCount.third
+      break
+    }
+    case ("4"): {
+      num = levelCount.fourth
+      break
+    }
+    default: {
+      break
+    }
+    }
+    console.log(num)
+    return num
+ }
+  const tryToCreate = () => {
+    console.log(levelCount)
+    console.log("checkCount(newTask.level) = " + checkCount(newTask.level))
+  if (checkCount(newTask.level) >= 10)
+  {
+    alert("Достигнуто максимальное количество упражнений выбранного уровня")
+    return
+    }
   const t =  checkFields()
   console.log("createTask " + !t)
   console.log("newTask.creationType " + !newTask.creationType)
@@ -389,7 +435,6 @@ const del = async (name) => {
 }
  
   const ginfo = (() => {
-    console.log("fuck")
     console.log(newTask.level)
     console.log(level.number)
     //if (level.number === 0 || level.number === "0")
@@ -450,6 +495,7 @@ const del = async (name) => {
         </div>
         <div className="users ">
           <input
+            autocomplete="off"
             placeholder="Упражнение.."
             type="text"
             id="taskNames"
@@ -507,6 +553,7 @@ const del = async (name) => {
           </button>
             <div className="fields">
               <input
+                autocomplete="off"
                 placeholder="Название"
                 type="text"
                 name="taskName"
@@ -519,6 +566,7 @@ const del = async (name) => {
                 
               />
               <input
+                autocomplete="off"
                 placeholder="Длина"
                 type="number"
                 id="length"
