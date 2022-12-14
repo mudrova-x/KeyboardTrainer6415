@@ -9,6 +9,7 @@ import { getAllExercises } from "../../http/exerciseAPI"
 import { getStatisticsByExerciseId, getStatisticsByUserId, getStatisticsByUserIdCarton } from "../../http/statisticsAPI"
 
 import data from "../../mock-data.json" // Мокнутые данные для теста. Не забудь удалить. Я сказал НЕЗАБУДЬ!!!
+import { BarChart2 } from "../../components/BarChart2"
 
 
 export const exercisesList = ["loading..."]
@@ -38,6 +39,7 @@ export const StatisticExercise = () => {
         console.log(exerciseArr);
         setList(exerciseArr)
         setCurrent(exerciseArr[0])
+        formStat()
       })
     }
 
@@ -48,11 +50,12 @@ export const StatisticExercise = () => {
     }, [setList])
 
 
-   function handleClick(name) {
+   async function handleClick(name) {
       console.log(name)
       let newName = list.find(obj => obj.name === name)
       console.log("newName: " + newName);
       setCurrent(newName)
+      formStat()
    }
 
    async function formStat() {
@@ -64,7 +67,7 @@ export const StatisticExercise = () => {
       console.log("STATS GO HERE!!!!");
       console.log(stats);
       console.log(filteredUsers);
-
+      /*
       filteredUsers.map((user) => {
          let stat = stats.find(obj => (obj.userId === user.id) && (obj.exerciseId === currentExercise.id))
          statsArr.push({
@@ -75,20 +78,22 @@ export const StatisticExercise = () => {
             status: stat.success,
             date: stat.date
          })
-      })
-      /*
+      })*/
+      
       stats.map((stat) => {
          let user = filteredUsers.find(obj => obj.id === stat.userId)
          console.log(user);
+         if(user === undefined)
+            user = {login: "Удалённый пользователь"}
          statsArr.push({
             login: user.login,
             time: stat.time,
             errors: stat.errors,
-            typeSpeed: stat.speed,
+            typeSpeed: stat.speed.toFixed(2),
             status: stat.success,
             date: stat.date
          })
-      })*/
+      })
 
       setStatistics(statsArr)
       console.log(statsArr);
@@ -132,7 +137,7 @@ export const StatisticExercise = () => {
          </div>
          <div className="statistics-container">
             <div className="statistics-chart-container">
-               {/*<BarChart />*/}
+               {<BarChart2 stats={statistics}/>}
             </div>
             <div className="statistics-table-container">
                <table>
