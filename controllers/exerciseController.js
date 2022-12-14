@@ -128,7 +128,24 @@ class ExerciseController {
     // return res.json(exercise);
   }
  
+  async getOneExercise(req, res) {
+    const id = req.params.id
+    console.log(id)
+    // let {level_num} = req.query;
+    //const level_num = 1
+    const exercise = await Exercise.findOne({where: {id}});
+    //const exercise = await Exercise.findAll();
+    // console.log(exercise.rows)
+    console.log("id =", id)
+    return res.json(exercise);
 
+    // console.log(req.query)
+    // let {level_num} = req.query;
+    // //const level_num = 1
+    // const exercise = await Exercise.findAndCountAll({where: {level_num}});
+    // //const exercise = await Exercise.findAll();
+    // return res.json(exercise);
+}
 
 }
 

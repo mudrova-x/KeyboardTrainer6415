@@ -5,6 +5,7 @@ import { UserListPage } from "./pages/Admin/UserListPage"
 import { MainPage } from "./pages/MainPage"
 import { AdminPage } from "./pages/Admin/AdminPage";
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
+import {Training} from "./pages/client/Training";
 //  Route.Redirect - старая технология
 import { LevelSettings } from "./pages/Admin/LevelSettings";
 export const useRoutes = (isAuthenticated, accountType) => {
@@ -32,6 +33,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
                 <Routes>
                    
                     <Route path="/" exact element={<MainPage />} />
+                    <Route path="/training/:id" exact element={<Training />} />
                     <Route path="*" element={<Navigate replace to="/" />} />
                 </Routes>
             )

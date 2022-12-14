@@ -1,7 +1,7 @@
-const { User } = require("../models/models")
-const errors = require("../error/errors")
-const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
+const { User, Statistics} = require('../models/models')
+const errors = require('../error/errors')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const config = require("config") // константы проекта
 const key = config.get("Key")
 //доделать логин
@@ -50,21 +50,40 @@ class UserController {
       const isMatch = await bcrypt.compare(password, user.password)
       console.log("isMatch " + isMatch)
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ message: "Неверный пароль, попробуйте снова" })
+          return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' })
       }
-      const token = jwt.sign({ userId: user.login }, config.get("Key"), {
-        expiresIn: "1h",
-      })
-      const accountType = user.login === "admin" ? "admin" : "student"
+      const token = jwt.sign(
+          {userId: user.id },
+          config.get('Key'),
+          { expiresIn: '1h' }
+      )
+      const accountType = user.login === "admin" ? 'admin' : 'student'
       // let result = { token, userLogin: user.login, accountType: accountType }
-      console.log({ token, userId: user.login, accountType })
+      console.log({ token, userId: user.id, accountType })
 
-      res.json({ token, userId: user.login, accountType })
-    } catch (e) {
-      res.status(500).json({ message: e.message })
-    }
+      res.json({ token, userId: user.id, accountType })
+      
+  }catch (e) {
+      res.status(500).json({message: e.message})
+  }
+    //   const isMatch = await bcrypt.compare(password, user.password)
+    //   console.log("isMatch " + isMatch)
+    //   if (!isMatch) {
+    //     return res
+    //       .status(400)
+    //       .json({ message: "Неверный пароль, попробуйте снова" })
+    //   }
+    //   const token = jwt.sign({ userId: user.login }, config.get("Key"), {
+    //     expiresIn: "1h",
+    //   })
+    //   const accountType = user.login === "admin" ? "admin" : "student"
+    //   // let result = { token, userLogin: user.login, accountType: accountType }
+    //   console.log({ token, userId: user.login, accountType })
+
+    //   res.json({ token, userId: user.login, accountType })
+    // } catch (e) {
+    //   res.status(500).json({ message: e.message })
+    // }
   }
 
   async checkAuth(req, res) {
@@ -136,7 +155,17 @@ class UserController {
     })
     return res.json(user)
   }
+  async postStatistic(req,res,next){
+    try{
 
+        let{time,date,errors,speed,success,userId, exerciseId} = req.body;
+        const statistic = await Statistics.create({time,date,errors,speed,success,userId,exerciseId})
+        return res.json(statistic)
+    }
+    catch (e){
+        next(e.message)
+    }
+}
   async getAll(req, res, next) {
     //const users = await User.findAndCountAll();
     try {

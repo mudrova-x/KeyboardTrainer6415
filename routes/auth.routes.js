@@ -8,7 +8,7 @@ const router = Router()
 // /api/auth/register
 router.post(
     '/register',
-    async (req, res) => {
+    async (req, res,next) => {
         try{
             const { login, password } = req.body
                 console.log(req.body)
@@ -59,15 +59,15 @@ router.post('/login',
                 return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' })
             }
             const token = jwt.sign(
-                {userId: user.login },
+                {id: user.id },
                 config.get('Key'),
                 { expiresIn: '1h' }
             )
             const accountType = user.login === "admin" ? true : false
             // let result = { token, userLogin: user.login, accountType: accountType }
-            console.log({ token, userId: user.login, accountType })
+            console.log({ token, id: user.id, accountType })
 
-            return res.json({ token, userId: user.login, accountType })
+            return res.json({ token, id: user.id, accountType })
             
         }catch (e) {
             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})

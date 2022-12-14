@@ -9,5 +9,6 @@ router.get('/getAll', exerciseController.getAll)
 router.get('/explore/:name', exerciseController.explore)
 
 router.get('/getExerciseByLevel/:level_num', exerciseController.getExerciseByLevel)
+router.get('/getOneExercise/:id', exerciseController.getOneExercise)
 
 module.exports = router
