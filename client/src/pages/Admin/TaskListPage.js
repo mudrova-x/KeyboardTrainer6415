@@ -21,11 +21,11 @@ export const TaskListPage = (props) => {
   const [newTask, setNewTask] = useState({
     taskName: "",
     length: 0,
-    level: "3",
+    level: "0",
     creationType: "2",
     taskText: "",
   })
-  const [level, setLevel] = useState({max_length: 0, min_length: 0,number: 0})
+  const [level, setLevel] = useState({max_length: 0, min_length: 0,number: 0, zones:0})
   const [windowMode, setWindowMode] = useState("0")
 
   useEffect(() => {
@@ -41,7 +41,8 @@ export const TaskListPage = (props) => {
   useEffect(() => {
     console.log("use " + newTask.creationType)
     if (newTask.creationType === "1") {
-      checkInput (functions.CheckZone(newTask.taskText, newTask.level) < 0)
+      //checkInput(functions.CheckZone(newTask.taskText, newTask.level) < 0)
+      checkInput (functions.CheckZone(newTask.taskText, level.zones) < 0)
     }
   }, [ windowMode])
 
@@ -60,20 +61,36 @@ export const TaskListPage = (props) => {
       setList(mass)
     })
   }
-  useEffect(()=>{
-    let func = async () => { await setLevel(1) }
-    func() 
-  }, [])
+  // useEffect(()=>{
+  //   let func = async () => { await setLevel(0) }
+  //   func() 
+  // }, [])
   useEffect(()=>{
     let func = async () => { await getAll() }
     func() 
   }, [setList])
 
+  const clearFields = () => {
+    document.getElementById("errorFile").style.display = "none"
+    setNewTask(
+      {
+        taskName: "",
+        length: 0,
+        level: "0",
+        creationType: "2",
+        taskText: "",
+      }
+    )
+    setLevel({ max_length: 0, min_length: 0, number: 0, zones: 0 })
+    closeErrors()
+  }
   useEffect(() => { 
     console.log(newTask.taskName)
     console.log(list)
     console.log(!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== ""))
     console.log("settings = " + (settings!==true))
+    if (document.getElementById("levelSelector").value!=="0") document.getElementById("errorSLevel").style.display = "none"
+    else document.getElementById("errorSLevel").style.display = "block"
     if (!!list.find(ex => ex.name === newTask.taskName) && (newTask.taskName !== "") && settings!==true)
       document.getElementById("errorExExistence").style.display = "block"
     else 
@@ -81,7 +98,7 @@ export const TaskListPage = (props) => {
     if (document.getElementById("errorName")&&newTask.taskName!=="")
     {
       //console.log(document.getElementById("taskName").checkValidity())
-      if (!document.getElementById("taskName").checkValidity())
+    if (!document.getElementById("taskName").checkValidity())
        document.getElementById("errorName").style.display = "block"
     else
         document.getElementById("errorName").style.display = "none"
@@ -102,14 +119,14 @@ export const TaskListPage = (props) => {
         })
       let text = null
       text = functions.Decode(newTask.length,newTask.level, reader.result)
-      if (!checkFields() && text &&text!=="") {
+      if (!checkFields() && text && text!=="") {
         document.getElementById("errorFile").style.display = "none"
         setNewTask({ ...newTask, taskText: text })
         console.log("newTask")
         console.log(newTask)
         callback(text)
       }
-      if (!text||text!=="") document.getElementById("errorFile").style.display = "block"
+      else document.getElementById("errorFile").style.display = "block"
     }
     reader.onerror = function() {
       console.log("error: " + reader.error)
@@ -121,28 +138,32 @@ export const TaskListPage = (props) => {
     //let text = ''
    // let file = true
     console.log("newTask.creationType "+newTask.creationType)
-    
+   if(!level.max_length)changeLevel(level)
+    console.log(document.getElementById("length").value.includes("."))
    // if (newTask.creationType !== "3") file = false
     const name = !document.getElementById("taskName").checkValidity()
     if(name)
       document.getElementById("errorName").style.display = "block"
-    const length = !(newTask.length >= level.min_length && newTask.length <= level.max_length)
+    const length = !(newTask.length >= level.min_length && newTask.length <= level.max_length && !document.getElementById("length").value.includes("."))
     console.log("length " + newTask.length >= level.min_length)
     console.log("length " + newTask.length <= level.max_length)
     console.log( "length " + newTask.length >= level.min_length && newTask.length <= level.max_length)
     if(length)
       document.getElementById("errorLength").style.display = "block"
     let zone = false
-    if (newTask.creationType === "1" && functions.CheckZone(newTask.taskText, newTask.level) < 0) {
+    if (newTask.creationType === "1" && functions.CheckZone(newTask.taskText, level.zones) < 0) {
       document.getElementById("errorText").style.display = "block"
       zone=true
     }
+    let selected_level = newTask.level==="0"
+    if (selected_level)
+      document.getElementById("errorSLevel").style.display = "block"
       console.log({
         name: name,
         length: length,
         zone:zone
       })
-   const desabled = name || length || zone
+   const desabled = name || length || zone || selected_level
    return desabled
     
   })
@@ -151,6 +172,7 @@ const tryToCreate = () => {
   const t =  checkFields()
   console.log("createTask " + !t)
   console.log("newTask.creationType " + !newTask.creationType)
+  console.log("level " + level.number)
   if (!t&&newTask.creationType === "3" && document.getElementById("fileInput").value.endsWith(".lern"))
     openFile((data) => {
       console.log("callback funck " + data)
@@ -173,7 +195,8 @@ const tryToCreate = () => {
   if (!t && newTask.creationType === "2")
   {
     console.log("AutoCreate")
-    const text = functions.AutoCreate(newTask.length, newTask.level)
+    console.log(level.zones)
+    const text = functions.AutoCreate(newTask.length,level.zones)
     setNewTask({ ...newTask, taskText: text })
     console.log(newTask)
     if (!settings) create({
@@ -191,14 +214,18 @@ const tryToCreate = () => {
        taskText: text,
     })
    }
-  if (!t&&newTask.creationType !== "3"&&newTask.creationType !== "2") create(newTask)
+  //if (!t && newTask.creationType !== "3" && newTask.creationType !== "2") create(newTask)
+  if (!t && newTask.creationType === "1" && !settings) create(newTask)
+  if (!t&&newTask.creationType === "1"&&settings) update(newTask)
 }
 const update = async (ex) => {
   console.log("update")
+  console.log(ex)
   updateExercise(ex.taskName,ex.level, ex.taskText).then(data => {
     console.log(data)
     document.getElementById("myModal").style.display = "none"
     getAll()
+    clearFields()
   })
   
 }
@@ -208,18 +235,24 @@ const update = async (ex) => {
       console.log(data)
       document.getElementById("myModal").style.display = "none"
       getAll()
+      clearFields()
     })
     
   }
-  const changeLevel = ((level) => {
+  const changeLevel = ((l) => {
     console.log("changeLevel")
-    fetchDescriptionLevel(level).then(data =>
+    if (l === "0") {
+      setLevel({ max_length: 0, min_length: 0, number: 0, zones: 0 })
+      return
+    }
+    fetchDescriptionLevel(l).then(data =>
     {
             console.log(data)
             if(data)setLevel({
                 max_length: data.max_length,
                 min_length: data.min_length,
-                number:level,
+              number: l,
+                zones: data.zones
             })
         }
     )
@@ -258,8 +291,10 @@ const del = async (name) => {
 
   const changeNewTaskHandler = (event) => {
     const target = event.target
-    if (target.name === "level") changeLevel(target.value)
-    if (newTask.creationType === "1" && (target.name === "taskText" || target.name === "level")) {
+    if (target.name === "level"
+      //&& target.value !== "0"
+    ) changeLevel(target.value)
+    if (newTask.creationType === "1" && (target.name === "taskText" || (target.name === "level"))) {
       setNewTask({
         ...newTask,
         [target.name]: target.value,
@@ -268,8 +303,11 @@ const del = async (name) => {
       console.log("newTask.taskText.length" + newTask.taskText.length)
       console.log(target.name === "level" ? newTask.taskText : target.value)
       console.log(target.name === "level" ? target.value : newTask.level)
-      checkInput (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
-      target.name === "level" ? target.value : newTask.level) < 0)
+      // if (target.value!=="0")checkInput (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
+      //   target.name === "level" ? target.value : newTask.level) < 0)
+        if (target.value!=="0")checkInput (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
+        target.name === "level" ? target.value : level.zones) < 0)
+      else checkInput(true)
       //if (functions.CheckZone(target.name === "level" ? newTask.taskText : target.value,
       //  target.name === "level" ? target.value : newTask.level) < 0)
       // {
@@ -350,7 +388,23 @@ const del = async (name) => {
       marginTop: '2 %'
 }
  
- 
+  const ginfo = (() => {
+    console.log("fuck")
+    console.log(newTask.level)
+    console.log(level.number)
+    //if (level.number === 0 || level.number === "0")
+    if (newTask.level!=="0")
+      return "Длина упражнения должна быть положительным числом от " + level.min_length + " до " + level.max_length + " символов" 
+    else return "Длина упражнения должна быть положительным числом"
+  })
+  
+  const closeErrors = () => {
+    let mass = document.getElementsByClassName("errorMessage")
+    console.log(mass)
+    for (let i = 0; i < mass.length; i++) {
+      mass[i].style.display = "none"
+  }
+  }
   const TaskRow = (props) => {
     const {
       Name,
@@ -439,7 +493,10 @@ const del = async (name) => {
           >
             <button
               className="closeButton"
-              onClick={() => (document.getElementById("myModal").style.display = "none")}>
+              onClick={() => {
+                (document.getElementById("myModal").style.display = "none")
+                clearFields()
+              }}>
             <img
               src={Delete}
               className="add"
@@ -473,15 +530,17 @@ const del = async (name) => {
                 }
                 disabled={newTask.creationType === "1" ? true : false}
                 onChange={changeNewTaskHandler}
-                
+                required
+                pattern="^\d$"
               />
               <div className="select">
                 <select
+                id="levelSelector"
                   name="level"
                   value={newTask.level}
                 onChange={changeNewTaskHandler}
-                
                 >
+                  <option value="0">Уровень сложности</option>
                   <option value="1">Первый ур. сложности</option>
                   <option value="2">Второй ур. сложности</option>
                   <option value="3">Третий ур. сложности</option>
@@ -537,7 +596,10 @@ const del = async (name) => {
                  Название должно содержать от 4 до 16 символов.
                 </p>
               <p className="errorMessage" id="errorLength">
-                Длина упражнения должна быть от {level.min_length} до {level.max_length} символов  
+                {ginfo()}
+              </p> 
+              <p className="errorMessage" id="errorSLevel">
+                  Выберите уровень сложности.
               </p>
               <p className="errorMessage" id="errorText">
                   Текст не соответствует уровню.
@@ -553,7 +615,7 @@ const del = async (name) => {
               <input
                 type="submit"
                 className="addButton"
-                value="Создать"
+                value={settings?"Сохранить":"Создать"}
                 id = "single-button"
                 onClick={() => {
                   tryToCreate(newTask)

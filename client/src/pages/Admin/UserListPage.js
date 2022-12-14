@@ -8,7 +8,8 @@ import { createUser, getAllUsers, updateUser, deleteUser } from "../../http/user
 export const UserListPage = (props) => {
   
  // const { request } = useHttp()
-  const [list, setList] = useState([{userName:"loading"}])
+  const [list, setList] = useState([{ userName: "loading" }])
+  const [dis, setDis] = useState(true)
   const [settings, setSettings] = useState(true)
   const [oldUser, setOldUser] = useState({
     userName: "",
@@ -25,29 +26,37 @@ export const UserListPage = (props) => {
   const changeNewUserHandler = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value })
   }
+  const clearFields = () => {
+    setNewUser({userName: "", password: ""})
+  }
 
   const checkInput = (() => {
-    let isDisabled = document.getElementById("password") && document.getElementById("userName")
-    ? !(
-        document.getElementById("password").checkValidity() &&
-        document.getElementById("userName").checkValidity() 
-      )
-      : true
-   
-    return isDisabled
+    if (document.getElementById("passwordu")) console.log("bbbbbbbeeeeeeeeeeee "+(document.getElementById("passwordu").checkValidity() ))
+    if (settings) {
+      let isDisabled = document.getElementById("password") && document.getElementById("userName")
+        ? !(
+          document.getElementById("password").checkValidity() &&
+          document.getElementById("userName").checkValidity()
+        )
+        : true
+      if (document.getElementById("password")) console.log("document.getElementById().checkValidity()" + document.getElementById("password").checkValidity())
+      return isDisabled
+    }
+    else return document.getElementById("passwordu") ? !(document.getElementById("password").checkValidity() ): true
   })
 
   const check_disable = (() =>{
-    let input = checkInput()
-    console.log("checkInput= " + input)
     let listIn = !!list.find(person => person.userName === newUser.userName)
     console.log("list= " + listIn)
     let admin = newUser.userName === "admin"
     console.log("admin= " + admin)
     console.log("settings= " + settings)
     if (!settings) listIn = false
-    console.log((input||admin||listIn))
-    if (input||admin||listIn)
+    
+    let input = checkInput()
+    console.log("checkInput= " + input)
+    console.log("result = = = "+(input||admin||listIn))
+    if (input || admin || listIn)
      return true;
     else
       return false;
@@ -57,7 +66,7 @@ export const UserListPage = (props) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value })
     console.log(event.target.name)
     console.log(newUser)
-    check_disable()
+    //check_disable()
   }
   // function checkUser(){
   //   // есть в списке или админ
@@ -91,6 +100,7 @@ export const UserListPage = (props) => {
       console.log(data)
       document.getElementById("createModal").style.display = "none"
       getAll()
+      clearFields()
     })
     
   }
@@ -101,6 +111,7 @@ export const UserListPage = (props) => {
       console.log(data)
       document.getElementById("updateModal").style.display = "none"
       getAll()
+      clearFields()
     })
   }
 
@@ -164,12 +175,16 @@ export const UserListPage = (props) => {
         document.getElementById("errorPasswordu").style.display = "block";
       else
         document.getElementById("errorPasswordu").style.display = "none";
-     }
+      }
+      if (!check_disable()) {
+        console.log("saveButton() = ")
+        setDis(false)
+      }else setDis(true)
     }
     
     // console.log("checkInput() = "+checkInput())
     // console.log(("list.find() = "+!!list.find(person=>person.userName===newUser.userName)))
-    console.log((!!list.find(person => person.userName === newUser.userName) || (newUser.userName === "admin"))  && checkInput())
+   // console.log((!!list.find(person => person.userName === newUser.userName) || (newUser.userName === "admin"))  && checkInput())
   }, [newUser])
 
   // let checkPassword = (() => {
@@ -322,7 +337,7 @@ export const UserListPage = (props) => {
                 type="submit"
                 className="addButton"
                 value="Создать"
-                disabled={check_disable()}
+                disabled={dis}
                 onClick={() => {
                   create(newUser)
                 }}
@@ -371,9 +386,10 @@ export const UserListPage = (props) => {
               </div>
               <input
                 type="submit"
+                id="saveButton"
                 className="addButton"
                 value="Сохранить"
-                disabled={check_disable()}
+                disabled={dis}
                 onClick={() => { update(newUser) }}
               ></input>
             </div>

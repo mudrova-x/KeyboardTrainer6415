@@ -2,14 +2,17 @@
 export const firstZone = [ " ","а","п","м","и","к","е","о","р","т","ь","н","г","5","6","7","8"]
 export const secondZone = ["в", "с", "у", "л", "б", "ш", "9", "4"]
 export const thirdZone = ["ы", "ч", "ц", "д", "ю", "щ", "0", "3"]
-export const fourthZone = ["ж", "э", "з", "х", "ъ", ".", "-", "+","1","2", "\\"]
+export const fourthZone = ["ж", "э", "з", "х", "ъ", ".", "-", "+","1","2", "\\", "ф", "я", "й", "ё"]
+
+// regex zone
+// 1 - [ апмикеортьнг5678]
 
 export function GetZone(level) {
   console.log("level = " + level)
   console.log("level = "+ typeof level)
   let validSymbols = []
 
-  switch (level) {
+  switch (level.toString()) {
     // объеденить массивы
     case "1": {
       console.log("fffffff = "+ typeof level)
@@ -42,6 +45,7 @@ export function GetZone(level) {
 
 export function CheckZone(holeText, level) {
   console.log(holeText, level)
+  if (level==="0") return -1
   let validSymbols = GetZone(level.toString())
   let res = 0
   console.log(validSymbols)
