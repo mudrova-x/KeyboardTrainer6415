@@ -10,6 +10,15 @@ class StatisticsController {
 
       return res.json(statistic)
    }
+
+   async getStatisticsByExerciseId(req, res) {
+      const { exerciseId } = req.params
+      console.log(exerciseId)
+
+      const statistic = await Statistics.findAll({ where: {exerciseId}})
+
+      return res.json(statistic)
+   }
    
 }
 

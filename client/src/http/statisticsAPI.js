@@ -13,3 +13,9 @@ export const getStatisticsByUserIdCarton = async (userId) => {
    console.log(data)
    return data
 }
+
+export const getStatisticsByExerciseId = async (exerciseId) => {
+   const data = await requestCreator('/api/statistics/getStatisticsByExerciseId/'+exerciseId)
+   console.log(data)
+   return data;
+}

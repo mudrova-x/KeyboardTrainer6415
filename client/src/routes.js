@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { TaskListPage } from "./pages/Admin/TaskListPage"
 import { UserListPage } from "./pages/Admin/UserListPage"
 import { StatisticAllUsers } from "./pages/Admin/StatisticAllUsers";
+import { StatisticExercise} from "./pages/Admin/StatisticExercise";
 
 import { MainPage } from "./pages/MainPage"
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
@@ -50,6 +51,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
     return (
     <Routes>
     <Route path="/statisticallusers" exact element={<StatisticAllUsers />} />
+    <Route path="/statisticexercise" exact element={<StatisticExercise />} />
     <Route path="/tasklist" exact element={<TaskListPage />} />
     <Route path="/userlist" exact element={<UserListPage />} />
     <Route path="/" exact element={<MainPage />} />

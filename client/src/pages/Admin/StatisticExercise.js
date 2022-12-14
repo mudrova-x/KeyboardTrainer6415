@@ -5,47 +5,39 @@ import Arrow from "../../icons/arrow.png"
 import { BarChart } from "../../components/BarChart"
 import { MenuItem} from "../../components/MenuItem"
 import { getAllUsers } from "../../http/userAPI"
-import { getStatisticsByUserId, getStatisticsByUserIdCarton } from "../../http/statisticsAPI"
+import { getAllExercises } from "../../http/exerciseAPI"
+import { getStatisticsByExerciseId, getStatisticsByUserId, getStatisticsByUserIdCarton } from "../../http/statisticsAPI"
 
 import data from "../../mock-data.json" // Мокнутые данные для теста. Не забудь удалить. Я сказал НЕЗАБУДЬ!!!
-import { getAllExercises } from "../../http/exerciseAPI"
 
-export const userList = ["loading..."]
+
+export const exercisesList = ["loading..."]
 
 export const dataTemplate = []
 
 
 
-export const StatisticAllUsers = () => {
+export const StatisticExercise = () => {
+
+   const [list, setList] = useState([{id: 1, name:"loading..."}])
+   const [currentExercise, setCurrent] = useState({id: 1, name:"loading..."})
    const [statistics, setStatistics] = useState(dataTemplate);
 
-
-   const [users, setUsers] = useState(userList)
-   const [currentUser, setCurrentUser] = useState("Choose user")
-   const [currentId, setId] = useState(1)
-
-   const [list, setList] = useState([{id: 1, userName:"loading..."}])
    
-
    const getAll = async () => {
-      let usersMass = []
-      let usersArr = []
+      let exerciseArr = []
       console.log("getAll")
-      getAllUsers().then(data => {
+      getAllExercises().then(data => {
          for (var e in data) {
-          if(data[e].login!=="admin")
-            usersArr.push(data[e].login)
-         usersMass.push({
-            id: data[e].id,
-            userName: data[e].login
-         })
+            exerciseArr.push({
+               id: data[e].levelId,
+               name: data[e].name
+            })
         }
         console.log("DEBUG LIST")
-        console.log(usersMass)
-        setList(usersMass)
-        setUsers(usersArr)
-        setCurrentUser(usersArr[0])
-        formStat()
+        console.log(exerciseArr);
+        setList(exerciseArr)
+        setCurrent(exerciseArr[0])
       })
     }
 
@@ -53,57 +45,60 @@ export const StatisticAllUsers = () => {
       let func = async () => { await getAll() }
       func() 
       //setTestName(users[0])
-    }, [setUsers])
+    }, [setList])
 
 
-
-   
-   console.log("Stats")
-   console.log(statistics)
-
-    function getUserIdByName(user) {
-      //console.log("getUserIdByName")
-      //console.log(list)
-      list.map((elem) => {
-         console.log(elem.userName)
-         if(elem.userName === user) {
-            //console.log("SAME")
-            setId(elem.id)
-            //console.log("Current id: " + currentId)
-         }
-      })
-    }
-
-   function handleClick(userName) {
-      console.log(userName)
-      setCurrentUser(userName)
-      getUserIdByName(userName)
-      formStat()
+   function handleClick(name) {
+      console.log(name)
+      let newName = list.find(obj => obj.name === name)
+      console.log("newName: " + newName);
+      setCurrent(newName)
    }
 
    async function formStat() {
       let statsArr = []
-      let stats = await getStatisticsByUserId(currentId)
-      let exercises = await getAllExercises()
+      let stats = await getStatisticsByExerciseId(currentExercise.id)
+      let users = await getAllUsers()
+      let filteredUsers = users.filter((item) => item.login !== "admin")
 
-      console.log("Form stat")
-      console.log(stats)
-      console.log(exercises)
+      console.log("STATS GO HERE!!!!");
+      console.log(stats);
+      console.log(filteredUsers);
 
-      stats.map((stat) => {
-         let exercise = exercises.find(obj => obj.id === stat.exerciseId)
+      filteredUsers.map((user) => {
+         let stat = stats.find(obj => (obj.userId === user.id) && (obj.exerciseId === currentExercise.id))
          statsArr.push({
+            login: user.login,
+            time: stat.time,
             errors: stat.errors,
-            typeSpeed: stat.speed.toFixed(2),
-            date: stat.date,
-            exerciseId: stat.exerciseId,
-            exName: exercise.name,
-            level: exercise.level_num,
-            charCount: exercise.text.length
+            typeSpeed: stat.speed,
+            status: stat.success,
+            date: stat.date
          })
       })
-      console.log(statsArr)
+      /*
+      stats.map((stat) => {
+         let user = filteredUsers.find(obj => obj.id === stat.userId)
+         console.log(user);
+         statsArr.push({
+            login: user.login,
+            time: stat.time,
+            errors: stat.errors,
+            typeSpeed: stat.speed,
+            status: stat.success,
+            date: stat.date
+         })
+      })*/
+
       setStatistics(statsArr)
+      console.log(statsArr);
+   }
+
+   function statusString(status){
+      if(status)
+         return "Пройдено"
+      else
+         return "Не пройдено"
    }
 
    async function debugClick() {
@@ -116,7 +111,7 @@ export const StatisticAllUsers = () => {
       <div className="admin-page-statistics">
          <div className="nav-panel">
             <div className="user-chooser"> 
-               <p>{currentUser}</p>
+               <p>{currentExercise.name}</p>
                <button>
                   <img
                      src={Arrow}
@@ -137,28 +132,28 @@ export const StatisticAllUsers = () => {
          </div>
          <div className="statistics-container">
             <div className="statistics-chart-container">
-               <BarChart stats={statistics}/>
+               {/*<BarChart />*/}
             </div>
             <div className="statistics-table-container">
                <table>
                   <thead>
                      <tr>
-                        <th>Название упражнения</th>
-                        <th>Номер уровня сложности</th>
-                        <th>Количество символов</th>
+                        <th>Логин</th>
+                        <th>Время выполнения</th>
                         <th>Количество ошибок %</th>
                         <th>Средняя скорость набора</th>
+                        <th>Статус</th>
                         <th>Дата</th>
                      </tr>
                   </thead>
                   <tbody>
                      {statistics.map((stat) => 
                         <tr>
-                           <td>{stat.exName}</td>
-                           <td>{stat.level}</td>
-                           <td>{stat.charCount}</td>
+                           <td>{stat.login}</td>
+                           <td>{stat.time}</td>
                            <td>{stat.errors}</td>
                            <td>{stat.typeSpeed}</td>
+                           <td>{statusString(stat.status)}</td>
                            <td>{stat.date}</td>
                         </tr>
                      )}
@@ -174,8 +169,8 @@ export const StatisticAllUsers = () => {
                      /*value={oldUser.userName}*/
                      /*onChange={changeOldUserHandler}*/
                   />
-                  {users.map((userElem) => 
-                  <MenuItem name={userElem} handleClick={handleClick}/>
+                  {list.map((exerciseElem) => 
+                  <MenuItem name={exerciseElem.name} handleClick={handleClick}/>
                      )};
                </div>
             </div>
