@@ -25,7 +25,7 @@ const Header = () => {
   }
   const getName = () => {
     if (!auth.isAuthenticated) return "Профиль"
-    if (location.pathname.startsWith("/admin_panel")||location.pathname.startsWith("/")) return "Выход"
+    if (location.pathname.startsWith("/admin_panel")||location.pathname===("/")) return "Выход"
     return "Профиль"
   }
   const reNavidate = () => {
