@@ -7,7 +7,7 @@ import { StatisticAllUsers } from "./pages/Admin/StatisticAllUsers";
 import { MainPage } from "./pages/MainPage"
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
 //  Route.Redirect - старая технология
-
+/*
 export const useRoutes = (isAuthenticated, accountType) => {
     
     console.log("accountType", accountType)
@@ -18,7 +18,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
                 return (
                 ///администратор
                 <Routes>
-                    {/* <Route path="/main" exact element={<MainPage />} /> */}
+                    {/ <Route path="/main" exact element={<MainPage />} /> /}
                     <Route path="/tasklist" exact element={<TaskListPage />} />
                     <Route path="/userlist" exact element={<UserListPage />} />
                     <Route path="/statisticallusers" exact element={<StatisticAllUsers />} />
@@ -44,4 +44,16 @@ export const useRoutes = (isAuthenticated, accountType) => {
             <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
     );
-};
+};*/
+
+export const useRoutes = (isAuthenticated, accountType) => {
+    return (
+    <Routes>
+    <Route path="/statisticallusers" exact element={<StatisticAllUsers />} />
+    <Route path="/tasklist" exact element={<TaskListPage />} />
+    <Route path="/userlist" exact element={<UserListPage />} />
+    <Route path="/" exact element={<MainPage />} />
+    <Route path="*" element={<Navigate replace to="/" />} />
+    </Routes>
+    );
+    };

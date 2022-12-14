@@ -46,5 +46,53 @@
       "errors" : 14,
       "typeSpeed" : 30,
       "date" : "22.12.12022"
+   },
+   {
+      "exName" : "Exercise 1",
+      "level" : 1,
+      "charCount" : 100,
+      "errors" : 8,
+      "typeSpeed" : 10,
+      "date" : "11.12.12022"
+   },
+   {
+      "exName" : "Exercise 2",
+      "level" : 1,
+      "charCount" : 150,
+      "errors" : 4,
+      "typeSpeed" : 11,
+      "date" : "12.12.12022"
+   },
+   {
+      "exName" : "Exercise 3",
+      "level" : 2,
+      "charCount" : 200,
+      "errors" : 13,
+      "typeSpeed" : 14,
+      "date" : "09.12.12022"
+   },
+   {
+      "exName" : "Exercise 4",
+      "level" : 3,
+      "charCount" : 350,
+      "errors" : 12,
+      "typeSpeed" : 20,
+      "date" : "14.12.12022"
+   },
+   {
+      "exName" : "Exercise 5",
+      "level" : 4,
+      "charCount" : 520,
+      "errors" : 18,
+      "typeSpeed" : 40,
+      "date" : "21.12.12022"
+   },
+   {
+      "exName" : "Exercise 6",
+      "level" : 4,
+      "charCount" : 640,
+      "errors" : 14,
+      "typeSpeed" : 30,
+      "date" : "22.12.12022"
    }
 ]

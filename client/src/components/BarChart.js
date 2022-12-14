@@ -24,37 +24,36 @@ export const options = {
    responsive: true,
    plugins: {
      legend: {
-       position: 'top',
+       display: false,
      },
      title: {
        display: true,
-       text: 'Chart.js Bar Chart',
+       text: 'Количество ошибок %',
      },
-   },
+   }
  };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['Exercise 1', 'Exercise 2', 'Exercise 3', 'Exercise 4', 'Exercise 5', 'Exercise 6', 'Exercise 7'];
 
 export const data = {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
       data: [1, 2, 3, 4, 5, 6, 7],//labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [11, 12, 13, 14, 15, 16, 17],//labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
+      backgroundColor: 'rgb(0, 0, 0)',
+    }
   ],
 };
 
+const formData = () => {
+  console.log('data form!')
+}
+
 
 export const BarChart = () => {
-   return (
-      <div>Bar chart here!
+  formData();
+  return (
+      <div>
          <Bar options={options} data={data} />;
       </div>
    )

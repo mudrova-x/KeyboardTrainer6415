@@ -7,6 +7,9 @@ const app = express()
 
 const router = require('./routes/index')
 
+const cors = require('cors')
+app.use(cors());
+
 // app.use(express.json())
 app.use(express.json(
    // { extended: true }
