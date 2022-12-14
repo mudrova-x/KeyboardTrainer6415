@@ -258,8 +258,11 @@ export const UserListPage = (props) => {
         <button
           id="add-task"
           onClick={() => {
-            (document.getElementById("createModal").style.display = "block")
-            setSettings(true)
+            if (list.length !== 100) {
+              (document.getElementById("createModal").style.display = "block")
+              setSettings(true)
+            }
+            //else alert("Максимальное число пользователей");
           }}
         >
           <img
