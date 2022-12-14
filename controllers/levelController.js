@@ -1,5 +1,6 @@
 const { Level } = require('../models/models')
-
+const { Exercise } = require('../models/models')
+const {json} = require("express");
 class LevelController {
 
     async zones(req, res) {
@@ -18,6 +19,23 @@ class LevelController {
         const {level_num} = req.params
         console.log(req.params)
         console.log("Запрос пошел нужный")
+        const level = await Level.findOne({
+            where:
+                {number:level_num}
+
+        });
+        console.log("Прошел")
+        return res.json(level)
+    }
+    async exploreVIKA(req, res) {
+        const {id} = req.params
+        console.log(req.params)
+        console.log("Запрос Вики нужный")
+        const exercise = await Exercise.findOne({where: {id}})
+        //const exercise2 =json(exercise)
+        //console.log(exercise)
+        let level_num = exercise.level_num
+
         const level = await Level.findOne({
             where:
                 {number:level_num}

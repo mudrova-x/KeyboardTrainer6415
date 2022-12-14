@@ -18,6 +18,7 @@ function App() {
     //console.log(useAuth())
     const isAuthenticated = !!token
     const routes = useRoutes(isAuthenticated, accountType)
+    const [isLoading, setLoading] = useState(true);
 
     if (!ready) {
         return <Loader/>

@@ -39,11 +39,13 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\WS\\WebStorm 2021.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Сoursework\KeyboardTrainer6415\client\src\sound" />
       <recent name="D:\Сoursework\KeyboardTrainer6415\client\src\styles\client" />
     </key>
   </component>
@@ -64,10 +66,23 @@
       <workItem from="1670825716581" duration="38583000" />
       <workItem from="1670887240214" duration="508000" />
       <workItem from="1670889625513" duration="1153000" />
+      <workItem from="1670927086315" duration="40254000" />
+      <workItem from="1671012671816" duration="9850000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

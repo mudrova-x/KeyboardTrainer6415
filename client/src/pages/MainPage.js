@@ -7,6 +7,7 @@ import React, {
 import {useHttp} from "../hooks/http.hook"
 import {AuthContext} from "../context/auth.context";
 import { getExerciseByLevel, fetchDescriptionLevel, logiunser, test} from "../http/mainAPI";
+import {useNavigate} from "react-router-dom";
 
 export const MainPage = (props) => {
 
@@ -16,7 +17,7 @@ export const MainPage = (props) => {
         userName: "",
         password: "",
     })
-    const [exercises, setExercises] = useState([{level_num:1, name: "default", time:0}])
+    const [exercises, setExercises] = useState([{ id:0, level_num:1, name: "default", time:0}])
     const [level, setLevel] = useState({max_errors: 0,max_length: 0,max_time: 0,min_length: 0,number: 0, zones:0})
 
     const changeNewUserHandler = (event) => {
@@ -80,8 +81,9 @@ export const MainPage = (props) => {
                 })
             }
             ).then(getExerciseByLevel(level).then(data => {
-               // console.log(data.rows)
+               //console.log(data.rows)
                setExercises(data.rows)
+                //console.log("exercises.id= " ,exercises.id)
                 //console.log(exercises)
                 
             }
@@ -112,20 +114,22 @@ export const MainPage = (props) => {
                 ))
         
     }, [])
-    
-   
 
+
+    let nav = useNavigate()
     const ExRow = (props) => {
         const {ex
     } = props
         const {
-            name,
+            id
+            ,name,
             text
         } = ex
 
         //console.log(props)
        // console.log(level)
         return (
+            <div onClick={auth.isAuthenticated ? () => {nav('/training/' + id)} : () => {alert("Для прохождения теста войдите в аккаунт")}} style={{cursor: "pointer"}}>
             <div className="container-number-test" key={Math.random() * (100000 - 1) + 1}>
             <div className="test-name">{name}</div>
 
@@ -139,6 +143,7 @@ export const MainPage = (props) => {
             </div>
 
         </div>
+            </div>
         )
     }
     

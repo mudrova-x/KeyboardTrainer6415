@@ -30,7 +30,7 @@ export const useRoutes = (isAuthenticated, accountType) => {
                 <Routes>
                    
                     <Route path="/" exact element={<MainPage />} />
-                    <Route path="/training" exact element={<Training />} />
+                    <Route path="/training/:id" exact element={<Training />} />
                     <Route path="*" element={<Navigate replace to="/" />} />
                 </Routes>
             )

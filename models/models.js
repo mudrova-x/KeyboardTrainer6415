@@ -33,8 +33,11 @@ const Level = sequelize.define('level', {
     max_length: { type: DataTypes.INTEGER, allowNull: false }
 })
 
-User.belongsToMany(Exercise, { through: Statistics })
-Exercise.belongsToMany(User, {through: Statistics})
+
+User.hasMany(Statistics)
+Statistics.belongsTo(User)
+Exercise.hasMany(Statistics)
+Statistics.belongsTo(Exercise)
 
 Level.hasMany(Exercise, { onDelete: "cascade" })
 

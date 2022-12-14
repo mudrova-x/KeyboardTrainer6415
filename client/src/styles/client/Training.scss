@@ -205,7 +205,10 @@
     color: #fae803;
     border-color: #fae803;
   }
-
+  .Color-falseColor{
+    color: darkred;
+    border-color: darkred;
+  }
 
   .Border-button {
     width: 4.7vw;
@@ -361,4 +364,60 @@
 
   }
 }
+}
+
+.Container-Audio{
+  z-index: 3;
+  position: absolute;
+  width: 34vw;
+  height: 44.3vh;
+  border: solid 4px black;
+  background-color: white;
+  bottom: 10.6vh;
+  right: 14vw;
+
+
+
+  .Container-Audio-text-Effect{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.2vw;
+    margin-top: 6%;
+    margin-left: 8%;
+
+  }
+
+  .Container-Audio-line{
+    display: inline-flex;
+    margin-left: 8%;
+
+    .Audio-Effect-true{
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 1.5vw;
+      line-height: 49px;
+
+    }
+
+    .Audio-Effect-trait{
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 1.5vw;
+      line-height: 49px;
+
+    }
+
+    .Audio-Effect-false{
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 1.5vw;
+      line-height: 49px;
+      color: #838383;
+
+    }
+  }
 }
