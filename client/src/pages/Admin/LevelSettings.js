@@ -22,14 +22,15 @@ export const LevelSettings = () => {
         errors: data.errors,
         zones: data.zones
       })
-      //console.log(data)
+      console.log(data)
       callback(num)
       console.log(setting)
     })
   }
 
   useEffect(() => {
-    let func = async () => { await changeLevelHandler(1) }
+   // let func = async () => { await changeLevelHandler(1) }
+    let func = async () => { await changeLevelHandler(level.number??1) }
     func() 
   }, [])
   
@@ -41,6 +42,7 @@ export const LevelSettings = () => {
     {
       console.log(data)
       setLevel(level.number)
+      changeLevelHandler(level.number)
     }
     )
   })
@@ -133,9 +135,11 @@ export const LevelSettings = () => {
    // console.log(setting)
    // console.log(checkFields())
   }
-  const changeLevelHandler = async (num) => {
-    await getLevelInfo(num,
-   (num) => {resetStyle()
+  const changeLevelHandler = async (n) => {
+    await getLevelInfo(n,
+      (num) => {
+        resetStyle()
+        console.log("num="+num)
     let name
     switch (num) {
       case (1): {

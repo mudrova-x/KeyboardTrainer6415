@@ -435,7 +435,7 @@ export const Training = (props) => {
                     <></>
                     :
                     <div>
-                        <div className="First-layer" style={{margin:"2vh 0vh 0vh 10vw"}}>
+                        <div className="First-layer" style={{margin:"5vh 0vh 0vh 10vw"}}>
                             {first.map(first => <Letter key={first.letter} obj={first}/>)}
                             <div className="Back-button">
                                 <div className="Back">BACK</div>
