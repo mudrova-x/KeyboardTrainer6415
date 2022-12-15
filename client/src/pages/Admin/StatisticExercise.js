@@ -24,6 +24,14 @@ export const StatisticExercise = () => {
    const [list, setList] = useState([{id: 1, name:"loading..."}])
    const [currentExercise, setCurrent] = useState({id: 1, name:"loading..."})
    const [statistics, setStatistics] = useState(dataTemplate);
+
+   const [searchExercise, setSearchExercise] = useState({name: ""})
+
+   const changeSearchExerciseHandler = (event) => {
+      console.log("exerciseName = " + searchExercise.name)
+      setSearchExercise({ ...searchExercise, [event.target.name]: event.target.value })
+    }
+
    const history = useNavigate();
    
    const getAll = async () => {
@@ -173,12 +181,20 @@ export const StatisticExercise = () => {
                      placeholder="Пользователь.."
                      type="text"
                      name="userName"
-                     /*value={oldUser.userName}*/
-                     /*onChange={changeOldUserHandler}*/
+                     value={searchExercise.name}
+                     onChange={changeSearchExerciseHandler}
                   />
                   {list.map((exerciseElem) => 
                   <MenuItem name={exerciseElem.name} handleClick={handleClick}/>
-                     )};
+                     )}
+                  {/*searchExercise.name === ""
+                     ? list.map((elem) => (
+                        <MenuItem name={elem} handleClick={handleClick} />
+                     ))
+                     : list.filter((elem) => elem.name.includes(searchExercise.name)).map((elem) => (
+                        <MenuItem name={elem} handleClick={handleClick} />
+                     ))
+                     */}
                </div>
             </div>
          </div>

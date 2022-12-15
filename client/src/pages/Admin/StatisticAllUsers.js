@@ -26,6 +26,13 @@ export const StatisticAllUsers = () => {
    const [currentId, setId] = useState(1)
 
    const [list, setList] = useState([{id: 1, userName:"loading..."}])
+
+   const [searchUser, setSearchUser] = useState({userName: ""})
+
+   const changeSearchUserHandler = (event) => {
+      console.log("userName = " + searchUser.userName)
+      setSearchUser({ ...searchUser, [event.target.name]: event.target.value })
+    }
    
    const history = useNavigate();
 
@@ -174,12 +181,33 @@ export const StatisticAllUsers = () => {
                      placeholder="Пользователь.."
                      type="text"
                      name="userName"
-                     /*value={oldUser.userName}*/
-                     /*onChange={changeOldUserHandler}*/
+                     value={searchUser.userName}
+                     onChange={changeSearchUserHandler}
                   />
-                  {users.map((userElem) => 
+                  {/*users.map((userElem) => 
                   <MenuItem name={userElem} handleClick={handleClick}/>
-                     )};
+                     )*/}
+
+                  {searchUser.userName === ""
+                     ? users.map((userElem) => (
+                        <MenuItem name={userElem} handleClick={handleClick}/>
+                     ))
+                     : users.filter((item) => item.includes(searchUser.userName)).map((userElem) => (
+                        <MenuItem name={userElem} handleClick={handleClick}/>
+                     ))
+                     }
+
+                  {/*searchUser.userName === ""
+                     ? users.map((el) => (
+                        <MenuItem name={el} handleClick={handleClick} key={Math.random() * (100000 - 1) + 1} />
+                     ))
+                     : users.map((el) =>
+                        el.userName.includes(searchUser.userName) ? (
+                           <MenuItem name={el} handleClick={handleClick} key={Math.random() * (100000 - 1) + 1} />
+                        ) : (
+                           <></>
+                        )
+                        )*/}
                </div>
             </div>
          </div>
