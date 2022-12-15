@@ -178,10 +178,10 @@ export const TaskListPage = (props) => {
 
   const checkCount = (l) => {
     console.log("l = " + l)
-    console.log(typeof l)
-    console.log(levelCount)
+    //console.log(typeof l)
+    //console.log(levelCount)
     let num
-  switch (l) {
+  switch (l.toString()) {
     case ("1"): {
       console.log("case (1)")
       num = levelCount.first

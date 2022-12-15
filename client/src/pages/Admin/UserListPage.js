@@ -10,7 +10,6 @@ export const UserListPage = (props) => {
  // const { request } = useHttp()
   const [list, setList] = useState([{ userName: "loading" }])
   const [dis, setDis] = useState(true)
-  const [max, setMax] = useState(0)
   const [settings, setSettings] = useState(true)
   const [oldUser, setOldUser] = useState({
     userName: "",
@@ -88,7 +87,6 @@ export const UserListPage = (props) => {
       }
       //console.log(usersMass)
       setList(usersMass)
-      setMax(list.length)
       //console.log(list)
     })
   }
@@ -127,6 +125,14 @@ export const UserListPage = (props) => {
     func() 
   }, [setList])
   
+  const openWindow=()=>{
+    console.log(list.length)
+    if (list.length <10) {
+      (document.getElementById("createModal").style.display = "block")
+      setSettings(true)
+    }
+    else alert("Максимальное число пользователей");
+  }
  
   let distance = {
     height:
@@ -185,7 +191,7 @@ export const UserListPage = (props) => {
     // console.log("checkInput() = "+checkInput())
     // console.log(("list.find() = "+!!list.find(person=>person.userName===newUser.userName)))
    // console.log((!!list.find(person => person.userName === newUser.userName) || (newUser.userName === "admin"))  && checkInput())
-  }, [newUser])
+  }, [newUser, settings])
 
   // let checkPassword = (() => {
   //   // let password = document.getElementById("passwordu")
@@ -248,7 +254,7 @@ export const UserListPage = (props) => {
         </div>
         <div className="users ">
           <input
-            autocomplete="off"
+            autoComplete="off"
             placeholder="Пользователь.."
             type="text"
             name="userName"
@@ -258,13 +264,15 @@ export const UserListPage = (props) => {
         </div>
         <button
           id="add-task"
-          onClick={() => {
-            if (max !== 10) {
-              (document.getElementById("createModal").style.display = "block")
-              setSettings(true)
-            }
-            else alert("Максимальное число пользователей");
-          }}
+          onClick={() => openWindow()
+          //   {
+          //   if (max !== 10) {
+          //     (document.getElementById("createModal").style.display = "block")
+          //     setSettings(true)
+          //   }
+          //   else alert("Максимальное число пользователей");
+          // }
+        }
         >
           <img
             id="add-task-img"
@@ -303,7 +311,7 @@ export const UserListPage = (props) => {
           <div className="window-user">
             <div className="fields-user" id="window">
               <input
-                autocomplete="off"
+                autoComplete="off"
                 className="input-user"
                 placeholder="Логин"
                 type="text"
@@ -315,7 +323,7 @@ export const UserListPage = (props) => {
                 pattern="^.{4,16}$"
               />
               <input
-                autocomplete="off"
+                autoComplete="off"
                 className="input-user"
                 placeholder="Пароль"
                 type="text"
@@ -365,7 +373,7 @@ export const UserListPage = (props) => {
           <div className="window-user">
             <div className="fields-user" id="windowu">
               <input
-                autocomplete="off"
+                autoComplete="off"
                 className="input-user"
                 placeholder="Логин"
                 type="text"
@@ -376,7 +384,7 @@ export const UserListPage = (props) => {
                 readOnly
               />
               <input
-                autocomplete="off"
+                autoComplete="off"
                 className="input-user"
                 placeholder="Пароль"
                 type="text"
