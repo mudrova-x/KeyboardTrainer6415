@@ -154,8 +154,22 @@ class UserController {
       },
     })
     return res.json(user)
+
+
   }
-  async postStatistic(req,res,next){
+
+  async exploreVIKA(req, res) {
+    const id = req.params.id;
+    const user = await User.findOne({
+      where: {
+        id: id,
+      },
+    })
+    console.log(user)
+    return res.json(user)
+  }
+
+    async postStatistic(req,res,next){
     try{
 
         let{time,date,errors,speed,success,userId, exerciseId} = req.body;

@@ -31,6 +31,7 @@ export const Training = (props) => {
     } = useStopwatch({autoStart: false})
 
 
+
     let nav = useNavigate()
     const startTime = Date.now();
     const {id} = useParams()
@@ -45,6 +46,7 @@ export const Training = (props) => {
     const [endFail, setEndFail] = useState(false)
     const [hide, setHide] = useState(false)
     const [hideAudio, setHideAudio] = useState(false)
+    const timeRef = useRef(0)
 
     const first = [{letter: "Ё", color: 4},
         {letter: "1", color: 4},
@@ -118,6 +120,7 @@ export const Training = (props) => {
     const trueFalseEffectRef = useRef(false)
     const trueFalseEffectMusic = useRef(false)
     const trueFalseEffectComps = useRef(true)
+    const [timeForCheck, setTimeForCheck] = useState(0)
 
 
     useEffect(() => {
@@ -132,7 +135,6 @@ export const Training = (props) => {
         fetchOneExercise(id).then(data => {
 
             setTimeout(() => {
-
 
                 console.log(data)
                 if (data) {
@@ -203,6 +205,7 @@ export const Training = (props) => {
 
 
 
+
     const detectKeyDown = useCallback((e) => {
         console.log("Нажата клавиша")
 
@@ -211,8 +214,8 @@ export const Training = (props) => {
         }
 
         if (e.key === nowst[curr.current]) {
+
             setSpaceNow(0)
-            //console.log(checkMis)
             curr.current = curr.current + 1
             let now = curr.current
             let st1 = nowst.slice(0, now)
@@ -432,7 +435,7 @@ export const Training = (props) => {
                     <></>
                     :
                     <div>
-                        <div className="First-layer">
+                        <div className="First-layer" style={{margin:"2vh 0vh 0vh 10vw"}}>
                             {first.map(first => <Letter key={first.letter} obj={first}/>)}
                             <div className="Back-button">
                                 <div className="Back">BACK</div>
