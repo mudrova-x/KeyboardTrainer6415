@@ -110,7 +110,7 @@ export const MainPage = (props) => {
                         max_errors: data.max_errors,
                         max_length: data.max_length,
                         max_time: data.max_time,
-                        min_length: data.max_time,
+                        min_length: data.min_length,
                         number: data.number,
                         zones:data.zones
                     })
@@ -243,7 +243,7 @@ export const MainPage = (props) => {
                     <div className="text-description-of-difficulty-levels underline">Максимальное время нажатия в секундах: {levelMy.max_time}</div>
                     <div className="text-description-of-difficulty-levels underline">Максимальное количество зон для тренировки: {levelMy.zones}</div>
                     <div className="text-description-of-difficulty-levels underline">Максимальное количество символов:{levelMy.max_length}</div>
-
+                    <div className="text-description-of-difficulty-levels underline">Минимальное количество символов:{levelMy.min_length}</div>
                 </div>
 
             </div>
