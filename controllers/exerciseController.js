@@ -186,6 +186,7 @@ console.log(first)
     // return res.json(exercise);
 }
 
+
 }
 
 module.exports = new ExerciseController() // возвращаем объект класса, через который будем обращаться к функциям (выше)

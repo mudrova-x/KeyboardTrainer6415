@@ -2,6 +2,10 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { TaskListPage } from "./pages/Admin/TaskListPage"
 import { UserListPage } from "./pages/Admin/UserListPage"
+import { StatisticAllUsers } from "./pages/Admin/StatisticAllUsers";
+import { StatisticExercise} from "./pages/Admin/StatisticExercise";
+import { StatisticAllUsersMean } from "./pages/Admin/StatisticsAllUsersMean";
+import { StatisticAllExercisesMean} from "./pages/Admin/StatisticAllExercisesMean"
 import { MainPage } from "./pages/MainPage"
 import { AdminPage } from "./pages/Admin/AdminPage";
 import { StatisticMenu } from "./pages/Admin/StatisticMenu"
@@ -24,6 +28,11 @@ export const useRoutes = (isAuthenticated, accountType) => {
                         <Route path="/tasklist" exact element={<TaskListPage />} />
                         <Route path="/userlist" exact element={<UserListPage />} />
                         <Route path="/settings" exact element={<LevelSettings />} />
+                        <Route path="/statisticmenu" exact element={<StatisticMenu />} />
+                        <Route path="/statisticallusers" exact element={<StatisticAllUsers />} />
+                        <Route path="/statisticexercise" exact element={<StatisticExercise />} />
+                        <Route path="/statisticallusersmean" exact element={<StatisticAllUsersMean />} />
+                        <Route path="/statisticallexercisesmean" exact element={<StatisticAllExercisesMean />} />
                     <Route path="*" element={<Navigate replace to="/admin_panel/" />} />
                 </Routes>
             )

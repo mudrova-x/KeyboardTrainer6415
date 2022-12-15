@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import "../../styles/Admin/AdminPage.scss"
 import { useNavigate } from "react-router-dom"
 
