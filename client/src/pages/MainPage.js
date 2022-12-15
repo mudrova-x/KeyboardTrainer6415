@@ -18,7 +18,8 @@ export const MainPage = (props) => {
         password: "",
     })
     const [exercises, setExercises] = useState([{ id:0, level_num:1, name: "default", time:0}])
-    const [level, setLevel] = useState({max_errors: 0,max_length: 0,max_time: 0,min_length: 0,number: 0, zones:0})
+    const [levelMy, setLevelMy] = useState({max_errors: 0,max_length: 0,max_time: 0,min_length: 0,number: 0, zones:0})
+    const [textLevel, setTextLevel] = useState("Первый уровень сложности")
 
     const changeNewUserHandler = (event) => {
         setNewUser({ ...newUser, [event.target.name]: event.target.value })
@@ -71,7 +72,7 @@ export const MainPage = (props) => {
             //setExerlevel.setLevel(data)
         {
                 //console.log(data)
-                if(data)setLevel({
+                if(data)setLevelMy({
                     max_errors: data.max_errors,
                     max_length: data.max_length,
                     max_time: data.max_time,
@@ -79,7 +80,15 @@ export const MainPage = (props) => {
                     number: data.number ,
                     zones:data.zones
                 })
+
+            switch (data.number){
+                case 1: setTextLevel("Первый уровень сложности"); break;
+                case 2: setTextLevel("Второй уровень сложности"); break;
+                case 3: setTextLevel("Третий уровень сложности"); break;
+                case 4: setTextLevel("Четвертый уровень сложности"); break;
+
             }
+        }
             ).then(getExerciseByLevel(level).then(data => {
                //console.log(data.rows)
                setExercises(data.rows)
@@ -88,6 +97,7 @@ export const MainPage = (props) => {
                 
             }
             ))
+
    })
 
    
@@ -96,7 +106,7 @@ export const MainPage = (props) => {
                 //setExerlevel.setLevel(data)
             {
                     //console.log(data)
-                    if(data)setLevel({
+                    if(data)setLevelMy({
                         max_errors: data.max_errors,
                         max_length: data.max_length,
                         max_time: data.max_time,
@@ -134,10 +144,10 @@ export const MainPage = (props) => {
             <div className="test-name">{name}</div>
 
             <div className="text-flex-row">
-                <div className="test-zone">Зона: {level.zones}</div>
-                <div className="test-time">Время теста: {text?(level.max_time*text.length).toFixed(1):0}</div>
+                <div className="test-zone">Зона: {levelMy.zones}</div>
+                <div className="test-time">Время теста: {text?(levelMy.max_time*text.length).toFixed(1):0}</div>
                 <div>
-                    <div className="test-max-mistake">Количество допустимых ошибок: {level.max_errors}</div>
+                    <div className="test-max-mistake">Количество допустимых ошибок: {levelMy.max_errors}</div>
                     <div className="test-symbol">Количество символов: {text?text.length:0}</div>
                 </div>
             </div>
@@ -173,10 +183,10 @@ export const MainPage = (props) => {
                     <div className="difficulty-levels">
                         <div className="difficulty-levels-text">Уровень сложности:</div>
                         <div className="">
-                            <button  className="level-1" onClick={()=>getLevel(1)}>1</button>
-                            <button  className="level-2" onClick={()=>getLevel(2)}>2</button>
-                            <button  className="level-3">3</button>
-                            <button  className="level-4">4</button>
+                            <button  className="level-1" onClick={()=>getLevel(1)} style={{cursor:"pointer"}}>1</button>
+                            <button  className="level-2" onClick={()=>getLevel(2)} style={{cursor:"pointer"}}>2</button>
+                            <button  className="level-3" onClick={()=>getLevel(3)} style={{cursor:"pointer"}}>3</button>
+                            <button  className="level-4" onClick={()=>getLevel(4)} style={{cursor:"pointer"}}>4</button>
                         </div>
 
                     </div>
@@ -228,18 +238,11 @@ export const MainPage = (props) => {
                 </div>
 
                 <div className="description-of-difficulty-levels">
-                    <div className="the-name-of-the-difficulty-level">Первый уровень сложности</div>
-                    <div className="text-description-of-difficulty-levels underline">Мин. количество допустимых ошибок:
-
-                    </div>
-                    <div className="text-description-of-difficulty-levels underline">
-                    </div>
-                    <div className="text-description-of-difficulty-levels underline">Макс. время нажатия в секундах: 4
-                    </div>
-                    <div className="text-description-of-difficulty-levels underline">Макс. количество зон для
-                        тренировки: 1
-                    </div>
-                    <div className="text-description-of-difficulty-levels underline">Maкс. количество символов: 50</div>
+                    <div className="the-name-of-the-difficulty-level">{textLevel}</div>
+                    <div className="text-description-of-difficulty-levels underline">Максимальное количество допустимых ошибок:{levelMy.max_errors}</div>
+                    <div className="text-description-of-difficulty-levels underline">Максимальное время нажатия в секундах: {levelMy.max_time}</div>
+                    <div className="text-description-of-difficulty-levels underline">Максимальное количество зон для тренировки: {levelMy.zones}</div>
+                    <div className="text-description-of-difficulty-levels underline">Максимальное количество символов:{levelMy.max_length}</div>
 
                 </div>
 

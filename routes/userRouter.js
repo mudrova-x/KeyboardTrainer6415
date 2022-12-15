@@ -8,6 +8,7 @@ router.post('/update',userController.update)
 router.get('/auth', userController.checkAuth)
 router.delete('/', userController.delete)
 router.get('/explore', userController.explore)
+router.get('/exploreVIKA/:id', userController.exploreVIKA)
 router.get('/getAll', userController.getAll)
 router.post('/postStatistic', userController.postStatistic)
 

@@ -36,7 +36,7 @@ export const test = async () => {
 
 export const fetchOneExercise = async (id) => {
     const {data} = await $host.get('http://localhost:5000/api/exercise/getOneExercise/' + id);
-    console.log(data)
+    //console.log(data)
     return data
 }
 

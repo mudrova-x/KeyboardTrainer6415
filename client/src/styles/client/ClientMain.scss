@@ -221,11 +221,13 @@ $last-child-list:calc(52vh - 35px);
       width: 61vw;
       border-bottom: solid 7px black;
       border-top: solid 7px black;
+
       margin-top: -7px;
       overflow-y: auto;
 
       .container-number-test {
-        border: solid 7px black;
+        border-bottom: solid 7px black;
+        border-top: solid 7px black;
         margin-top: -7px;
         height: 20vh;
 

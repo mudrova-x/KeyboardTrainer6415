@@ -1,12 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+::-webkit-scrollbar {
+  width: 2vw;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border: solid 6px black;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(217, 217, 217, 1);
+  border: solid 6px black;
+
+}
+
 .Container-flex {
   display: inline-flex;
+  height: 10vh;
 
   .Container-name {
     border: solid 4px black;
     width: 49vw;
-    height: 10vh;
+
     display: flex;
     align-items: center;
 
@@ -38,3 +55,221 @@
   }
 
 }
+
+.Container-Gist{
+  width: 30vw;
+  height: 50vw;
+  position: absolute;
+  top:55vh;
+  left:0vw;
+}
+.Diag-num-mis{
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.9vw;
+  letter-spacing: 0.05em;
+  position: absolute;
+  top: 47vh;
+  left: 6vw;
+
+}
+.Diag-num-exerc{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  position: absolute;
+  top: 87vh;
+  left: 10vw;
+
+}
+
+.Container-Hat{
+  display: inline-flex;
+  margin-left: 32vw;
+  margin-bottom: 0.3vw;
+
+  .Name-of-the-exercise{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 4px black;
+    height: 9vh;
+    justify-content: center;
+    align-items: center;
+    width: 13vw;
+    display: flex;
+  }
+
+  .Difficulty-level-name{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 4px black;
+    height: 9vh;
+    align-items: center;
+    width: 10vw;
+    display: flex;
+    text-align: center;
+
+  }
+
+  .Characters{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 4px black;
+    height: 9vh;
+    align-items: center;
+    width: 10vw;
+    display: flex;
+    text-align: center;
+  }
+
+  .Number-of-mistakes{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 4px black;
+    height: 9vh;
+    align-items: center;
+    width: 10vw;
+    display: flex;
+    text-align: center;
+  }
+
+  .Average-dialing-speed{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 4px black;
+    height: 9vh;
+    align-items: center;
+    width: 12vw;
+    display: flex;
+    text-align: center;
+  }
+
+  .Data{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 4px black;
+    height: 9vh;
+    justify-content: center;
+    align-items: center;
+    width: 10.5vw;
+    display: flex;
+  }
+
+
+}
+
+.container-all-test{
+  height: 62.7vh;
+  width: 100vw;
+
+  margin-top: -7px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: 0vw;
+
+.Container-Hat-Test{
+  display: inline-flex;
+  margin-left: 32vw;
+  height: 8vh;
+
+  .Name-of-the-exercise-Test{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 3px black;
+    align-items: center;
+    width: 13.1vw;
+    display: flex;
+    text-align: center;
+  }
+
+  .Difficulty-level-name-Test{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 3px black;
+    justify-content: center;
+    align-items: center;
+    width: 10.1vw;
+    display: flex;
+
+  }
+
+  .Characters-Test{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 3px black;
+    justify-content: center;
+    align-items: center;
+    width: 10.2vw;
+    display: flex;
+  }
+
+  .Number-of-mistakes-Test{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 3px black;
+    justify-content: center;
+    align-items: center;
+    width: 10.1vw;
+    display: flex;
+  }
+
+  .Average-dialing-speed-Test{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 3px black;
+    justify-content: center;
+    align-items: center;
+    width: 12.1vw;
+    display: flex;
+  }
+
+  .Data-Test{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1vw;
+    letter-spacing: 0.05em;
+    border: solid 3px black;
+    justify-content: center;
+    align-items: center;
+    width: 9.9vw;
+    display: flex;
+  }
+
+
+}}
