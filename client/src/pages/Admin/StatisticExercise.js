@@ -38,9 +38,10 @@ export const StatisticExercise = () => {
       let exerciseArr = []
       console.log("getAll")
       getAllExercises().then(data => {
+         console.log(data)
          for (var e in data) {
             exerciseArr.push({
-               id: data[e].levelId,
+               id: data[e].id,
                name: data[e].name
             })
         }
@@ -63,6 +64,7 @@ export const StatisticExercise = () => {
       console.log(name)
       let newName = list.find(obj => obj.name === name)
       console.log("newName: " + newName);
+      console.log(newName);
       setCurrent(newName)
       formStat()
    }

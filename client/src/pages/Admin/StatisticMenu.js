@@ -1,12 +1,27 @@
 import { useNavigate } from "react-router-dom"
 import "../../styles/Admin/AdminPage.scss"
-import { useNavigate } from "react-router-dom"
 
 export const StatisticMenu = () => {
   const history = useNavigate()
   const backHandler = (event) => {
     event.preventDefault()
     history("/admin_panel")
+  }
+  const allExHandler = (event) => {
+    event.preventDefault()
+    history("/statisticallexercisesmean")
+  }
+  const exHandler = (event) => {
+    event.preventDefault()
+    history("/statisticexercise")
+  }
+  const allUsersHandler = (event) => {
+    event.preventDefault()
+    history("/statisticallusersmean")
+  }
+  const userHandler = (event) => {
+    event.preventDefault()
+    history("/statisticallusers")
   }
   return (
     <div className="admin-page">
@@ -20,20 +35,20 @@ export const StatisticMenu = () => {
         </div>
         {/* <div className="title "><p>Статистика</p></div> */}
         <div className="users ">
-          <button>Все упражнения</button>
+          <button  onClick={allExHandler}>Все упражнения</button>
         </div>
       </div>
       <div className="admin-panel second-layers">
         <div className="st task">
-          <button>Конкретное упражнение</button>
+          <button  onClick={exHandler}>Конкретное упражнение</button>
         </div>
         <div className="st all-users">
-          <button>По всем пользователям</button>
+          <button  onClick={allUsersHandler}>По всем пользователям</button>
         </div>
       </div>
       <div className="admin-panel third-layer">
         <div className="user">
-          <button>Конкретный пользователь</button>
+          <button  onClick={userHandler}>Конкретный пользователь</button>
         </div>
         <div className="back">
           <button onClick={backHandler}>Назад</button>

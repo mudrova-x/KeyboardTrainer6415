@@ -62,9 +62,10 @@ export const StatisticAllExercisesMean = () => {
       console.log(stats);
       exercises.map((exercise) => {
          console.log(exercise.name)
-         let filteredStats = stats.filter((item) => item.exerciseId === exercise.levelId)
+         let filteredStats = stats.filter((item) => item.id === exercise.levelId)
          console.log(filteredStats);
          let mean = getMean(filteredStats)
+         if (!isNaN(mean.meanTime))
          exercisesArr.push({
             name: exercise.name,
             level_num: exercise.level_num,

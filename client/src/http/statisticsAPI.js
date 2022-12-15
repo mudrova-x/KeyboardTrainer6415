@@ -2,6 +2,7 @@ import { requestCreator } from "../hook"
 import {$host, $authHost} from "./index";
 
 export const getStatisticsByUserId = async (userId) => {
+   console.log("=============== "+userId)
    const data = await requestCreator('/api/statistics/getStatisticsByUserId/'+userId)
    console.log(data)
    return data;

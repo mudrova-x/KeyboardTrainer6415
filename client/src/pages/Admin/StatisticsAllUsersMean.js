@@ -66,6 +66,7 @@ export const StatisticAllUsersMean = () => {
          let filteredStats = stats.filter((item) => item.userId === user.id)
          console.log(filteredStats);
          let mean = getMean(filteredStats)
+         if (!isNaN(mean.meanTime))
          usersArr.push({
             name: user.login,
             mean: mean

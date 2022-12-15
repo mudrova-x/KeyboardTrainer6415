@@ -76,7 +76,7 @@ export const MainPage = (props) => {
                     max_errors: data.max_errors,
                     max_length: data.max_length,
                     max_time: data.max_time,
-                    min_length: data.max_time,
+                    min_length: data.min_length,
                     number: data.number ,
                     zones:data.zones
                 })

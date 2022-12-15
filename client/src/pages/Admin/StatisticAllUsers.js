@@ -72,13 +72,14 @@ export const StatisticAllUsers = () => {
 
     function getUserIdByName(user) {
       //console.log("getUserIdByName")
-      //console.log(list)
+      console.log("======= list")
+      console.log(list)
       list.map((elem) => {
          console.log(elem.userName)
          if(elem.userName === user) {
             //console.log("SAME")
             setId(elem.id)
-            //console.log("Current id: " + currentId)
+            console.log("Current id: " + currentId)
          }
       })
     }
@@ -92,6 +93,7 @@ export const StatisticAllUsers = () => {
 
    async function formStat() {
       let statsArr = []
+      console.log("formStat Current id: " + currentId)
       let stats = await getStatisticsByUserId(currentId)
       let exercises = await getAllExercises()
 
