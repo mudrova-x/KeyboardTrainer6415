@@ -9,6 +9,7 @@ import { getStatisticsByUserId, getStatisticsByUserIdCarton } from "../../http/s
 
 import data from "../../mock-data.json" // Мокнутые данные для теста. Не забудь удалить. Я сказал НЕЗАБУДЬ!!!
 import { getAllExercises } from "../../http/exerciseAPI"
+import { useNavigate } from "react-router-dom"
 
 export const userList = ["loading..."]
 
@@ -26,6 +27,7 @@ export const StatisticAllUsers = () => {
 
    const [list, setList] = useState([{id: 1, userName:"loading..."}])
    
+   const history = useNavigate();
 
    const getAll = async () => {
       let usersMass = []
@@ -108,7 +110,8 @@ export const StatisticAllUsers = () => {
 
    async function debugClick() {
       console.log("CLIIIIICK!!")
-      formStat()
+      //formStat()
+      history('/statisticmenu')
    }
    
    // Rename cool class name "user-chooser" to "user-select"???

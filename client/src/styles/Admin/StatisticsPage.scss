@@ -100,6 +100,11 @@ body {
    background-color: inherit;
  }
  
+ th.special-table,
+ td.special-table {
+  width: 20%;
+ }
+
  th,
  td {
    border: 3px solid black;

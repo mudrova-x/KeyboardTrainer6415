@@ -19,6 +19,11 @@ class StatisticsController {
 
       return res.json(statistic)
    }
+
+   async getAllStatistics(req, res) {
+      const statistic = await Statistics.findAll()
+      return res.json(statistic)
+   }
    
 }
 

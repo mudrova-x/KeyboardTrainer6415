@@ -19,3 +19,9 @@ export const getStatisticsByExerciseId = async (exerciseId) => {
    console.log(data)
    return data;
 }
+
+export const getAllStatistics = async () => {
+   const data = await requestCreator('/api/statistics/getAllStatistics')
+   console.log(data)
+   return data
+}

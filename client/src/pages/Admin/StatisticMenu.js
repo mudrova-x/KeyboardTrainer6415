@@ -1,12 +1,17 @@
+import { useNavigate } from "react-router-dom"
 import "../../styles/Admin/AdminPage.scss"
 
 export const StatisticMenu = () => {
-   
+   const history = useNavigate();
+    function getTo(destination) {
+        history(destination)
+    }
+
     return (
         <div className="admin-page">
             <div className="admin-panel first-layer">
                 <div className="title "><p>Статистика</p></div>
-                <div className="users "><button>Все упражнения</button></div>
+                <div className="users " onClick={getTo('/statisticallexercisesmean')}><button>Все упражнения</button></div>
             </div>
             <div className="admin-panel second-layer">
                 <div className="st task"><button>Конкретное упражнение</button></div>

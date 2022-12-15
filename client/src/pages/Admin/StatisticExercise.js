@@ -10,6 +10,7 @@ import { getStatisticsByExerciseId, getStatisticsByUserId, getStatisticsByUserId
 
 import data from "../../mock-data.json" // Мокнутые данные для теста. Не забудь удалить. Я сказал НЕЗАБУДЬ!!!
 import { BarChart2 } from "../../components/BarChart2"
+import { useNavigate } from "react-router-dom"
 
 
 export const exercisesList = ["loading..."]
@@ -23,7 +24,7 @@ export const StatisticExercise = () => {
    const [list, setList] = useState([{id: 1, name:"loading..."}])
    const [currentExercise, setCurrent] = useState({id: 1, name:"loading..."})
    const [statistics, setStatistics] = useState(dataTemplate);
-
+   const history = useNavigate();
    
    const getAll = async () => {
       let exerciseArr = []
@@ -108,7 +109,8 @@ export const StatisticExercise = () => {
 
    async function debugClick() {
       console.log("CLIIIIICK!!")
-      formStat()
+      //formStat()
+      history('/statisticmenu')
    }
    
    // Rename cool class name "user-chooser" to "user-select"???

@@ -4,5 +4,6 @@ const statisticsController = require('../controllers/statisticsController')
 
 router.get('/getStatisticsByUserId/:userId', statisticsController.getStatisticsByUserId)
 router.get('/getStatisticsByExerciseId/:exerciseId', statisticsController.getStatisticsByExerciseId)
+router.get('/getAllStatistics', statisticsController.getAllStatistics)
 
 module.exports = router
