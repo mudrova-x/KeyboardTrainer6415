@@ -25,7 +25,8 @@ export const TaskListPage = (props) => {
     creationType: "2",
     taskText: "",
   })
-  const [level, setLevel] = useState({max_length: 0, min_length: 0,number: 0, zones:0})
+  const [level, setLevel] = useState({ max_length: 0, min_length: 0, number: 0, zones: 0 })
+  const [before, setBefore] = useState(0)
   const [windowMode, setWindowMode] = useState("0")
   const [levelCount, setLevelCount] = useState({
     first: 0,
@@ -162,16 +163,17 @@ export const TaskListPage = (props) => {
       document.getElementById("errorText").style.display = "block"
       zone=true
     }
-    let inList = !!list.find(ex => ex.name === newTask.taskName)
+    let inList = settings?false:!!list.find(ex => ex.name === newTask.taskName)
     let selected_level = newTask.level==="0"
     if (selected_level)
       document.getElementById("errorSLevel").style.display = "block"
       console.log({
         name: name,
         length: length,
-        zone:zone
+        zone: zone,
+        inList: inList
       })
-   const desabled = name || length || zone || selected_level ||inList
+   const desabled = name || length || zone || selected_level || inList
    return desabled
     
   })
@@ -210,10 +212,14 @@ export const TaskListPage = (props) => {
   const tryToCreate = () => {
     console.log(levelCount)
     console.log("checkCount(newTask.level) = " + checkCount(newTask.level))
-  if (checkCount(newTask.level) >= 10)
+  if (!settings && checkCount(newTask.level) >= 10)
   {
     alert("Достигнуто максимальное количество упражнений выбранного уровня")
     return
+    }
+    if (settings && checkCount(newTask.level) >= 10 && before !== newTask.level) {
+      alert("Достигнуто максимальное количество упражнений выбранного уровня")
+      return
     }
   const t =  checkFields()
   console.log("createTask " + !t)
@@ -261,6 +267,11 @@ export const TaskListPage = (props) => {
     })
    }
   //if (!t && newTask.creationType !== "3" && newTask.creationType !== "2") create(newTask)
+    console.log({
+      t: !t,
+      creationType: newTask.creationType,
+      settings:settings
+   })
   if (!t && newTask.creationType === "1" && !settings) create(newTask)
   if (!t&&newTask.creationType === "1"&&settings) update(newTask)
 }
@@ -314,6 +325,7 @@ const del = async (name) => {
     getExercise(name).then(ex => {
       console.log("findEx")
       console.log(ex)
+      setBefore(ex.level)
     //  setNewTask({
     //    taskName: ex.taskName,
     //    length: ex.length,
@@ -495,7 +507,7 @@ const del = async (name) => {
         </div>
         <div className="users ">
           <input
-            autocomplete="off"
+            autoComplete="off"
             placeholder="Упражнение.."
             type="text"
             id="taskNames"
@@ -553,7 +565,7 @@ const del = async (name) => {
           </button>
             <div className="fields">
               <input
-                autocomplete="off"
+                autoComplete="off"
                 placeholder="Название"
                 type="text"
                 name="taskName"
@@ -566,7 +578,7 @@ const del = async (name) => {
                 
               />
               <input
-                autocomplete="off"
+                autoComplete="off"
                 placeholder="Длина"
                 type="number"
                 id="length"

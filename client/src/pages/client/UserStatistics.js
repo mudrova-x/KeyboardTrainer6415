@@ -10,17 +10,27 @@ import {Loader} from "../../components/Loader";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 
-import {Chart as ChartJS, CategoryScale, LinearScale, BarElement} from "chart.js";
+import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title} from "chart.js";
 import {Bar} from "react-chartjs-2";
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement
+    BarElement,
+    Title
 )
 
 export const options = {
     responsive: true,
+    plugins: {
+        legend: {
+            display: false,
+        },
+        title: {
+            display: false,
+            text: 'Количество ошибок',
+        },
+    }
 }
 
 
