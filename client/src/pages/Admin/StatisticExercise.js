@@ -25,10 +25,10 @@ export const StatisticExercise = () => {
    const [currentExercise, setCurrent] = useState({id: 1, name:"loading..."})
    const [statistics, setStatistics] = useState(dataTemplate);
 
-   const [searchExercise, setSearchExercise] = useState({name: ""})
+   const [searchExercise, setSearchExercise] = useState({exName: ""})
 
    const changeSearchExerciseHandler = (event) => {
-      console.log("exerciseName = " + searchExercise.name)
+      console.log("exerciseName = " + searchExercise.exName)
       setSearchExercise({ ...searchExercise, [event.target.name]: event.target.value })
     }
 
@@ -66,12 +66,13 @@ export const StatisticExercise = () => {
       console.log("newName: " + newName);
       console.log(newName);
       setCurrent(newName)
-      formStat()
+      formStat({id: newName.id, name:newName.name})
    }
 
-   async function formStat() {
+   async function formStat(ex) {
       let statsArr = []
-      let stats = await getStatisticsByExerciseId(currentExercise.id)
+      //let stats = await getStatisticsByExerciseId(currentExercise.id)
+      let stats = await getStatisticsByExerciseId(ex.id)
       let users = await getAllUsers()
       let filteredUsers = users.filter((item) => item.login !== "admin")
 
@@ -182,21 +183,21 @@ export const StatisticExercise = () => {
                   <input
                      placeholder="Пользователь.."
                      type="text"
-                     name="userName"
-                     value={searchExercise.name}
+                     name="exName"
+                     value={searchExercise.exName}
                      onChange={changeSearchExerciseHandler}
                   />
-                  {list.map((exerciseElem) => 
+                  {/*list.map((exerciseElem) => 
                   <MenuItem name={exerciseElem.name} handleClick={handleClick}/>
-                     )}
-                  {/*searchExercise.name === ""
+                     )*/}
+                  {searchExercise.exName === ""
                      ? list.map((elem) => (
-                        <MenuItem name={elem} handleClick={handleClick} />
+                        <MenuItem name={elem.name} handleClick={handleClick} />
                      ))
-                     : list.filter((elem) => elem.name.includes(searchExercise.name)).map((elem) => (
-                        <MenuItem name={elem} handleClick={handleClick} />
+                     : list.filter((elem) => elem.name.includes(searchExercise.exName)).map((elem) => (
+                        <MenuItem name={elem.name} handleClick={handleClick} />
                      ))
-                     */}
+                     }
                </div>
             </div>
          </div>
