@@ -601,10 +601,10 @@ const del = async (name) => {
                 onChange={changeNewTaskHandler}
                 >
                   <option value="0">Уровень сложности</option>
-                  <option value="1">Первый ур. сложности</option>
-                  <option value="2">Второй ур. сложности</option>
-                  <option value="3">Третий ур. сложности</option>
-                  <option value="4">Четвертый ур. сложности</option>
+                  <option value="1">Первый</option>
+                  <option value="2">Второй</option>
+                  <option value="3">Третий</option>
+                  <option value="4">Четвертый</option>
                 </select>
               </div>
               <div className="button-row">

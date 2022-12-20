@@ -11,10 +11,11 @@
 
 body {
    font-family: "Raleway";
+   overflow-x:hidden;  /*для горизонтального*/
 }
 
 .admin-page-statistics {
-   height: 81vh;
+   height: 88vh;
    overflow-y: hidden;
 }
 

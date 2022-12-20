@@ -60,8 +60,12 @@ export const MainPage = (props) => {
            // console.log(data)
             const { status } = data
             console.log(status)
-
-            if (status === 400) document.getElementById("errorData").style.display = "block"
+            console.log(data)
+            console.log(document.getElementById("errorData"))
+            if (status === 400) {
+                document.getElementById("errorData").innerText = data.message
+                document.getElementById("errorData").style.display = "block"
+            }
 
             auth.login(data.token, data.userId, data.accountType)
             })
@@ -269,7 +273,7 @@ export const MainPage = (props) => {
                             <input
                                 className="input-user"
                                 placeholder="Пароль"
-                                type="text"
+                                type="password"
                                 id="password"
                                 name="password"
                                 value={newUser.password}

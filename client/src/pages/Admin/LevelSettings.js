@@ -210,6 +210,27 @@ export const LevelSettings = () => {
             </p>
           </div>
           <div className="card" >
+            <div className="field">
+              <p className="field-name" id="card5">Максимальное количество символов</p>
+              <input
+                // placeholder="Длина"
+                type="number"
+                id="maxLen"
+                name="max_len"
+                value={setting.max_len}
+                onChange={changeSettingHandler}
+                required
+                pattern="^[0-9]+$"
+              />
+            </div>
+            <p className="errMessage" id="errorMaxLength">
+              Максимальное количество символов в диапазоне 31..200
+            </p>
+            <p className="errMessage" id="errorWindow">
+              Максимальное количество символов должно превышать минимальное
+            </p>
+          </div>
+          <div className="card" >
             <div className="field" >
               <p className="field-name" id="card2">Максимальное количество ошибок</p>
               <input
@@ -263,27 +284,6 @@ export const LevelSettings = () => {
             </div>
             <p className="errMessage" id="errorZones">
               Максимальное количество зон в диапазоне 1..4
-            </p>
-          </div>
-          <div className="card" >
-            <div className="field">
-              <p className="field-name" id="card5">Максимальное количество символов</p>
-              <input
-                // placeholder="Длина"
-                type="number"
-                id="maxLen"
-                name="max_len"
-                value={setting.max_len}
-                onChange={changeSettingHandler}
-                required
-                pattern="^[0-9]+$"
-              />
-            </div>
-            <p className="errMessage" id="errorMaxLength">
-              Максимальное количество символов в диапазоне 31..200
-            </p>
-            <p className="errMessage" id="errorWindow">
-              Максимальное количество символов должно превышать минимальное
             </p>
           </div>
               </div>

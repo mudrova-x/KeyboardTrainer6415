@@ -44,13 +44,13 @@ class UserController {
       })
       console.log(user)
       if (!user) {
-        return res.status(400).json({ message: "Пользователь не найден" })
+        return res.status(400).json({ message: "Пользователь с таким логином не найден." })
       }
 
       const isMatch = await bcrypt.compare(password, user.password)
       console.log("isMatch " + isMatch)
       if (!isMatch) {
-          return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' })
+          return res.status(400).json({ message: 'Неверный пароль. Попробуйте снова.' })
       }
       const token = jwt.sign(
           {userId: user.id },
@@ -102,7 +102,7 @@ class UserController {
         },
       })
       if (!user) {
-        return res.status(400).json({ message: "Пользователь не найден" })
+        return res.status(400).json({ message: "Пользователь с таким логином не найден" })
       }
 
       User.destroy({
@@ -128,7 +128,7 @@ class UserController {
       })
       console.log(fuser)
       if (!fuser) {
-        return res.status(400).json({ message: "Пользователь не найден" })
+        return res.status(400).json({ message: "Пользователь с таким логином не найден" })
       }
 
       const hashedPassword = await bcrypt.hash(password, 12)
