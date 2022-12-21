@@ -1,6 +1,7 @@
 import "../../styles/Admin/LevelSettings.scss"
 import React, { useEffect, useState } from "react"
 import { getLevel, updateLevel } from "../../http/SettingAPI"
+import { getEmount } from "../../http/exerciseAPI";
 
 export const LevelSettings = () => {
 
@@ -12,7 +13,7 @@ export const LevelSettings = () => {
     zones: 0,
   })
   const [level, setLevel] = useState({number:1, name:"Первый"})
-  
+  const [levelCount, setLevelCount] = useState(0)
   const getLevelInfo = async (num, callback) => {
     getLevel(num).then(data => {
       setSetting({
@@ -25,6 +26,7 @@ export const LevelSettings = () => {
       console.log(data)
       callback(num)
       console.log(setting)
+      //getEmount().then(data=>console.log(data))
     })
   }
 
@@ -32,6 +34,7 @@ export const LevelSettings = () => {
    // let func = async () => { await changeLevelHandler(1) }
     let func = async () => { await changeLevelHandler(level.number??1) }
     func() 
+    getEmount().then(data=>setLevelCount(data.first))
   }, [])
   
   const changeLevel = (async (l) => {
@@ -66,7 +69,8 @@ export const LevelSettings = () => {
       && isInteger(setting.zones) && setting.zones >= 1 && setting.zones <= 4
       && isInteger(setting.max_len) && setting.max_len >= 31 && setting.max_len <= 200
       && setting.time >= 0.5 && setting.time <= 4
-    &&setting.min_len<setting.max_len
+      && setting.min_len < setting.max_len
+      &&levelCount===0
   }
   const changeStyle = ((errorName, cardNum, valid) => {
     if (!valid) {
@@ -110,8 +114,9 @@ export const LevelSettings = () => {
       document.getElementById("errorWindow").style.display = "block"
     else 
       document.getElementById("errorWindow").style.display = "none"  
-      
-  }, [setting])
+    if (levelCount > 0) document.getElementById("errorEmount").style.display = "block"
+    else document.getElementById("errorEmount").style.display =  "none"
+  }, [setting, levelCount])
   
   const resetStyle = () => {
     for (let i = 1; i < 5; i++){
@@ -140,22 +145,27 @@ export const LevelSettings = () => {
       (num) => {
         resetStyle()
         console.log("num="+num)
-    let name
+        let name
+        let count
     switch (num) {
       case (1): {
         name = "Первый"
+        getEmount().then(data=>setLevelCount(data.first))
         break
       }
       case (2): {
         name = "Второй"
+        getEmount().then(data=>setLevelCount(data.second))
         break
       }
       case (3): {
         name = "Третий"
+        getEmount().then(data=>setLevelCount(data.third))
         break
       }
       case (4): {
         name = "Четвертый"
+        getEmount().then(data=>setLevelCount(data.fourth))
         break
       }
       default: { name = "Первый" }
@@ -285,11 +295,17 @@ export const LevelSettings = () => {
             <p className="errMessage" id="errorZones">
               Максимальное количество зон в диапазоне 1..4
             </p>
+            
           </div>
-              </div>
-              <div className="btnPart"><button className="saveButton" id="saveBtn" onClick={()=>changeLevel(setting)}>
+        </div>
+        <p className="errMessage" id="errorEmount">
+              Невозможно настроить уровень после создания упражнений.<br/> Необходимо предварительно удалить упражнения соответствующего уровня
+            </p>
+        <div className="btnPart">
+          <button className="saveButton" id="saveBtn" onClick={() => changeLevel(setting)}>
             Сохранить
           </button></div>
+          
       </div>
     </div>
   )
