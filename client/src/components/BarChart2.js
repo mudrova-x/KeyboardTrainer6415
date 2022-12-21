@@ -28,7 +28,7 @@ export const options = {
      },
      title: {
        display: true,
-       text: 'Количество ошибок %',
+       text: 'Количество ошибок',
      },
    }
  };

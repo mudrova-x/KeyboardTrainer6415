@@ -59,10 +59,13 @@ export const StatisticAllExercisesMean = () => {
       console.log("getAll")
       let exercises = await getAllExercises()
       let stats = await getAllStatistics()
+      console.log("EXERCISES");
+      console.log(exercises);
+      console.log("STATS");
       console.log(stats);
       exercises.map((exercise) => {
          console.log(exercise.name)
-         let filteredStats = stats.filter((item) => item.id === exercise.levelId)
+         let filteredStats = stats.filter((item) => item.exerciseId === exercise.id)
          console.log(filteredStats);
          let mean = getMean(filteredStats)
          if (!isNaN(mean.meanTime))
@@ -124,8 +127,8 @@ export const StatisticAllExercisesMean = () => {
                         <tr>
                            <td>{stat.name}</td>
                            <td>{stat.level_num}</td>
-                           <td>{stat.mean.meanErrors.toFixed(2)}</td>
                            <td>{stat.mean.meanTime.toFixed(2)}</td>
+                           <td>{stat.mean.meanErrors.toFixed(2)}</td>
                            <td>{stat.mean.meanSpeed.toFixed(2)}</td>
                            <td>{stat.mean.completion.toFixed(2) * 100}</td>
                         </tr>
