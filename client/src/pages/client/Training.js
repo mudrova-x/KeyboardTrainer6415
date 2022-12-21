@@ -45,6 +45,7 @@ export const Training = (props) => {
 
     const [level, setLevel] = useState({max_errors: 0, max_length: 0, max_time: 0, min_length: 0, number: 0, zones: 0});
     const startFlag = useRef(false)
+    const typeСharacters = useRef(false)
     const curr = useRef(0)
     const misRef = useRef(0)
     const [end, setEnd] = useState(false)
@@ -219,7 +220,7 @@ export const Training = (props) => {
             misRef.current = misRef.current + 1;
             setcheckMaxTime(seconds)
         }
-        if (!startFlag.current) {
+        if (!typeСharacters.current) {
             //console.log(startFlag)
             setMistake(0);
             misRef.current = 0;
@@ -229,6 +230,7 @@ export const Training = (props) => {
             pause()
             setEndFail(true)
             setEnd(true)
+            typeСharacters.current = false
         }
 
     }, [seconds])
@@ -248,7 +250,7 @@ export const Training = (props) => {
             clickingSound.play()
         }
 
-        if (e.key === nowst[curr.current] && startFlag.current) {
+        if (e.key === nowst[curr.current] && typeСharacters.current) {
 
             setSpaceNow(0)
             curr.current = curr.current + 1
@@ -269,6 +271,7 @@ export const Training = (props) => {
         } else if ((e.code === "Space") && (startFlag.current === false)) {
             console.log(head)
             startFlag.current = true;
+            typeСharacters.current = true
             start()
             //start2()
             console.log(startFlag)
@@ -276,7 +279,7 @@ export const Training = (props) => {
             setHideAudio(false)
 
         } else {
-            if (stopExc.current && startFlag.current) {
+            if (stopExc.current && typeСharacters.current) {
                 console.log("Упражнние идет")
                 setMistake(mistake => mistake + 1)
                 misRef.current = misRef.current + 1
@@ -290,6 +293,7 @@ export const Training = (props) => {
             //console.log(curr.current)
             // console.log(head.length)
             stopExc.current = false
+            typeСharacters.current = false
         }
 
         if (misRef.current === maxError.current && misRef.current != 0) {
@@ -297,6 +301,7 @@ export const Training = (props) => {
             setEndFail(true)
             setEnd(true)
             stopExc.current = false
+            typeСharacters.current = false
         }
 
     });
@@ -359,7 +364,7 @@ export const Training = (props) => {
                     <div className="Text-modal">УСПЕШНОЕ ПРОХОЖДЕНИЕ!</div>
                 }
                 <button onClick={() => {
-                    nav('/')
+                    nav('/');window.location.reload(false);
                 }} className="Main-page-button underline">Главная
                 </button>
                 <button onClick={() => {
@@ -501,8 +506,7 @@ export const Training = (props) => {
 
         return (
             <div>
-                <audio ref={music1} src={composition1} loop/>
-                <audio ref={music2} src={composition2} loop/>
+
 
                 <div className="Container">
                     <div className="Container-characteristic">
@@ -535,6 +539,8 @@ export const Training = (props) => {
 
     return (
         <div>
+            <audio ref={music1} src={composition1} loop/>
+            <audio ref={music2} src={composition2} loop/>
 
             <StartTest/>
 

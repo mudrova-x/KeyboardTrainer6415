@@ -30,7 +30,7 @@ const Header = () => {
   }
   const reNavidate = () => {
     if (auth.accountType === "admin") history("/admin_panel")
-    if (auth.accountType === "student") history("/statistics") // ДОБАВИТЬ ССЫЛОЧКУ
+    if (auth.accountType === "student") {history("/statistics");window.location.reload(false)} // ДОБАВИТЬ ССЫЛОЧКУ
   }
   const func = () => {
     const f = !auth.isAuthenticated

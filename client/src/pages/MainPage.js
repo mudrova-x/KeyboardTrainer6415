@@ -102,6 +102,7 @@ export const MainPage = (props) => {
 
    
     useEffect( () => {
+
             fetchDescriptionLevel(1).then(data =>
                 //setExerlevel.setLevel(data)
             {
