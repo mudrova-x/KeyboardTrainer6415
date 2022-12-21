@@ -137,3 +137,13 @@ input[type="number"]:focus {
   appearance: none;
   -moz-appearance: textfield;
 }
+
+#errorEmount{
+  margin-right: 50px;
+    margin-bottom: 28px;
+    /* margin-left: 0; */
+    left: 40%;
+    top: 82%;
+    position: absolute;
+    max-height: 60px;
+}

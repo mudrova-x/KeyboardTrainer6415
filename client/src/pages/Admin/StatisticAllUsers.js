@@ -18,14 +18,10 @@ export const dataTemplate = []
 
 
 export const StatisticAllUsers = () => {
+   
+   const [list, setList] = useState([{id: 1, name:"loading..."}])
+   const [currentUser, setCurrentUser] = useState({id: 1, name:"loading..."})
    const [statistics, setStatistics] = useState(dataTemplate);
-
-
-   const [users, setUsers] = useState(userList)
-   const [currentUser, setCurrentUser] = useState("Choose user")
-   const [currentId, setId] = useState(1)
-
-   const [list, setList] = useState([{id: 1, userName:"loading..."}])
 
    const [searchUser, setSearchUser] = useState({userName: ""})
 
@@ -37,24 +33,20 @@ export const StatisticAllUsers = () => {
    const history = useNavigate();
 
    const getAll = async () => {
-      let usersMass = []
       let usersArr = []
       console.log("getAll")
       getAllUsers().then(data => {
          for (var e in data) {
-          if(data[e].login!=="admin")
-            usersArr.push(data[e].login)
-         usersMass.push({
-            id: data[e].id,
-            userName: data[e].login
-         })
-        }
+            if (data[e].login !== "admin")
+               usersArr.push({
+                  id: data[e].id,
+                  name: data[e].login
+               })
+         }
         console.log("DEBUG LIST")
-        console.log(usersMass)
-        setList(usersMass)
-        setUsers(usersArr)
+        setList(usersArr)
         setCurrentUser(usersArr[0])
-        formStat()
+        formStat(usersArr[0])
       })
     }
 
@@ -62,39 +54,21 @@ export const StatisticAllUsers = () => {
       let func = async () => { await getAll() }
       func() 
       //setTestName(users[0])
-    }, [setUsers])
+    }, [setList])
 
-
-
-   
-   console.log("Stats")
-   console.log(statistics)
-
-    function getUserIdByName(user) {
-      //console.log("getUserIdByName")
-      console.log("======= list")
-      console.log(list)
-      list.map((elem) => {
-         console.log(elem.userName)
-         if(elem.userName === user) {
-            //console.log("SAME")
-            setId(elem.id)
-            console.log("Current id: " + currentId)
-         }
-      })
-    }
-
-   function handleClick(userName) {
-      console.log(userName)
-      setCurrentUser(userName)
-      getUserIdByName(userName)
-      formStat()
+   function handleClick(name) {
+      console.log(name)
+      let newName = list.find(obj => obj.name === name)
+      console.log("newName: " + newName);
+      console.log(newName);
+      setCurrentUser(newName)
+      formStat({id: newName.id, name:newName.name})
+      document.getElementById("createModalMenu").classList.toggle("active")
    }
 
-   async function formStat() {
+   async function formStat(user) {
       let statsArr = []
-      console.log("formStat Current id: " + currentId)
-      let stats = await getStatisticsByUserId(currentId)
+      let stats = await getStatisticsByUserId(user.id)
       let exercises = await getAllExercises()
 
       console.log("Form stat")
@@ -128,7 +102,7 @@ export const StatisticAllUsers = () => {
       <div className="admin-page-statistics">
          <div className="nav-panel">
             <div className="user-chooser"> 
-               <p>{currentUser}</p>
+               <p>{currentUser.name}</p>
                <button>
                   <img
                      src={Arrow}
@@ -158,7 +132,7 @@ export const StatisticAllUsers = () => {
                         <th>Название упражнения</th>
                         <th>Номер уровня сложности</th>
                         <th>Количество символов</th>
-                        <th>Количество ошибок %</th>
+                        <th>Количество ошибок</th>
                         <th>Средняя скорость набора</th>
                         <th>Дата</th>
                      </tr>
@@ -191,11 +165,11 @@ export const StatisticAllUsers = () => {
                      )*/}
 
                   {searchUser.userName === ""
-                     ? users.map((userElem) => (
-                        <MenuItem name={userElem} handleClick={handleClick}/>
+                     ? list.map((elem) => (
+                        <MenuItem name={elem.name} handleClick={handleClick}/>
                      ))
-                     : users.filter((item) => item.includes(searchUser.userName)).map((userElem) => (
-                        <MenuItem name={userElem} handleClick={handleClick}/>
+                     : list.filter((item) => item.name.includes(searchUser.userName)).map((elem) => (
+                        <MenuItem name={elem.name} handleClick={handleClick}/>
                      ))
                      }
 

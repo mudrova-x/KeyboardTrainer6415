@@ -3,15 +3,15 @@ const { DataTypes } = require('sequelize')
 
 const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    login: { type: DataTypes.STRING, unique: true,  allowNull: false },
-    password: { type: DataTypes.STRING, allowNull: false }
+    login: { type: DataTypes.STRING(16), unique: true,  allowNull: false },
+    password: { type: DataTypes.STRING(16), allowNull: false }
 })
 
 const Exercise = sequelize.define('exercise', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, unique: true, allowNull: false},
+    name: { type: DataTypes.STRING(50), unique: true, allowNull: false},
     level_num: { type: DataTypes.INTEGER, allowNull: false},
-    text: { type: DataTypes.STRING, allowNull: false }
+    text: { type: DataTypes.STRING(200), allowNull: false }
 })
 
 const Statistics = sequelize.define('statistics', {
@@ -34,9 +34,9 @@ const Level = sequelize.define('level', {
 })
 
 
-User.hasMany(Statistics)
+User.hasMany(Statistics, { onDelete: "cascade" })
 Statistics.belongsTo(User)
-Exercise.hasMany(Statistics)
+Exercise.hasMany(Statistics, { onDelete: "cascade" })
 Statistics.belongsTo(Exercise)
 
 Level.hasMany(Exercise, { onDelete: "cascade" })
