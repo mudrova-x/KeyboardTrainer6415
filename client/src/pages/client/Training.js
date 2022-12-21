@@ -14,13 +14,19 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Loader} from "../../components/Loader";
 import {AuthContext} from "../../context/auth.context";
 
+//import { existsSync } from "node:fs";
+
 export const Training = (props) => {
     const user = useContext(AuthContext);
 
-
     const clickingSound = new Audio(tapSound);
-    const music1 = new Audio(composition1);
-    const music2 = new Audio(composition2);
+    //const music1 = new Audio(composition1);
+    //const music2 = new Audio(composition2);
+    //console.log(music1)
+    //const fs = require('fs')
+
+    const music1 = useRef();
+    const music2 = useRef();
 
     const {
         seconds,
@@ -29,7 +35,6 @@ export const Training = (props) => {
         start,
         pause
     } = useStopwatch({autoStart: false})
-
 
 
     let nav = useNavigate()
@@ -110,6 +115,7 @@ export const Training = (props) => {
     const [mistake, setMistake] = useState(0)
     const maxError = useRef(0)
     const allLenght = useRef(30)
+    const stopExc = useRef(true)
 
     const [colorTrueEff, setColorTrueEff] = useState(`Audio-Effect-true`);
     const [colorFalseEff, setColorFalseEff] = useState(`Audio-Effect-false`);
@@ -120,8 +126,9 @@ export const Training = (props) => {
     const trueFalseEffectRef = useRef(false)
     const trueFalseEffectMusic = useRef(false)
     const trueFalseEffectComps = useRef(true)
-    const [timeForCheck, setTimeForCheck] = useState(0)
-
+    //const [timeForCheck, setTimeForCheck] = useState(0)
+    const [checkMaxTime, setcheckMaxTime] = useState(0)
+    const [checkMaxTimeBOOL, setcheckMaxTimeBOOL] = useState(false)
 
     useEffect(() => {
         document.addEventListener('keydown', detectKeyDown, true)
@@ -136,17 +143,17 @@ export const Training = (props) => {
 
             setTimeout(() => {
 
-                console.log(data)
+                // console.log(data)
                 if (data) {
                     setExercises({text: data.text, level_num: data.level_num})
-                    console.log(data)
-                    console.log(data.text)
+                    //  console.log(data)
+                    // console.log(data.text)
                     nowst = data.text
                     checkMis = data.text
                     setHead(data.text)
                     allLenght.current = nowst.length
                     dif.current = data.level_num
-                    console.log("dif = ", dif)
+                    //console.log("dif = ", dif)
                 }
             }, 500)
         }).then(
@@ -167,53 +174,81 @@ export const Training = (props) => {
 
 
     useEffect(() => {
+
         if (end) {
             postResult({
                 time: minutes * 60 + seconds,
                 date: Date.now(),
                 errors: misRef.current,
-                speed: (minutes * 60 + seconds) / currSym,
+                speed: (minutes * 60 + seconds) / (1 + currSym),
                 success: !endFail,
                 userId: user.userId,
                 exerciseId: id
             }).then(data => console.log(data))
         }
 
+
     }, [end]);
 
-    useEffect( () =>{
-        console.log("ААААА")
-        if(trueFalseEffectMusic.current){
-            if(trueFalseEffectComps.current){
-                music1.play()
-                music2.pause()
-            }
-            else {
-                music1.pause()
-                music2.play()
-                console.log("пауза первой")
+    // useEffect(() => {
+    //     console.log("ААААА")
+    //     if (trueFalseMusic) {
+    //         if (trueFalseComps) {
+    //             music1.current.play()
+    //            // music2.pause()
+    //         } else {
+    //             music1.current.pause()
+    //            // music2.play()
+    //             console.log("пауза первой")
+    //
+    //         }
+    //     } else {
+    //         console.log("Пауза всего")
+    //         music1.current.pause()
+    //         //music2.pause()
+    //     }
+    //
+    //
+    // }, [trueFalseMusic, trueFalseComps])
 
-            }
+    useEffect(() => {
+
+        console.log(checkMaxTime)
+        if (seconds - checkMaxTime > Math.round(level.max_time)) {
+            setMistake(mistake => mistake + 1);
+            misRef.current = misRef.current + 1;
+            setcheckMaxTime(seconds)
         }
-        else {
-            console.log("Пауза всего")
-            music1.pause()
-            music2.pause()
+        if (!startFlag.current) {
+            //console.log(startFlag)
+            setMistake(0);
+            misRef.current = 0;
+            console.log("Зашел сюда")
+        }
+        if (misRef.current === maxError.current && misRef.current != 0) {
+            pause()
+            setEndFail(true)
+            setEnd(true)
         }
 
-    }, [trueFalseMusic, trueFalseComps])
+    }, [seconds])
 
+    useEffect(() => {
+        setcheckMaxTime(seconds)
+        //console.log("seconds = " + seconds)
 
-
+    }, [checkMaxTimeBOOL])
 
     const detectKeyDown = useCallback((e) => {
-        console.log("Нажата клавиша")
+        //console.log("Нажата клавиша")
+        setcheckMaxTimeBOOL(checkMaxTimeBOOL => !checkMaxTimeBOOL)
+        //console.log(checkMaxTimeBOOL)
 
-        if(trueFalseEffectRef.current){
-        clickingSound.play()
+        if (trueFalseEffectRef.current) {
+            clickingSound.play()
         }
 
-        if (e.key === nowst[curr.current]) {
+        if (e.key === nowst[curr.current] && startFlag.current) {
 
             setSpaceNow(0)
             curr.current = curr.current + 1
@@ -235,26 +270,33 @@ export const Training = (props) => {
             console.log(head)
             startFlag.current = true;
             start()
+            //start2()
             console.log(startFlag)
             console.log(checkMis)
+            setHideAudio(false)
 
         } else {
-            setMistake(mistake => mistake + 1)
-            misRef.current = misRef.current + 1
+            if (stopExc.current && startFlag.current) {
+                console.log("Упражнние идет")
+                setMistake(mistake => mistake + 1)
+                misRef.current = misRef.current + 1
+            }
         }
 
 
         if ((allLenght.current - curr.current) === 0 && curr.current != 0) {
             setEnd(true)
             pause()
-            console.log(curr.current)
-            console.log(head.length)
+            //console.log(curr.current)
+            // console.log(head.length)
+            stopExc.current = false
         }
 
         if (misRef.current === maxError.current && misRef.current != 0) {
             pause()
             setEndFail(true)
             setEnd(true)
+            stopExc.current = false
         }
 
     });
@@ -328,42 +370,105 @@ export const Training = (props) => {
         )
     }
 
-    function ChangeEffect (){
-        setTrueFalseEffect(!trueFalseEffect)
+    function ChangeEffect() {
+        setTrueFalseEffect(trueFalseEffect => !trueFalseEffect)
         trueFalseEffectRef.current = !trueFalseEffectRef.current
     }
-    function ChangeMusic (){
+
+
+    function ChangeMusic() {
+
         setTrueFalseMusic(!trueFalseMusic)
-        trueFalseEffectMusic.current = !trueFalseEffectMusic.current
+        //console.log("trufalseMusic = " + trueFalseMusic)
+
+        //console.log("Включена музыка? " + trueFalseEffectMusic.current)
+
+        setTimeout(() => {
+            if (!trueFalseMusic) {
+                if (trueFalseComps) {
+                    music1.current.play()
+                    music2.current.pause()
+
+                }
+                else{
+                    music2.current.play()
+                    music1.current.pause()
+                }
+
+            } else {
+                music1.current.pause()
+                music2.current.pause()
+            }
+        }, 100)
+
     }
-    function ChangeComps (){
+
+    function OffMusic() {
+        //music1.current.pause()
+    }
+
+    function ChangeComps() {
         setTrueFalseComps(!trueFalseComps)
-        trueFalseEffectComps.current = !trueFalseEffectComps.current
+        //trueFalseEffectComps.current = !trueFalseEffectComps.current
+        setTimeout(() => {
+        if(!trueFalseComps && trueFalseMusic){
+            music1.current.play()
+            music2.current.pause()
+        }
+        else if(trueFalseComps && trueFalseMusic){
+            music2.current.play()
+            music1.current.pause()
+        }
+        }, 100)
+    }
+
+    function PlayMusic() {
+        //console.log("Так можно")
+        //music1.current.play()
     }
 
     const ModalAudio = () => {
 
         return (
-            <div className="Container-Audio">
-                <div className="Container-Audio-text-Effect">Звуковые эффекты</div>
-                <div className="Container-Audio-line">
-                    <div className={trueFalseEffect? colorTrueEff:colorFalseEff} onClick={ChangeEffect} style={{cursor:"pointer"}}>Вкл</div>
-                    <div className="Audio-Effect-trait">/</div>
-                    <div className={trueFalseEffect? colorFalseEff:colorTrueEff} onClick={ChangeEffect} style={{cursor:"pointer"}}>Выкл</div>
+
+            <>
+                <div className="Container-Audio">
+                    <div className="Container-Audio-text-Effect">Звуковые эффекты</div>
+                    <div className="Container-Audio-line">
+                        <div className={trueFalseEffect ? colorTrueEff : colorFalseEff} onClick={ChangeEffect}
+                             style={{cursor: "pointer"}}>Вкл
+                        </div>
+                        <div className="Audio-Effect-trait">/</div>
+                        <div className={trueFalseEffect ? colorFalseEff : colorTrueEff} onClick={ChangeEffect}
+                             style={{cursor: "pointer"}}>Выкл
+                        </div>
+                    </div>
+                    <div className="Container-Audio-text-Effect">Музыка</div>
+                    <div className="Container-Audio-line">
+                        <div className={trueFalseMusic ? colorTrueEff : colorFalseEff} onClick={() => {
+                            ChangeMusic()
+                        }}
+                             style={{cursor: "pointer"}}>Вкл
+                        </div>
+                        <div className="Audio-Effect-trait">/</div>
+                        <div className={trueFalseMusic ? colorFalseEff : colorTrueEff} onClick={() => {
+                            ChangeMusic()
+                        }}
+                             style={{cursor: "pointer"}}>Выкл
+                        </div>
+                    </div>
+                    <div className="Container-Audio-text-Effect">Выбор музыкального сопровождения</div>
+                    <div className="Container-Audio-line">
+                        <div className={trueFalseComps ? colorTrueEff : colorFalseEff} onClick={ChangeComps}
+                             style={{cursor: "pointer"}}>Композиция 1
+                        </div>
+                        <div className="Audio-Effect-trait">/</div>
+                        <div className={trueFalseComps ? colorFalseEff : colorTrueEff} onClick={ChangeComps}
+                             style={{cursor: "pointer"}}>Композиция 2
+                        </div>
+                    </div>
                 </div>
-                <div className="Container-Audio-text-Effect">Музыка</div>
-                <div className="Container-Audio-line">
-                    <div className={trueFalseMusic? colorTrueEff:colorFalseEff} onClick={ChangeMusic} style={{cursor:"pointer"}}>Вкл</div>
-                    <div className="Audio-Effect-trait">/</div>
-                    <div className={trueFalseMusic? colorFalseEff:colorTrueEff} onClick={ChangeMusic} style={{cursor:"pointer"}}>Выкл</div>
-                </div>
-                <div className="Container-Audio-text-Effect">Выбор музыкального сопровождения</div>
-                <div className="Container-Audio-line">
-                    <div className={trueFalseComps? colorTrueEff:colorFalseEff} onClick={ChangeComps} style={{cursor:"pointer"}}>Композиция 1</div>
-                    <div className="Audio-Effect-trait">/</div>
-                    <div className={trueFalseComps? colorFalseEff:colorTrueEff} onClick={ChangeComps} style={{cursor:"pointer"}}>Композиция 2</div>
-                </div>
-            </div>
+            </>
         )
     }
 
@@ -396,6 +501,8 @@ export const Training = (props) => {
 
         return (
             <div>
+                <audio ref={music1} src={composition1} loop/>
+                <audio ref={music2} src={composition2} loop/>
 
                 <div className="Container">
                     <div className="Container-characteristic">
@@ -407,7 +514,7 @@ export const Training = (props) => {
                         <div type="text" className="Symbol" key={"133423423"}>{minutes}:{seconds}</div>
                         <div className="Number-symbol">Средняя скорость набора:</div>
                         <div
-                            className="Symbol">{startFlag.current ? ((minutes * 60 + seconds) / currSym).toFixed(2) : 0}</div>
+                            className="Symbol">{startFlag.current && curr.current > 0 ? ((minutes * 60 + seconds) / currSym).toFixed(2) : 0}</div>
                     </div>
                 </div>
 
@@ -425,6 +532,7 @@ export const Training = (props) => {
         )
     }
 
+
     return (
         <div>
 
@@ -435,7 +543,7 @@ export const Training = (props) => {
                     <></>
                     :
                     <div>
-                        <div className="First-layer" style={{margin:"5vh 0vh 0vh 10vw"}}>
+                        <div className="First-layer" style={{margin: "5vh 0vh 0vh 10vw"}}>
                             {first.map(first => <Letter key={first.letter} obj={first}/>)}
                             <div className="Back-button">
                                 <div className="Back">BACK</div>
@@ -472,13 +580,29 @@ export const Training = (props) => {
             }
 
             <div className="Special-layer">
-                <div className="Hide-button" onClick={Hide}>
-                    <div className="Hide">СКРЫТЬ</div>
-                </div>
+                {startFlag.current ?
+                    <div className="Hide-button" style={{"border-color": "#838383"}}>
+                        <div className="Hide" style={{color: "#838383"}}>СКРЫТЬ</div>
+                    </div>
+
+                    :
+                    <div className="Hide-button" onClick={Hide} style={{cursor: "pointer"}}>
+                        <div className="Hide">СКРЫТЬ</div>
+                    </div>
+                }
+
                 <div className="Space"></div>
-                <div className="Audio-button">
-                    <div className="Audio" onClick={HideAudio} style={{cursor:"pointer"}}>АУДИО</div>
-                </div>
+
+                {startFlag.current ?
+                    <div className="Audio-button" style={{"border-color": "#838383"}}>
+                        <div className="Audio" style={{color: "#838383"}}>АУДИО</div>
+                    </div>
+                    :
+                    <div className="Audio-button">
+                        <div className="Audio" onClick={HideAudio} style={{cursor: "pointer"}}>АУДИО</div>
+                    </div>
+                }
+
             </div>
 
 
@@ -488,11 +612,10 @@ export const Training = (props) => {
                 <div></div>
             }
 
-            {hideAudio?
+            {hideAudio ?
                 <ModalAudio/>
-                :<div></div>
+                : <div></div>
             }
-
 
 
         </div>

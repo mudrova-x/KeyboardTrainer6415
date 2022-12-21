@@ -6,7 +6,7 @@ import { BarChart } from "../../components/BarChart"
 import { MenuItem} from "../../components/MenuItem"
 import { getAllUsers } from "../../http/userAPI"
 import { getAllExercises } from "../../http/exerciseAPI"
-import { getStatisticsByExerciseId, getStatisticsByUserId, getStatisticsByUserIdCarton } from "../../http/statisticsAPI"
+import { getStatisticsByExerciseId } from "../../http/statisticsAPI"
 
 import data from "../../mock-data.json" // Мокнутые данные для теста. Не забудь удалить. Я сказал НЕЗАБУДЬ!!!
 import { BarChart2 } from "../../components/BarChart2"
@@ -49,7 +49,7 @@ export const StatisticExercise = () => {
         console.log(exerciseArr);
         setList(exerciseArr)
         setCurrent(exerciseArr[0])
-        formStat()
+        formStat(exerciseArr[0])
       })
     }
 
@@ -67,6 +67,7 @@ export const StatisticExercise = () => {
       console.log(newName);
       setCurrent(newName)
       formStat({id: newName.id, name:newName.name})
+      document.getElementById("createModalMenu").classList.toggle("active")
    }
 
    async function formStat(ex) {
@@ -95,16 +96,17 @@ export const StatisticExercise = () => {
       stats.map((stat) => {
          let user = filteredUsers.find(obj => obj.id === stat.userId)
          console.log(user);
-         if(user === undefined)
-            user = {login: "Удалённый пользователь"}
-         statsArr.push({
-            login: user.login,
-            time: stat.time,
-            errors: stat.errors,
-            typeSpeed: stat.speed.toFixed(2),
-            status: stat.success,
-            date: stat.date
-         })
+         if (user !== undefined) {
+            //user = {login: "Удалённый пользователь"}
+            statsArr.push({
+               login: user.login,
+               time: stat.time,
+               errors: stat.errors,
+               typeSpeed: stat.speed.toFixed(2),
+               status: stat.success,
+               date: stat.date
+            })
+         }
       })
 
       setStatistics(statsArr)
@@ -118,9 +120,7 @@ export const StatisticExercise = () => {
          return "Не пройдено"
    }
 
-   async function debugClick() {
-      console.log("CLIIIIICK!!")
-      //formStat()
+   async function handleGoBackClick() {
       history('/statisticmenu')
    }
    
@@ -146,7 +146,7 @@ export const StatisticExercise = () => {
             {/*DEBUG HERE!!!!!! 
             УБРАТЬ ПОЗЖЕ НЕ ЗАБУУУУДЬЬ, нужно сделать шаги назад!!!
             */}
-            <button id="back" onClick={debugClick}>Назад</button>
+            <button id="back" onClick={handleGoBackClick}>Назад</button>
          </div>
          <div className="statistics-container">
             <div className="statistics-chart-container">
@@ -158,7 +158,7 @@ export const StatisticExercise = () => {
                      <tr>
                         <th>Логин</th>
                         <th>Время выполнения</th>
-                        <th>Количество ошибок %</th>
+                        <th>Количество ошибок</th>
                         <th>Средняя скорость набора</th>
                         <th>Статус</th>
                         <th>Дата</th>

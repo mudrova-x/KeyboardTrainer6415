@@ -119,7 +119,7 @@ export const StatisticAllUsersMean = () => {
                      <tr>
                         <th className="special-table">Логин</th>
                         <th className="special-table">Среднее время выполнения</th>
-                        <th className="special-table">Среднее количество ошибок %</th>
+                        <th className="special-table">Среднее количество ошибок</th>
                         <th className="special-table">Средняя скорость набора</th>
                         <th className="special-table">Процент выполнения %</th>
                      </tr>

@@ -34,14 +34,14 @@
 }
 
 .Modal{
-  width: 50vw;
-  height: 60vh;
+  width: 45vw;
+  height: 55vh;
   background-color: #D9D9D9;
   border: solid 7px black;
   z-index: 3;
   position: fixed;
-  left: 25vw;
-  top:20vh;
+  left: 27vw;
+  top:28vh;
 
   .Text-modal{
     font-family: 'Raleway';
@@ -323,7 +323,7 @@
   justify-content: center;
   color: #000000;
   border-color: #000000;
-    cursor: pointer;
+
   .Hide{
     font-family: 'Montserrat';
     font-style: normal;
