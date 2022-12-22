@@ -215,17 +215,29 @@ export const Training = (props) => {
     useEffect(() => {
 
         console.log(checkMaxTime)
-        if (seconds - checkMaxTime > Math.round(level.max_time)) {
+        //вот отсюда начинаютмя ошибки по времени
+        if (seconds - checkMaxTime >= Math.round(level.max_time)) {
             setMistake(mistake => mistake + 1);
             misRef.current = misRef.current + 1;
             setcheckMaxTime(seconds)
         }
+        //тут заканчиваются
+
+        if( level.max_time * exercises.text.length -(minutes * 60 + seconds) === 0  && typeСharacters.current){
+            pause()
+            setEndFail(true)
+            setEnd(true)
+            typeСharacters.current = false
+            console.log("Провал")
+        }
+
         if (!typeСharacters.current) {
             //console.log(startFlag)
             setMistake(0);
             misRef.current = 0;
             console.log("Зашел сюда")
         }
+
         if (misRef.current === maxError.current && misRef.current != 0) {
             pause()
             setEndFail(true)
@@ -515,7 +527,7 @@ export const Training = (props) => {
                         <div className="Number-symbol">Количество ошибок:</div>
                         <div className="Symbol">{mistake}/{level.max_errors}</div>
                         <div className="Number-symbol">Таймер:</div>
-                        <div type="text" className="Symbol" key={"133423423"}>{minutes}:{seconds}</div>
+                        <div type="text" className="Symbol" key={"133423423"}>{ level.max_time * exercises.text.length -(minutes * 60 + seconds) }</div>
                         <div className="Number-symbol">Средняя скорость набора:</div>
                         <div
                             className="Symbol">{startFlag.current && curr.current > 0 ? ((minutes * 60 + seconds) / currSym).toFixed(2) : 0}</div>
