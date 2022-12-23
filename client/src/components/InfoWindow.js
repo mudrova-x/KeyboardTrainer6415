@@ -8,6 +8,16 @@ import {FileVIKA} from "../http/mainAPI"
 
 export const InfoWindow = () => {
 
+  function isValidHTML(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/xml');
+    if (doc.documentElement.querySelector('parsererror')) {
+      return doc.documentElement.querySelector('parsererror').innerText;
+    } else {
+      return true;
+    }
+  }
+
     function Test() {
         let iffile = false;
         FileVIKA().then(data => {
@@ -20,9 +30,8 @@ export const InfoWindow = () => {
         console.log("iffile " + iffile)
         if(iffile){
 
-        var myWindow = document.open("", "MsgWindow", "width=1000,height=1000");
+        
 
-        //console.log(myWindow.document.body)
         var txtFile = new XMLHttpRequest();
         txtFile.open("GET", "../spravkaNew/Help.html", true)
         console.log(txtFile)
@@ -35,8 +44,13 @@ export const InfoWindow = () => {
                     console.log("Тут 3")
                     let allText = txtFile.responseText;
                     //console.log(allText)
-
-                    myWindow.document.body.innerHTML = allText;
+                    let valid = isValidHTML(allText)
+                    if (valid === true) {
+                      var myWindow = document.open("", "MsgWindow", "width=1000,height=1000");
+                      myWindow.document.body.innerHTML = allText;
+                    } else {
+                      alert(valid)
+                    }
                     //document.body.innerHTML = allText;
                 }
             }
