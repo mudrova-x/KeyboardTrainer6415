@@ -11,5 +11,5 @@ router.get('/explore', userController.explore)
 router.get('/exploreVIKA/:id', userController.exploreVIKA)
 router.get('/getAll', userController.getAll)
 router.post('/postStatistic', userController.postStatistic)
-
+router.get('/ifFile', userController.ifFile)
 module.exports = router

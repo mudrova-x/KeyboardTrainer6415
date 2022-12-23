@@ -8,7 +8,7 @@ import composition1 from "../../sound/comp1.mp3"
 import composition2 from "../../sound/comp2.mp3"
 
 import {fetchOneExercise, fetchDescriptionLevelVIKA, postResult} from "../../http/mainAPI"
-import {setIntervalAsync, clearIntervalAsync} from 'set-interval-async/fixed';
+
 import {useStopwatch} from "react-timer-hook";
 import {useNavigate, useParams} from "react-router-dom";
 import {Loader} from "../../components/Loader";
@@ -17,17 +17,15 @@ import {AuthContext} from "../../context/auth.context";
 //import { existsSync } from "node:fs";
 
 export const Training = (props) => {
+
     const user = useContext(AuthContext);
 
+    //отвечает за музыку
     const clickingSound = new Audio(tapSound);
-    //const music1 = new Audio(composition1);
-    //const music2 = new Audio(composition2);
-    //console.log(music1)
-    //const fs = require('fs')
-
     const music1 = useRef();
     const music2 = useRef();
 
+    //таймер
     const {
         seconds,
         minutes,
@@ -54,6 +52,7 @@ export const Training = (props) => {
     const [hideAudio, setHideAudio] = useState(false)
     const timeRef = useRef(0)
 
+    //буквы на клавиатуре
     const first = [{letter: "Ё", color: 4},
         {letter: "1", color: 4},
         {letter: "2", color: 4},
@@ -131,15 +130,16 @@ export const Training = (props) => {
     const [checkMaxTime, setcheckMaxTime] = useState(0)
     const [checkMaxTimeBOOL, setcheckMaxTimeBOOL] = useState(false)
 
+    //отслеживание нажатие файла
     useEffect(() => {
         document.addEventListener('keydown', detectKeyDown, true)
         return () => document.removeEventListener("keydown", detectKeyDown)
     }, []);
 
+
+    //получение данных с сервера - упражнение и уровень сложности
     useEffect(() => {
         console.log("id = ", id)
-
-
         fetchOneExercise(id).then(data => {
 
             setTimeout(() => {
@@ -174,6 +174,7 @@ export const Training = (props) => {
     }, []);
 
 
+    //запись в бд, когда заканчивается упражнение
     useEffect(() => {
 
         if (end) {
@@ -187,41 +188,10 @@ export const Training = (props) => {
                 exerciseId: id
             }).then(data => console.log(data))
         }
-
-
     }, [end]);
 
-    // useEffect(() => {
-    //     console.log("ААААА")
-    //     if (trueFalseMusic) {
-    //         if (trueFalseComps) {
-    //             music1.current.play()
-    //            // music2.pause()
-    //         } else {
-    //             music1.current.pause()
-    //            // music2.play()
-    //             console.log("пауза первой")
-    //
-    //         }
-    //     } else {
-    //         console.log("Пауза всего")
-    //         music1.current.pause()
-    //         //music2.pause()
-    //     }
-    //
-    //
-    // }, [trueFalseMusic, trueFalseComps])
-
+    //работа с таймером
     useEffect(() => {
-
-        console.log(checkMaxTime)
-        //вот отсюда начинаютмя ошибки по времени
-        if (seconds - checkMaxTime >= Math.round(level.max_time)) {
-            setMistake(mistake => mistake + 1);
-            misRef.current = misRef.current + 1;
-            setcheckMaxTime(seconds)
-        }
-        //тут заканчиваются
 
         if( level.max_time * exercises.text.length -(minutes * 60 + seconds) === 0  && typeСharacters.current){
             pause()
@@ -249,14 +219,13 @@ export const Training = (props) => {
 
     useEffect(() => {
         setcheckMaxTime(seconds)
-        //console.log("seconds = " + seconds)
 
     }, [checkMaxTimeBOOL])
 
+    //обработка нажатий клавиатуры
     const detectKeyDown = useCallback((e) => {
-        //console.log("Нажата клавиша")
+
         setcheckMaxTimeBOOL(checkMaxTimeBOOL => !checkMaxTimeBOOL)
-        //console.log(checkMaxTimeBOOL)
 
         if (trueFalseEffectRef.current) {
             clickingSound.play()
@@ -285,25 +254,20 @@ export const Training = (props) => {
             startFlag.current = true;
             typeСharacters.current = true
             start()
-            //start2()
-            console.log(startFlag)
-            console.log(checkMis)
             setHideAudio(false)
 
         } else {
             if (stopExc.current && typeСharacters.current) {
-                console.log("Упражнние идет")
                 setMistake(mistake => mistake + 1)
                 misRef.current = misRef.current + 1
             }
         }
 
 
+        //проверка окончания упражнения
         if ((allLenght.current - curr.current) === 0 && curr.current != 0) {
             setEnd(true)
             pause()
-            //console.log(curr.current)
-            // console.log(head.length)
             stopExc.current = false
             typeСharacters.current = false
         }
@@ -323,7 +287,6 @@ export const Training = (props) => {
 
     useEffect(() => {
         setTimeout(() => {
-            console.log("абз")
             setLength(nowst.length)
         }, 500)
 
@@ -387,18 +350,16 @@ export const Training = (props) => {
         )
     }
 
+    //включение и отключение звука
     function ChangeEffect() {
         setTrueFalseEffect(trueFalseEffect => !trueFalseEffect)
         trueFalseEffectRef.current = !trueFalseEffectRef.current
     }
 
-
+    //включение и отключение звука
     function ChangeMusic() {
 
         setTrueFalseMusic(!trueFalseMusic)
-        //console.log("trufalseMusic = " + trueFalseMusic)
-
-        //console.log("Включена музыка? " + trueFalseEffectMusic.current)
 
         setTimeout(() => {
             if (!trueFalseMusic) {
@@ -420,10 +381,8 @@ export const Training = (props) => {
 
     }
 
-    function OffMusic() {
-        //music1.current.pause()
-    }
 
+    //смена музыкальной композиции
     function ChangeComps() {
         setTrueFalseComps(!trueFalseComps)
         //trueFalseEffectComps.current = !trueFalseEffectComps.current
@@ -439,11 +398,7 @@ export const Training = (props) => {
         }, 100)
     }
 
-    function PlayMusic() {
-        //console.log("Так можно")
-        //music1.current.play()
-    }
-
+    //модальное окно со звуком
     const ModalAudio = () => {
 
         return (
@@ -489,36 +444,25 @@ export const Training = (props) => {
         )
     }
 
-
+    //скрыть клавиатуру
     function Hide() {
         setHide(!hide)
-        if (hide) {
-            console.log("Открыто")
-        } else {
-            console.log("Скрыто")
-        }
 
     }
 
+    //скрыть/открыть аудио
     function HideAudio() {
         setHideAudio(!hideAudio)
-        if (hideAudio) {
-            console.log("Открыто аудио")
-        } else {
-            console.log("Скрыто аудио")
-        }
-
     }
 
 
+    //начало теста
     const StartTest = () => {
-
 
         const [st, setSt] = useState("Нажмите пробел")
 
         return (
             <div>
-
 
                 <div className="Container">
                     <div className="Container-characteristic">
@@ -561,7 +505,7 @@ export const Training = (props) => {
                     <></>
                     :
                     <div>
-                        <div className="First-layer" style={{margin: "5vh 0vh 0vh 10vw"}}>
+                        <div className="First-layer" style={{margin: "2vh 0vh 0vh 10vw"}}>
                             {first.map(first => <Letter key={first.letter} obj={first}/>)}
                             <div className="Back-button">
                                 <div className="Back">BACK</div>
@@ -622,7 +566,6 @@ export const Training = (props) => {
                 }
 
             </div>
-
 
             {end ?
                 <Modal/>

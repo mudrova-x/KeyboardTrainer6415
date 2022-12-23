@@ -41,10 +41,18 @@ export const fetchOneExercise = async (id) => {
 }
 
 export const fetchDescriptionLevelVIKA = async (level_num) => {
-
     const {data} = await $host.get('http://localhost:5000/api/level/exploreVIKA/' + level_num);
     //console.log(data)
     return data
+}
+
+export const FileVIKA = async () => {
+
+     const {data} = await $host.get('http://localhost:5000/api/user/ifFile');
+     console.log("data")
+     console.log(data)
+     return data;
+
 }
 
 export const postResult = async (statistic) => {

@@ -4,9 +4,35 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require("config") // константы проекта
 const key = config.get("Key")
+
+
 //доделать логин
 
 class UserController {
+
+  async ifFile(req, res){
+    const fs = require('fs')
+    var test = {result:false}
+
+
+    fs.access("client/public/spravkaNew/Help.html", function(error){
+      if (error) {
+        console.log("Файл не найден");
+        let test = {result:false}
+        return res.json(test)
+
+      } else {
+        //test.result = true
+        let test = {result:true}
+        return res.json(test)
+        console.log(test)
+        console.log("Файл найден");
+      }
+    });
+    //return res.json(test)
+
+  }
+
   async registration(req, res, next) {
     try {
       const { login, password } = req.body
