@@ -1,4 +1,371 @@
-.test{
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,800;0,900;1,800&display=swap");
+
+body{
+  margin:0;
+  height: 100vh;
+  box-sizing: border-box;
+  font-family: "Raleway" !important;
+}
+.root{
+    overflow: hidden;
+}
+
+
+
+// header {
+//     display: flex;
+//     flex-direction: row;
+//     text-transform: uppercase;
+//     text-align: center;
+//     .title {
+//       flex: 3;
+//       font-weight: 800;
+//       font-size: 90px;
+//       line-height: 150px;
+//       letter-spacing: 0.3em;
+//       border: solid 3.5px black;
+//     }
+  
+//     .profile {
+//       flex: 1;
+//       button {
+//         width: 100%;
+//         height: 100%;
+//         text-align: center;
+//         font-weight: 500;
+//         font-size: 46px;
+//         line-height: 75px;
+//         background-color: inherit;
+//         letter-spacing: 0.3em;
+//         border: none;
+//         text-transform: uppercase;
+//         border: solid 3.5px black;
+//       }
+//     }
+//   }
+//   overflow: hidden;
+// }
+
+
+
+header {
+  display: flex;
+  flex-direction: row;
+  text-transform: uppercase;
+  text-align: center;
+  .title {
+    flex: 3;
+    font-weight: 800;
+    font-size: 90px;
+    line-height: 150px;
+    letter-spacing: 0.3em;
+    border: solid 3.5px black;
+  }
+
+  .profile {
+    flex: 1;
+    button {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font-weight: 500;
+      font-size: 46px;
+      line-height: 75px;
+      background-color: inherit;
+      letter-spacing: 0.3em;
+      border: none;
+      text-transform: uppercase;
+      border: solid 3.5px black;
+    }
+  }
+}
+
+@mixin fields-desc {
+  width: 100%;
+  height: 14%;
+  text-indent: 10px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-family: "Raleway";
+  border: 5px black solid;
+}
+
+.errorMessage-main{
+max-height: 20px;
+font-size: 20px;
+line-height: 20px;
+margin-block-end: 0;
+margin-block-start: 0;
+font-weight: 600;
+color: rgb(172, 6, 6);
+margin-left: 50px;
+padding-top: 4px;
+padding-bottom: 4px;
+}
+
+.errorsBox{
+// display: none;
+
+width: 100%;
+// #errorExistence{
+//   display: none;
+// }
+#errorLogin{
+display: none;
+}
+#errorPassword{
+display: none;
+}
+#errorData{
+  display: none;
+  margin-left: 28%;
+  }
+}
+
+.modal-main {
+display: none;
+position: fixed;
+z-index: 1;
+// padding-top: 100px;
+left: 0;
+top: 16.6vh;
+width: 100%;
+max-width: 80vw;
+height: 100%;
+overflow: auto;
+
+
+.task-text-field {
+  width: 40%;
+  height: 88%;
+  margin-top:2%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  display: flex;
+  border: 8px solid black;
+  textarea {
+    width: 95%;
+    height: 95%;
+    border: none;
+    /* text-indent: 10px; */
+    text-align: start;
+    /* padding: 28px; */
+    font-size: 18px;
+}
+
+}
+.addButton {
+padding: 5%;
+width: 55%;
+min-width: 252px;
+color: white;
+background-color: black;
+font-size:20px;
+font-weight: 200;
+letter-spacing: 2px;
+font-family: "Raleway";
+text-decoration: underline;
+}
+.window-user {
+display: flex;
+flex-direction: column;
+/* justify-content: space-between; */
+ background: rgb(217, 217, 217); 
+/* width: 60%; */
+/* height: 76%; */
+border: 7px solid black;
+/* margin-left: auto; */
+/* margin-right: auto; */
+// margin-top: 17vh;
+min-width: 638px;
+min-height: 422px;
+width: 34%;
+height: 50%;
+position: fixed;
+/* margin: 0; */
+right: 0;
+
+
+.fields-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex: 3;
+  padding: 54px;
+
+  .input-user {
+    padding: 3%;
+    width: 48%;
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-family: "Raleway";
+    border: 5px black solid;
+    text-align: center;
+    min-width: 217px;
+    font-weight: 500;
     font-size: 40px;
+  }
+  .addButton {
+    padding: 5%;
+    width: 55%;
+    min-width: 252px;
+    color: white;
+    background-color: black;
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    font-family: "Raleway";
+    text-decoration: underline;
+  }
+  
+}
+}
+.window {
+display: flex;
+flex-direction: column;
+justify-content:space-evenly;
+width: 50%;
+margin-left: auto;
+margin-right: auto;
+margin-top: 2%;
+height: 88%;
+border: 7px solid black;
+
+select::-ms-expand {
+  display: none;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 3;
+  padding: 52px 190px;
+
+  input {
+    @include fields-desc;
+    margin-top: 5%;
+    padding:0;
+  }
+  select {
+    @include fields-desc;
+    appearance: none;
+    outline: 0;
+    border: 0;
+    box-shadow: none;
+
+    flex: 1;
+    height: 100%;
+    color: black;
+    background-color: white;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  .select {
+    margin-top: 5%;
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 14%;
+    overflow: hidden;
+    border: 5px black solid;
+  }
+  
+  /* Transition */
+  option: {
+    background-color: #f39c12;
+  }
+  button{
+    padding:0;
+  }
+}
+.single-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin-bottom: 56px;
+
+}
+.file-field {
+  width: 100%;
+  height: 10%;
+  input {
+    width: 99%;
+    height: 100%;
+  }
+}
+}
+
+// .modal-content {
+//   width: 80%;
+//   height: 80%;
+//   margin: auto;
+// }
+}
+
+.loader{
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+  font-size: 2ch;
+}
+
+.info-box{
+  background-color: rgb(217, 217, 217);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+  p{
+    text-align: center;
+  }
+
+  .info-title{
+    font-size: 22px;
     font-weight: 600;
+  }
+
+  .info-text{
+    font-size: 18px;
+    font-size: 18px;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    p{
+      margin-block-start: 10px;
+    margin-block-end: 10px;
+    }
+    .p1{
+      font-weight: 600;
+      width: 65%;
+    }
+    .p2{
+      width: 70%;
+    }
+    
+}
+  .info-close{
+    margin-left: 90%;
+    margin-top: 2%;
+    background: inherit;
+    border: none;
+    width: 25px;
+  }
+
+  .systemButton{
+    margin-top: 2%;
+    width: 36%;
+    height: 3rem;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: rgb(134, 134, 134);
+    background: rgb(255, 255, 255);
+    border: solid 2px black;
+  }
 }

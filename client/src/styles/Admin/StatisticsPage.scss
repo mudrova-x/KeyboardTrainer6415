@@ -1,0 +1,208 @@
+@mixin fields-desc {
+   width: 100%;
+   height: 14%;
+   text-indent: 10px;
+   font-size: 20px;
+   letter-spacing: 2px;
+   font-family: "Raleway";
+   border: 5px black solid;
+ } /*I dont know what the hell is this, scss is weird I just copied it in case of voodoo magic requirements*/
+
+
+body {
+   font-family: "Raleway";
+   overflow-x:hidden;  /*для горизонтального*/
+}
+
+.admin-page-statistics {
+   height: 88vh;
+   overflow-y: hidden;
+}
+
+.nav-panel {
+   min-height: 90px;
+   display: flex;
+   flex-direction: row; // do I need this?
+   justify-content: space-between;
+   //align-items: center;
+   border: solid 3px black;
+
+   .user-chooser {
+      display: flex;
+      flex-direction: row;
+      width: 70%;
+      align-items: center;
+      justify-content: space-between;
+      //min-height: 90px;
+      border: solid 2px black;
+
+      button {
+         background-color: inherit;
+         border: none;
+         width: 36px;
+         height: 20px;
+         margin-right: 20px;
+      }
+
+      p {
+         margin: 5px 5px 5px 50px;
+         font-size: 30px;
+         font-weight: 500;
+      }
+   }
+
+   button#back {
+      background-color: inherit;
+      border: solid 2px black;
+      width: 30%;
+      font-size: 30px;
+      font-weight: 500;
+   }
+}
+
+.statistics-container {
+   width: 100%;
+   height: 100%;
+   display: flex;
+}
+
+.statistics-table-container {
+   display: flex;
+   flex-direction: column;
+   //padding: 1rem;
+   overflow-y: scroll;
+   overflow-x: hidden;
+   //height: 61vh;
+   height: 82%;
+   flex: 1;
+ }
+
+ ::-webkit-scrollbar {
+   width: 20px;
+ }
+ 
+ ::-webkit-scrollbar-track {
+   background: #ffffff;
+   border: solid 2px black;
+ }
+ 
+ ::-webkit-scrollbar-thumb {
+   background: rgba(217, 217, 217, 1);
+   max-height: 20px;
+   border: solid 2px black;
+ }
+ 
+ ::-webkit-scrollbar-thumb:hover {
+   background: #555;
+ }
+ 
+ table {
+   border-collapse: collapse;
+   width: 100%;
+   background-color: inherit;
+ }
+ 
+ th.special-table,
+ td.special-table {
+  width: 20%;
+ }
+
+ th,
+ td {
+   border: 3px solid black;
+   border-left: none;
+   text-align: left;
+   padding: 8px;
+   font-size: 16px;
+   width: 16%;
+ }
+ th {
+   border-top: 2px;
+ }
+ 
+ th {
+   background-color: inherit;
+ }
+ 
+ td {
+   background-color: inherit;
+ }
+
+ .statistics-chart-container {
+   width: 30%;
+   border-right: solid 3px black;
+   border-left: solid 3px black;
+ }
+
+.modal-menu.active {
+  //display: block;
+  max-height: 66%;
+  border: 2px black solid;
+  //border: none;
+}
+
+ .modal-menu {
+  width: 50%;
+  max-height: 0;
+  border: none;
+  //border: 2px black solid;
+  background-color: rgba($color: grey, $alpha: 1.0);
+  padding: 0% 10%;
+  //display: none;
+  display: block;
+  transition: max-height 0.5s;
+  position: fixed;
+  z-index: 1;
+  // padding-top: 100px;
+  //left: 0;
+  //top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .modal-menu-content {
+    //border: 2px red solid;
+    margin: 0 0;
+    //display: flex;
+    //flex-direction: column;
+    width: 100%;
+    padding: 50px 0px;
+    input {
+      //min-width: 500px;
+      width: 100%;
+      min-height: 48px;
+      text-indent: 20px;
+      font-size: 22px;
+      background-color: rgb(217, 217, 217);
+      color: rgb(109, 109, 109);
+      margin-bottom: 40px;
+      border: 2px black solid;
+      padding: 0 0;
+    }
+  }
+ }
+
+  .menu-item {
+    width: 100%;
+    height: 48px;
+    text-indent: 20px;
+    font-size: 22px;
+    background-color: rgb(217, 217, 217);
+
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+    border-right: 2px black solid;
+    border-left: 2px black solid;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    p {
+      z-index: 5;
+    }
+  }
+
+  .menu-item:hover {
+    background-color: rgb(240, 240, 240);
+  }

@@ -1,3 +1,9 @@
 {
-    "port": 5000
-  }
+  "port": 5000,
+  "DB_NAME":"postgres4",
+  "DB_USER":"postgres",
+  "DB_PASSWORD":"050401",
+  "DB_HOST":"localhost",
+  "DB_PORT":5432,
+  "Key":"KeyboardTrainer2022"
+}
